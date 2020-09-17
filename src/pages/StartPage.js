@@ -5,6 +5,10 @@ import Container from '@material-ui/core/Container';
 import MovieCard from '../components/MovieCard'
 import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
+import CardMedia from '@material-ui/core/CardMedia';
+import Card from '@material-ui/core/Card';
+import Image from '../utils/deadpool.jpg'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +30,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflowX: 'auto',
     alignItems: 'flexStart',
-  }
+  },
+  background: {
+    backgroundImage: `url(${'../utils/deadpool.jpg'})`,
+  },
 }));
+
+const styles = {
+  paperContainer: {
+    height: '1356',
+    backgroundImage: `url(${Image})`,
+    marginLeft: '-40px',
+    paddingLeft: '40px',
+  },
+};
 
 const cards = Array.from(Array(25).keys());
 
@@ -37,27 +53,26 @@ export default function Album() {
   return (
     <React.Fragment>
       <Container maxWidth="lg">
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Box maxWidth="lg">
-            <Typography component="h1" variant="h2" align="left" color="textPrimary">
-              Welcome.
-            </Typography>
-            <Typography variant="h5" align="left" color="textSecondary" paragraph>
-              Millions of movies, TV shows and people to discover. Explore now.
-            </Typography>
+        <main>
+          {/* Hero unit */}
+          <div className={classes.heroContent} style={styles.paperContainer}>
+            <Box maxWidth="lg">
+              <Typography component="h1" variant="h2" align="left" color="textPrimary">
+                Welcome.
+              </Typography>
+              <Typography variant="h5" align="left" color="textSecondary" paragraph>
+                Millions of movies, TV shows and people to discover. Explore now.
+              </Typography>
+            </Box>
+          </div>
+          {/* End hero unit */}
+          <ColumnHeader />
+          <Box className={classes.scroller}>
+            {cards.map((card) => (
+              <MovieCard key={card} href={'http://localhost:3000/'} />
+            ))}
           </Box>
-        </div>
-        {/* End hero unit */}
-        <ColumnHeader/>
-        <Box className={classes.scroller}>
-          {cards.map((card) => (
-            <MovieCard key={card} href={'http://localhost:3000/'}/>
-          ))}
-        </Box>
-        
-      </main>
+        </main>
       </Container>
     </React.Fragment>
   );

@@ -2,13 +2,19 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
 
 
 // how does this work? theme?
 const useStyles = makeStyles((theme) => ({
   footer: {
-    backgroundColor: 'theme.palette.background.paper',
+    backgroundColor: '#032541',
     padding: theme.spacing(6),
+  },
+  h2Link: {
+    fontWeight: '700',
+    fontSize: '1em',
+    color: 'white',
   },
 }));
 
@@ -18,11 +24,13 @@ export default () => {
       return (
         <Box style={styles.wrapper}>
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" color="inherit" gutterBottom>
-              Cine+
+            <Typography variant="h3" noWrap>
+              <Link href="/" underline="none" className="nav-link" className={classes.h2Link}>
+                Cine+
+              </Link>
             </Typography>
-            <Typography variant="subtitle1" align="center" color="textPrimary" component="p">
-              Something here to give the footer a purpose!
+            <Typography variant="subtitle1" align="center" color="textPrimary" component="p" className={classes.h2Link}>
+              by Staz
             </Typography>
           </footer>
         </Box>

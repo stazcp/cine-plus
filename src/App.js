@@ -2,12 +2,12 @@ import React from 'react';
 import './App.css';
 import StartPage from './pages/StartPage';
 import Footer from './components/Footer';
-import PrimarySearchAppBar from './components/PrimarySearchAppBar';
+import AppBar from './components/AppBar';
 
 function App() {
   return (
     <>
-      <PrimarySearchAppBar />
+      <AppBar />
       <StartPage />
       <Footer />
     </>
