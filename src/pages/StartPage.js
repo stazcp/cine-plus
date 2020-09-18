@@ -5,9 +5,9 @@ import Container from '@material-ui/core/Container';
 import MovieCard from '../components/MovieCard'
 import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
-import CardMedia from '@material-ui/core/CardMedia';
-import Card from '@material-ui/core/Card';
-import Image from '../utils/deadpool.jpg'
+import SearchBar from 'material-ui-search-bar';
+import Image from '../utils/deadpool.jpg';
+
 
 
 
@@ -31,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'auto',
     alignItems: 'flexStart',
   },
-  background: {
-    backgroundImage: `url(${'../utils/deadpool.jpg'})`,
-  },
 }));
 
 const styles = {
@@ -42,8 +39,29 @@ const styles = {
     backgroundImage: `url(${Image})`,
     marginLeft: '-40px',
     paddingLeft: '40px',
+    paddingRight: '40px',
+    marginRight: '-40px',
+    marginBottom: '30px',
+  },
+  heroTitle: {
+    color: 'white',
+    fontSize: '3em',
+    fontWeight: '700',
+  },
+  heroSubtitle: {
+    color: 'white',
+    fontSize: '2em',
+    fontWeight: '600',
   },
 };
+
+const search = () => {
+
+}
+
+const doNothing = ()=>{
+
+}
 
 const cards = Array.from(Array(25).keys());
 
@@ -57,15 +75,50 @@ export default function Album() {
           {/* Hero unit */}
           <div className={classes.heroContent} style={styles.paperContainer}>
             <Box maxWidth="lg">
-              <Typography component="h1" variant="h2" align="left" color="textPrimary">
+              <Typography
+                component="h1"
+                variant="h2"
+                align="left"
+                color="inherit"
+                style={styles.heroTitle}
+              >
                 Welcome.
               </Typography>
-              <Typography variant="h5" align="left" color="textSecondary" paragraph>
+              <Typography
+                variant="h5"
+                align="left"
+                color="secondary"
+                paragraph
+                style={styles.heroSubtitle}
+              >
                 Millions of movies, TV shows and people to discover. Explore now.
               </Typography>
+              <SearchBar
+                placeholder="Search for a movie, tv show, person....."
+                onChange={doNothing}
+                onRequestSearch={search}
+              />
             </Box>
           </div>
           {/* End hero unit */}
+          <ColumnHeader />
+          <Box className={classes.scroller}>
+            {cards.map((card) => (
+              <MovieCard key={card} href={'http://localhost:3000/'} />
+            ))}
+          </Box>
+          <ColumnHeader />
+          <Box className={classes.scroller}>
+            {cards.map((card) => (
+              <MovieCard key={card} href={'http://localhost:3000/'} />
+            ))}
+          </Box>
+          <ColumnHeader />
+          <Box className={classes.scroller}>
+            {cards.map((card) => (
+              <MovieCard key={card} href={'http://localhost:3000/'} />
+            ))}
+          </Box>
           <ColumnHeader />
           <Box className={classes.scroller}>
             {cards.map((card) => (

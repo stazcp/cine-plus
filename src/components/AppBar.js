@@ -125,6 +125,22 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+    const movieMenuId = 'movies-menu';
+    const renderMovieMenu = (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={movieMenuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Join Cine+</MenuItem>
+      </Menu>
+    );
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -192,7 +208,7 @@ export default function PrimarySearchAppBar() {
             </Link>
           </Typography>
           <div className={classes.menu}>
-            <Typography className={classes.h5Link}  variant="h5">
+            <Typography className={classes.h5Link} variant="h5">
               <Link href="/" color="inherit" underline="none" className="nav-link">
                 Movies
               </Link>
