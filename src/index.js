@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+// put in utils -> theme
 const theme = createMuiTheme({
   typography: {
     fontFamily: ['Source Sans Pro','Arial','sans-serif'].join(','),

@@ -8,9 +8,6 @@ import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../utils/deadpool.jpg';
 
-
-
-
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -18,9 +15,21 @@ const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
+    height: '1356',
+    backgroundImage: `url(${Image})`,
+    marginLeft: '-40px',
+    paddingLeft: '40px',
+    paddingRight: '40px',
+    marginRight: '-40px',
+    marginBottom: '30px',
   },
   heroButtons: {
     marginTop: theme.spacing(4),
+  },
+  heroTitle: {
+    color: 'white',
+    fontSize: '3em',
+    fontWeight: '700',
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -31,30 +40,12 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'auto',
     alignItems: 'flexStart',
   },
-}));
-
-// TODO: You can merge this object with useStyles
-const styles = {
-  paperContainer: {
-    height: '1356',
-    backgroundImage: `url(${Image})`,
-    marginLeft: '-40px',
-    paddingLeft: '40px',
-    paddingRight: '40px',
-    marginRight: '-40px',
-    marginBottom: '30px',
-  },
-  heroTitle: {
-    color: 'white',
-    fontSize: '3em',
-    fontWeight: '700',
-  },
   heroSubtitle: {
     color: 'white',
     fontSize: '2em',
     fontWeight: '600',
   },
-};
+}));
 
 const search = () => {
 
@@ -74,14 +65,14 @@ export default function Album() {
       <Container maxWidth="lg">
         <main>
           {/* Hero unit */}
-          <div className={classes.heroContent} style={styles.paperContainer}>
+          <div className={classes.heroContent}>
             <Box maxWidth="lg">
               <Typography
                 component="h1"
                 variant="h2"
                 align="left"
                 color="inherit"
-                style={styles.heroTitle}
+                className={classes.heroTitle}
               >
                 Welcome.
               </Typography>
@@ -90,7 +81,7 @@ export default function Album() {
                 align="left"
                 color="secondary"
                 paragraph
-                style={styles.heroSubtitle}
+                className={classes.heroSubtitle}
               >
                 Millions of movies, TV shows and people to discover. Explore now.
               </Typography>

@@ -51,7 +51,7 @@ export default function ColumnHeader(props){
   const [onTv, setOnTv] = useState(styles.unselected);
   const [forRent, setForRent] = useState(styles.unselected);
   const [inTheaters, setInTheaters] = useState(styles.unselected);
- 
+
   const handleStreaming = (e) => {
     setStreaming(styles.selected);
     setOnTv(styles.unselected);
