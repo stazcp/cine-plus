@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO: You can merge this object with useStyles
 const styles = {
   paperContainer: {
     height: '1356',
