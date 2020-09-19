@@ -27,9 +27,8 @@ const styles = {
 };
 
 
-export default () => {
+export default function Footer(props) {
       const classes = useStyles();
-
       return (
         <Box style={styles.wrapper}>
           <footer className={classes.footer}>

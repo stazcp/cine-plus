@@ -46,93 +46,32 @@ const styles = {
 // const [activeIndex, setActiveIndex] = useState(0)   --> index of element will be the active one
 
 export default function ColumnHeader(props){
+  const [activeIndex, setActiveIndex] = useState(0);
   const classes = useStyles();
-  const [streaming, setStreaming] = useState(styles.selected)
-  const [onTv, setOnTv] = useState(styles.unselected);
-  const [forRent, setForRent] = useState(styles.unselected);
-  const [inTheaters, setInTheaters] = useState(styles.unselected);
- 
-  const handleStreaming = (e) => {
-    setStreaming(styles.selected);
-    setOnTv(styles.unselected);
-    setForRent(styles.unselected);
-    setInTheaters(styles.unselected);
 
-  };
-  const handleOnTv = (e) => {
-    setOnTv(styles.selected);
-    setStreaming(styles.unselected);
-    setForRent(styles.unselected);
-    setInTheaters(styles.unselected);
-
-  };
-  const handleForRent = (e) => {
-    setForRent(styles.selected);
-    setStreaming(styles.unselected);
-    setOnTv(styles.unselected);
-    setInTheaters(styles.unselected);
-
-  };
-  const handleInTheaters = (e) => {
-    setInTheaters(styles.selected);
-    setStreaming(styles.unselected);
-    setOnTv(styles.unselected);
-    setForRent(styles.unselected);
-  };
-  
+  const handleClick = (e,i) => {
+    setActiveIndex(i)
+    e.preventDefault();
+  }
 
   return (
     <Grid container direction="row" alignItems="center">
-      <Typography className={classes.column_header}>What's Popular</Typography>
-      <Grid container md={5} style={styles.borderStyler}>
-        <Typography className={classes.link}>
-          <Link
-            href="#"
-            color="inherit"
-            underline="none"
-            className="nav-link"
-            onClick={handleStreaming}
-            style={streaming}
-          >
-            Streaming
-          </Link>
-        </Typography>
-        <Typography className={classes.link}>
-          <Link
-            href="#"
-            color="inherit"
-            underline="none"
-            className="nav-link"
-            onClick={handleOnTv}
-            style={onTv}
-          >
-            On Tv
-          </Link>
-        </Typography>
-        <Typography className={classes.link}>
-          <Link
-            href="#"
-            color="inherit"
-            underline="none"
-            className="nav-link"
-            onClick={handleForRent}
-            style={forRent}
-          >
-            For Rent
-          </Link>
-        </Typography>
-        <Typography className={classes.link}>
-          <Link
-            href="#"
-            color="inherit"
-            underline="none"
-            className="nav-link"
-            onClick={handleInTheaters}
-            style={inTheaters}
-          >
-            In Theaters
-          </Link>
-        </Typography>
+      <Typography className={classes.column_header}>{props.header}</Typography>
+      <Grid container style={styles.borderStyler}>
+        {props.options.titles.map((title, i) => 
+          <Typography className={classes.link} key={i}>
+            <Link
+              href={props.options.urls[i]}
+              color="inherit"
+              underline="none"
+              className="nav-link"
+              style={activeIndex === i ? styles.selected : styles.unselected}
+              onClick={e => handleClick(e,i)}
+            >
+              {title}
+            </Link>
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );

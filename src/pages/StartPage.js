@@ -93,25 +93,49 @@ export default function Album() {
             </Box>
           </div>
           {/* End hero unit */}
-          <ColumnHeader />
+          <ColumnHeader
+            header="What's Popular"
+            options={{
+              titles: ['Streaming', 'On Tv', 'For Rent', 'In Theaters'],
+              urls: ['/', '/', '/', '/'],
+            }}
+          />
           <Box className={classes.scroller}>
             {cards.map((card) => (
               <MovieCard key={card} href={'http://localhost:3000/'} />
             ))}
           </Box>
-          <ColumnHeader />
+          <ColumnHeader
+            header="Free To Watch"
+            options={{
+              titles: ['Movies', 'Tv'],
+              urls: ['/', '/'],
+            }}
+          />
           <Box className={classes.scroller}>
             {cards.map((card) => (
               <MovieCard key={card} href={'http://localhost:3000/'} />
             ))}
           </Box>
-          <ColumnHeader />
+          <ColumnHeader
+            header="Latest Trailers"
+            options={{
+              titles: ['Streaming', 'On Tv', 'For Rent', 'In Theaters'],
+              urls: ['/', '/', '/', '/'],
+            }}
+          />
           <Box className={classes.scroller}>
             {cards.map((card) => (
               <MovieCard key={card} href={'http://localhost:3000/'} />
             ))}
           </Box>
-          <ColumnHeader />
+          <ColumnHeader
+            header="Trending"
+            options={{
+              titles: ['Today', 'This Week'],
+              urls: ['/', '/'],
+            }}
+          />
           <Box className={classes.scroller}>
             {cards.map((card) => (
               <MovieCard key={card} href={'http://localhost:3000/'} />
