@@ -17,15 +17,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// won't work inside useStyles check bugs folder for error
 const styles = {
   borderStyler: {
-    borderStyle: 'solid',
     borderRadius: '50px 50px 50px 50px',
-    borderWidth: 'thin',
     height: '28px',
     maxWidth: '407.5px',
-    minWidth: '407.5px',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
     flexWrap: 'nowrap',
   },
   selected: {
@@ -40,11 +38,6 @@ const styles = {
   },
 };
 
-//array of options to reuse component (2-10)
-//       string->title, string->link
-// [obj:{title: "Movies",link: "/"},obj:{title: "Tv",link: "/"}]
-// const [activeIndex, setActiveIndex] = useState(0)   --> index of element will be the active one
-
 export default function ColumnHeader(props){
   const [activeIndex, setActiveIndex] = useState(0);
   const classes = useStyles();
@@ -58,17 +51,17 @@ export default function ColumnHeader(props){
     <Grid container direction="row" alignItems="center">
       <Typography className={classes.column_header}>{props.header}</Typography>
       <Grid container style={styles.borderStyler}>
-        {props.options.titles.map((title, i) => 
-          <Typography className={classes.link} key={i}>
+        {props.titles.map( (ele,i)=> 
+          <Typography className={classes.link} key={ele.url}>
             <Link
-              href={props.options.urls[i]}
+              href={ele.url}
               color="inherit"
               underline="none"
               className="nav-link"
               style={activeIndex === i ? styles.selected : styles.unselected}
               onClick={e => handleClick(e,i)}
             >
-              {title}
+              {ele.title}
             </Link>
           </Typography>
         )}

@@ -95,10 +95,12 @@ export default function Album() {
           {/* End hero unit */}
           <ColumnHeader
             header="What's Popular"
-            options={{
-              titles: ['Streaming', 'On Tv', 'For Rent', 'In Theaters'],
-              urls: ['/', '/', '/', '/'],
-            }}
+            titles={[
+              { title: 'Streaming', url: '/' },
+              { title: 'On Tv', url: '/' },
+              { title: 'For Rent', url: '/' },
+              { title: 'In Theaters', url: '/' },
+            ]}
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
@@ -111,6 +113,10 @@ export default function Album() {
               titles: ['Movies', 'Tv'],
               urls: ['/', '/'],
             }}
+            titles={[
+              { title: 'Movies', url: '/' },
+              { title: 'Tv', url: '/' },
+            ]}
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
@@ -119,10 +125,12 @@ export default function Album() {
           </Box>
           <ColumnHeader
             header="Latest Trailers"
-            options={{
-              titles: ['Streaming', 'On Tv', 'For Rent', 'In Theaters'],
-              urls: ['/', '/', '/', '/'],
-            }}
+            titles={[
+              { title: 'Streaming', url: '/' },
+              { title: 'On Tv', url: '/' },
+              { title: 'For Rent', url: '/' },
+              { title: 'In Theaters', url: '/' },
+            ]}
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
@@ -131,10 +139,10 @@ export default function Album() {
           </Box>
           <ColumnHeader
             header="Trending"
-            options={{
-              titles: ['Today', 'This Week'],
-              urls: ['/', '/'],
-            }}
+            titles={[
+              { title: 'Today', url: '/' },
+              { title: 'This Week', url: '/' },
+            ]}
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
