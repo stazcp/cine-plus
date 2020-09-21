@@ -59,10 +59,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
+  const [moreAnchor, setMoreAnchor] = React.useState(null);
+  const [peopleAnchor, setPeopleAnchor] = React.useState(null);
+  const [tvShowsAnchor, setTvShowsAnchor] = React.useState(null);
   const [moviesAnchor, setMoviesAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  const isMoreMenuOpen = Boolean(moreAnchor)
+  const isPeopleMenuOpen = Boolean(peopleAnchor);
+  const isTvShowsMenuOpen = Boolean(tvShowsAnchor);
   const isMoviesMenuOpen = Boolean(moviesAnchor);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -72,26 +78,39 @@ export default function PrimarySearchAppBar() {
     event.preventDefault();
   };
 
-  const handleMoviesMenuClose = () => {
-    setMoviesAnchor(null);
-    handleMobileMenuClose();
+  const handleTvShowsMenuOpen = (event) => {
+    setMoviesAnchor(event.currentTarget);
+    event.preventDefault();
   };
+
+  const handleMoreMenuOpen = (event) => {
+    setMoreAnchor(event.currentTarget);
+    event.preventDefault();
+  }
+
+  const handlePeopleMenuOpen = (event) => {
+    setPeopleAnchor(event.currentTarget);
+    event.preventDefault();
+  }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
+    setMoviesAnchor(null);
+    setMoreAnchor(null);
+    setPeopleAnchor(null);
     handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
   };
 
   const moviesMenuId = 'movies-menu';
@@ -101,16 +120,76 @@ export default function PrimarySearchAppBar() {
       getContentAnchorEl={null}
       anchorEl={moviesAnchor}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       id={moviesMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={isMoviesMenuOpen}
-      onClose={handleMoviesMenuClose}
+      onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMoviesMenuClose}>Popular</MenuItem>
-      <MenuItem onClick={handleMoviesMenuClose}>Now Playing</MenuItem>
-      <MenuItem onClick={handleMoviesMenuClose}>Upcoming</MenuItem>
-      <MenuItem onClick={handleMoviesMenuClose}>Top Rated</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+    </Menu>
+  );
+
+  const tvShowsMenuId = 'tv-shows-menu';
+  const renderTVShowsMenu = (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorEl={moviesAnchor}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      id={tvShowsMenuId}
+      keepMounted
+      open={isTvShowsMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+    </Menu>
+  );
+
+  const peopleMenuId = 'people-menu';
+  const renderPeopleMenu = (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorEl={peopleAnchor}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      id={peopleMenuId}
+      keepMounted
+      open={isPeopleMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+    </Menu>
+  );
+
+  const moreMenuId = 'more-menu';
+  const renderMoreMenu = (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorEl={moreAnchor}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      id={moreMenuId}
+      keepMounted
+      open={isMoreMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
     </Menu>
   );
 
@@ -118,10 +197,11 @@ export default function PrimarySearchAppBar() {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      getContentAnchorEl={null}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -173,6 +253,8 @@ export default function PrimarySearchAppBar() {
               aria-controls={moviesMenuId}
               aria-haspopup="true"
               onClick={handleMoviesMenuOpen}
+              onMouseOver={handleMoviesMenuOpen}
+              // onMouseLeave={handleMenuClose} crashes
               color="inherit"
               className={classes.h5Link}
               variant="h5"
@@ -181,17 +263,50 @@ export default function PrimarySearchAppBar() {
                 Movies
               </Link>
             </Typography>
-            <Typography className={classes.h5Link} variant="h5">
+            <Typography
+              edge="end"
+              aria-label="tv shows menu"
+              aria-controls={tvShowsMenuId}
+              aria-haspopup="true"
+              onClick={handleMoviesMenuOpen}
+              onMouseOver={handleMoviesMenuOpen}
+              // onMouseLeave={handleMenuClose} crashes
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
               <Link href="/" color="inherit" underline="none" className="nav-link">
                 TV Shows
               </Link>
             </Typography>
-            <Typography className={classes.h5Link} variant="h5">
+            <Typography
+              edge="end"
+              aria-label="people menu"
+              aria-controls={peopleMenuId}
+              aria-haspopup="true"
+              onClick={handlePeopleMenuOpen}
+              onMouseOver={handlePeopleMenuOpen}
+              // onMouseLeave={handleMenuClose} crashes
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
               <Link href="/" color="inherit" underline="none" className="nav-link">
                 People
               </Link>
             </Typography>
-            <Typography className={classes.h5Link} variant="h5">
+            <Typography
+              edge="end"
+              aria-label="more menu"
+              aria-controls={moreMenuId}
+              aria-haspopup="true"
+              onClick={handleMoreMenuOpen}
+              onMouseOver={handleMoreMenuOpen}
+              // onMouseLeave={handleMenuClose} crashes
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
               <Link href="/" color="inherit" underline="none" className="nav-link">
                 More
               </Link>
@@ -217,6 +332,7 @@ export default function PrimarySearchAppBar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
+              onMouseOver={handleProfileMenuOpen}
               color="inherit"
             >
               <AccountCircle />
@@ -235,7 +351,10 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+      {renderPeopleMenu}
+      {renderMoreMenu}
       {renderMoviesMenu}
+      {renderTVShowsMenu}
       {renderMobileMenu}
       {renderMenu}
     </div>
