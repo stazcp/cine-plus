@@ -52,7 +52,7 @@ export default function ColumnHeader(props){
       <Typography className={classes.column_header}>{props.header}</Typography>
       <Grid container style={styles.borderStyler}>
         {props.titles.map( (ele,i)=> 
-          <Typography className={classes.link} key={ele.url}>
+          <Typography className={classes.link} key={i}>
             <Link
               href={ele.url}
               color="inherit"

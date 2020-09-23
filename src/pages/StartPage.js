@@ -104,7 +104,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} />
+              <MovieCard key={'A'+card} href={'http://localhost:3000/'} />
             ))}
           </Box>
           <ColumnHeader
@@ -120,7 +120,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} />
+              <MovieCard key={'B'+card} href={'http://localhost:3000/'} />
             ))}
           </Box>
           <ColumnHeader
@@ -134,7 +134,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} />
+              <MovieCard key={'C'+card} href={'http://localhost:3000/'} />
             ))}
           </Box>
           <ColumnHeader
@@ -146,7 +146,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} />
+              <MovieCard key={'D'+card} href={'http://localhost:3000/'} />
             ))}
           </Box>
         </main>

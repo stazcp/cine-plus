@@ -51,9 +51,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1em',
   },
   mainMenu: {
-    display: 'flex',
+    display: 'none',
     flex: 1,
     justifyContent: 'space-evenly',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
   },
 }));
 
@@ -79,7 +82,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleTvShowsMenuOpen = (event) => {
-    setMoviesAnchor(event.currentTarget);
+    setTvShowsAnchor(event.currentTarget);
     event.preventDefault();
   };
 
@@ -138,7 +141,7 @@ export default function PrimarySearchAppBar() {
     <Menu
       elevation={0}
       getContentAnchorEl={null}
-      anchorEl={moviesAnchor}
+      anchorEl={tvShowsAnchor}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       id={tvShowsMenuId}
@@ -147,8 +150,8 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Airing Today</MenuItem>
+      <MenuItem onClick={handleMenuClose}>On TV</MenuItem>
       <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
     </Menu>
   );
@@ -166,10 +169,7 @@ export default function PrimarySearchAppBar() {
       open={isPeopleMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Popular People</MenuItem>
     </Menu>
   );
 
@@ -186,10 +186,10 @@ export default function PrimarySearchAppBar() {
       open={isMoreMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Discussions</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Leaderboard</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Support</MenuItem>
+      <MenuItem onClick={handleMenuClose}>API</MenuItem>
     </Menu>
   );
 
@@ -210,6 +210,116 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
+  //
+
+  const displayMoviesMenu = (
+    <Typography
+      edge="end"
+      aria-label="movies menu"
+      aria-controls={moviesMenuId}
+      aria-haspopup="true"
+      onClick={handleMoviesMenuOpen}
+      // onMouseOver={handleMoviesMenuOpen}
+      // onMouseLeave={handleMenuClose} crashes
+      color="inherit"
+      className={classes.h5Link}
+      variant="h5"
+    >
+      <Link href="/" color="inherit" underline="none" className="nav-link">
+        Movies
+      </Link>
+    </Typography>
+  )
+
+  const displayTvShowsMenu = (
+    <Typography
+      edge="end"
+      aria-label="tv shows menu"
+      aria-controls={tvShowsMenuId}
+      aria-haspopup="true"
+      onClick={handleTvShowsMenuOpen}
+      // onMouseOver={handleTvShowsMenuOpen}
+      // onMouseLeave={handleMenuClose} crashes
+      color="inherit"
+      className={classes.h5Link}
+      variant="h5"
+    >
+      <Link href="/" color="inherit" underline="none" className="nav-link">
+        TV Shows
+      </Link>
+    </Typography>
+  );
+
+  const displayPeopleMenu = (
+    <Typography
+      edge="end"
+      aria-label="people menu"
+      aria-controls={peopleMenuId}
+      aria-haspopup="true"
+      onClick={handlePeopleMenuOpen}
+      // onMouseOver={handlePeopleMenuOpen}
+      // onMouseLeave={handleMenuClose} crashes
+      color="inherit"
+      className={classes.h5Link}
+      variant="h5"
+    >
+      <Link href="/" color="inherit" underline="none" className="nav-link">
+        People
+      </Link>
+    </Typography>
+  );
+
+  const displayMoreMenu = (
+    <Typography
+      edge="end"
+      aria-label="more menu"
+      aria-controls={moreMenuId}
+      aria-haspopup="true"
+      onClick={handleMoreMenuOpen}
+      // onMouseOver={handleMoreMenuOpen}
+      // onMouseLeave={handleMenuClose} crashes
+      color="inherit"
+      className={classes.h5Link}
+      variant="h5"
+    >
+      <Link href="/" color="inherit" underline="none" className="nav-link">
+        More
+      </Link>
+    </Typography>
+  );
+
+  const displayAccountMenu = (
+    <IconButton
+      edge="end"
+      aria-label="account of current user"
+      aria-controls={menuId}
+      aria-haspopup="true"
+      onClick={handleProfileMenuOpen}
+      // onMouseOver={handleProfileMenuOpen}
+      color="inherit"
+    >
+      <AccountCircle />
+    </IconButton>
+  );
+
+  const displayLanguagesMenu = (
+    <IconButton aria-label="show" color="inherit">
+      <Badge color="secondary">
+        {/* languages? */}
+        <LanguageIcon />
+      </Badge>
+    </IconButton>
+  );
+
+  const displayAddMenu = (
+    <IconButton aria-label="show" color="inherit">
+      <Badge color="secondary">
+        {/* popup goes here */}
+        <AddIcon />
+      </Badge>
+    </IconButton>
+  );
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -222,18 +332,13 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       {/* <MenuItem></MenuItem> 4 menus go here */}
-      <MenuItem>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-      </MenuItem>
+      <MenuItem>{displayMoviesMenu}</MenuItem>
+      <MenuItem>{displayTvShowsMenu}</MenuItem>
+      <MenuItem>{displayPeopleMenu}</MenuItem>
+      <MenuItem>{displayMoreMenu}</MenuItem>
+      <MenuItem>{displayAddMenu}</MenuItem>
+      <MenuItem>{displayLanguagesMenu}</MenuItem>
+      <MenuItem>{displayAccountMenu}</MenuItem>
     </Menu>
   );
 
@@ -247,96 +352,16 @@ export default function PrimarySearchAppBar() {
             </Link>
           </Typography>
           <div className={classes.mainMenu}>
-            <Typography
-              edge="end"
-              aria-label="movies menu"
-              aria-controls={moviesMenuId}
-              aria-haspopup="true"
-              onClick={handleMoviesMenuOpen}
-              onMouseOver={handleMoviesMenuOpen}
-              // onMouseLeave={handleMenuClose} crashes
-              color="inherit"
-              className={classes.h5Link}
-              variant="h5"
-            >
-              <Link href="/" color="inherit" underline="none" className="nav-link">
-                Movies
-              </Link>
-            </Typography>
-            <Typography
-              edge="end"
-              aria-label="tv shows menu"
-              aria-controls={tvShowsMenuId}
-              aria-haspopup="true"
-              onClick={handleMoviesMenuOpen}
-              onMouseOver={handleMoviesMenuOpen}
-              // onMouseLeave={handleMenuClose} crashes
-              color="inherit"
-              className={classes.h5Link}
-              variant="h5"
-            >
-              <Link href="/" color="inherit" underline="none" className="nav-link">
-                TV Shows
-              </Link>
-            </Typography>
-            <Typography
-              edge="end"
-              aria-label="people menu"
-              aria-controls={peopleMenuId}
-              aria-haspopup="true"
-              onClick={handlePeopleMenuOpen}
-              onMouseOver={handlePeopleMenuOpen}
-              // onMouseLeave={handleMenuClose} crashes
-              color="inherit"
-              className={classes.h5Link}
-              variant="h5"
-            >
-              <Link href="/" color="inherit" underline="none" className="nav-link">
-                People
-              </Link>
-            </Typography>
-            <Typography
-              edge="end"
-              aria-label="more menu"
-              aria-controls={moreMenuId}
-              aria-haspopup="true"
-              onClick={handleMoreMenuOpen}
-              onMouseOver={handleMoreMenuOpen}
-              // onMouseLeave={handleMenuClose} crashes
-              color="inherit"
-              className={classes.h5Link}
-              variant="h5"
-            >
-              <Link href="/" color="inherit" underline="none" className="nav-link">
-                More
-              </Link>
-            </Typography>
+            {displayMoviesMenu}
+            {displayTvShowsMenu}
+            {displayPeopleMenu}
+            {displayMoreMenu}
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show" color="inherit">
-              <Badge color="secondary">
-                {/* popup goes here */}
-                <AddIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show" color="inherit">
-              <Badge color="secondary">
-                {/* languages? */}
-                <LanguageIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              onMouseOver={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {displayAddMenu}
+            {displayLanguagesMenu}
+            {displayAccountMenu}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
