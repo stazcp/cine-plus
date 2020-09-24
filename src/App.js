@@ -4,15 +4,15 @@ import StartPage from './pages/StartPage';
 import Footer from './components/Footer';
 import AppBar from './components/AppBar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import DisplayPage from './pages/DisplayPage';
+import PopularMovies from './pages/PopularMovies';
 
 function App() {
   return (
     <Router>
       <AppBar />
       <Switch>
-        <Route path="/DisplayPage">
-          <DisplayPage />
+        <Route path="/PopularMovies">
+          <PopularMovies />
         </Route>
         <Route path="/">
           <StartPage />

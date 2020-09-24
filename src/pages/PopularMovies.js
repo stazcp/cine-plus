@@ -38,7 +38,7 @@ export default function PopularMovies(props) {
           <Box className={classes.mainContainer}>
             <Box className={classes.titleContainer}>
               <Typography component="h2" variant="h4" className={classes.title}>
-                {props.title}
+                Popular Movies
               </Typography>
             </Box>
             <Box className={classes.centralSection}>

@@ -70,77 +70,18 @@ const styles = {
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-  // TODO INSTEAD OF ONE HOOK FOR EACH ANCHOR YOU CAN HAVE ONE HOOK THAT TAKES AN OBJECT WITH DATA ON EACH ANCHOR
-  const [moreAnchor, setMoreAnchor] = React.useState(null);
-  const [peopleAnchor, setPeopleAnchor] = React.useState(null);
-  const [tvShowsAnchor, setTvShowsAnchor] = React.useState(null);
-  const [moviesAnchor, setMoviesAnchor] = React.useState(null);
-  const [accountAnchor, setAccountAnchor] = React.useState(null);
+  const MENU_ANCHORS = { movies: null, people: null, tvShows: null, more: null, profile: null };
+  const [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMoreMenuOpen = Boolean(moreAnchor)
-  const isPeopleMenuOpen = Boolean(peopleAnchor);
-  const isTvShowsMenuOpen = Boolean(tvShowsAnchor);
-  const isMoviesMenuOpen = Boolean(moviesAnchor);
-  const isMenuOpen = Boolean(accountAnchor);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  // TODO YOU CAN MERGE THESE FUNCTIONS
-  const handleMoviesMenuOpen = (event) => {
-    setMoviesAnchor(event.currentTarget);
-    event.preventDefault();
-    setAccountAnchor(null);
-    setMoreAnchor(null);
-    setPeopleAnchor(null);
-    setTvShowsAnchor(null);
-    handleMobileMenuClose();
-  };
-
-  const handleTvShowsMenuOpen = (event) => {
-    setTvShowsAnchor(event.currentTarget);
-    event.preventDefault();
-    setAccountAnchor(null);
-    setMoviesAnchor(null);
-    setMoreAnchor(null);
-    setPeopleAnchor(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMoreMenuOpen = (event) => {
-    setMoreAnchor(event.currentTarget);
-    event.preventDefault();
-    setAccountAnchor(null);
-    setMoviesAnchor(null);
-    setPeopleAnchor(null);
-    setTvShowsAnchor(null);
-    handleMobileMenuClose();
+  const handleOpenMenu = (e,anchor) =>{
+    setAnchorEl({ ...MENU_ANCHORS, [anchor]: e.currentTarget });
+    e.preventDefault();
   }
-
-  const handlePeopleMenuOpen = (event) => {
-    setPeopleAnchor(event.currentTarget);
-    event.preventDefault();
-    setAccountAnchor(null);
-    setMoviesAnchor(null);
-    setMoreAnchor(null);
-    setTvShowsAnchor(null);
-    handleMobileMenuClose();
-  }
-
-  const handleProfileMenuOpen = (event) => {
-    setAccountAnchor(event.currentTarget);
-    setMoviesAnchor(null);
-    setMoreAnchor(null);
-    setPeopleAnchor(null);
-    setTvShowsAnchor(null);
-    handleMobileMenuClose();
-  };
 
   const handleMenuClose = () => {
-    setAccountAnchor(null);
-    setMoviesAnchor(null);
-    setMoreAnchor(null);
-    setPeopleAnchor(null);
-    setTvShowsAnchor(null);
+    setAnchorEl(MENU_ANCHORS);
     handleMobileMenuClose();
   };
 
@@ -153,126 +94,170 @@ export default function PrimarySearchAppBar() {
   };
 
   const moviesMenuId = 'movies-menu';
-  const renderMoviesMenu = (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorEl={moviesAnchor}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={moviesMenuId}
-      keepMounted
-      open={isMoviesMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {/* TODO: THE ONLY DIFFERENCE HERE IS THE TEXT. YOU CAN MAP AN ARRAY OF STRINGS TO MAKE THIS LOOK CLEANER.
-        APPLIES TO THE MENUES BELOW AS WELL.
-     */}
-      <MenuItem>
-        <L to="/DisplayPage" style={styles.routingLink}>
-          Popular
-        </L>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
-    </Menu>
-  );
+  const renderMoviesMenu = () => {
+    const items = [
+      { title: 'Popular', to: '/PopularMovies' },
+      { title: 'Now Playing', to: '/' },
+      { title: 'Upcoming', to: '/' },
+      { title: 'Top Rated', to: '/' },
+    ];
+    return (
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorEl={anchorEl.movies}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        id={moviesMenuId}
+        keepMounted
+        open={Boolean(anchorEl.movies)}
+        onClose={handleMenuClose}
+      >
+        {items.map((item) => {
+          return (
+            <MenuItem>
+              <L to={item.to} style={styles.routingLink}> {item.title} </L>
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    );
+  }
 
   const tvShowsMenuId = 'tv-shows-menu';
-  const renderTVShowsMenu = (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorEl={tvShowsAnchor}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={tvShowsMenuId}
-      keepMounted
-      open={isTvShowsMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Airing Today</MenuItem>
-      <MenuItem onClick={handleMenuClose}>On TV</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
-    </Menu>
-  );
+  const renderTVShowsMenu = () => {
+    const items = [
+      { title: 'Popular', to: '/' },
+      { title: 'Airing Today', to: '/' },
+      { title: 'On TV', to: '/' },
+      { title: 'Top Rated', to: '/' },
+    ]
+    return (
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorEl={anchorEl.tvShows}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        id={tvShowsMenuId}
+        keepMounted
+        open={Boolean(anchorEl.tvShows)}
+        onClose={handleMenuClose}
+      >
+        {items.map((item) => {
+          return (
+            <MenuItem>
+              <L to={item.to} style={styles.routingLink}> {item.title} </L>
+            </MenuItem>
+          )
+        })}
+      </Menu>
+    );
+  }
 
   const peopleMenuId = 'people-menu';
-  const renderPeopleMenu = (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorEl={peopleAnchor}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={peopleMenuId}
-      keepMounted
-      open={isPeopleMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Popular People</MenuItem>
-    </Menu>
-  );
+  const renderPeopleMenu = () => {
+    const items = [{ title: 'Popular People', to: '/' }];
+    return (
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorEl={anchorEl.people}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        id={peopleMenuId}
+        keepMounted
+        open={Boolean(anchorEl.people)}
+        onClose={handleMenuClose}
+      >
+        {items.map((item) => {
+          return(
+          <MenuItem>
+            <L to={item.to} style={styles.routingLink}> {item.title} </L>
+          </MenuItem>
+          )
+        })}
+      </Menu>
+    );
+  }
 
   const moreMenuId = 'more-menu';
-  const renderMoreMenu = (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorEl={moreAnchor}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={moreMenuId}
-      keepMounted
-      open={isMoreMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Discussions</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Leaderboard</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Support</MenuItem>
-      <MenuItem onClick={handleMenuClose}>API</MenuItem>
-    </Menu>
-  );
+  const renderMoreMenu = () => {
+    const items = [
+      { title: 'Discussions', to: '/' },
+      { title: 'Leaderboard', to: '/' },
+      { title: 'Support', to: '/' },
+      { title: 'API', to: '/' },
+    ];
+    return (
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorEl={anchorEl.more}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        id={moreMenuId}
+        keepMounted
+        open={Boolean(anchorEl.more)}
+        onClose={handleMenuClose}
+      >
+        {items.map((item) => {
+          return (
+            <MenuItem>
+              <L to={item.to} style={styles.routingLink}> {item.title} </L>
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    );
+  }
 
   const accountMenuId = 'account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={accountAnchor}
-      getContentAnchorEl={null}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={accountMenuId}
-      keepMounted
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  const renderMenu = () => {
+    const items = [
+      { title: 'Profile', to: '/' },
+      { title: 'My account', to: '/' },
+    ]
+    return(
+      <Menu
+        anchorEl={anchorEl.account}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        id={accountMenuId}
+        keepMounted
+        open={Boolean(anchorEl.account)}
+        onClose={handleMenuClose}
+      >
+        {items.map((item) => {
+          return (
+            <MenuItem>
+              <L to={item.to} style={styles.routingLink}> {item.title} </L>
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    )
+  }
 
   //
 
   const displayMoviesMenu = (
-    <Typography
-      edge="end"
-      aria-label="movies menu"
-      aria-controls={moviesMenuId}
-      aria-haspopup="true"
-      onClick={handleMoviesMenuOpen}
-      // onMouseOver={handleMoviesMenuOpen}
-      // onMouseLeave={handleMenuClose} crashes
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
-      <Link href="/" color="inherit" underline="none" className="nav-link">
-        Movies
-      </Link>
-    </Typography>
-  )
+      <Typography
+        edge="end"
+        aria-label="movies menu"
+        aria-controls={moviesMenuId}
+        aria-haspopup="true"
+        onClick={e => handleOpenMenu(e,"movies")}
+        color="inherit"
+        className={classes.h5Link}
+        variant="h5"
+      >
+        <Link href="/" color="inherit" underline="none" className="nav-link">
+          Movies
+        </Link>
+      </Typography>
+  );
 
   const displayTvShowsMenu = (
     <Typography
@@ -280,9 +265,7 @@ export default function PrimarySearchAppBar() {
       aria-label="tv shows menu"
       aria-controls={tvShowsMenuId}
       aria-haspopup="true"
-      onClick={handleTvShowsMenuOpen}
-      // onMouseOver={handleTvShowsMenuOpen}
-      // onMouseLeave={handleMenuClose} crashes
+      onClick={(e) => handleOpenMenu(e, 'tvShows')}
       color="inherit"
       className={classes.h5Link}
       variant="h5"
@@ -299,7 +282,7 @@ export default function PrimarySearchAppBar() {
       aria-label="people menu"
       aria-controls={peopleMenuId}
       aria-haspopup="true"
-      onClick={handlePeopleMenuOpen}
+      onClick={e => handleOpenMenu(e,'people')}
       // onMouseOver={handlePeopleMenuOpen}
       // onMouseLeave={handleMenuClose} crashes
       color="inherit"
@@ -318,7 +301,7 @@ export default function PrimarySearchAppBar() {
       aria-label="more menu"
       aria-controls={moreMenuId}
       aria-haspopup="true"
-      onClick={handleMoreMenuOpen}
+      onClick={e => handleOpenMenu(e,"more")}
       // onMouseOver={handleMoreMenuOpen}
       // onMouseLeave={handleMenuClose} crashes
       color="inherit"
@@ -337,7 +320,7 @@ export default function PrimarySearchAppBar() {
       aria-label="account of current user"
       aria-controls={accountMenuId}
       aria-haspopup="true"
-      onClick={handleProfileMenuOpen}
+      onClick={e => handleOpenMenu(e,"account")}
       // onMouseOver={handleProfileMenuOpen}
       color="inherit"
     >
@@ -363,27 +346,32 @@ export default function PrimarySearchAppBar() {
     </IconButton>
   );
 
+  // menus show under mobile menu?
   const mobileMenuId = 'mobile-menu';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      {/* <MenuItem></MenuItem> 4 menus go here */}
-      <MenuItem>{displayMoviesMenu}</MenuItem>
-      <MenuItem>{displayTvShowsMenu}</MenuItem>
-      <MenuItem>{displayPeopleMenu}</MenuItem>
-      <MenuItem>{displayMoreMenu}</MenuItem>
-      <MenuItem>{displayAddMenu}</MenuItem>
-      <MenuItem>{displayLanguagesMenu}</MenuItem>
-      <MenuItem>{displayAccountMenu}</MenuItem>
-    </Menu>
-  );
+  const renderMobileMenu = () => {
+    const items = [
+      displayMoviesMenu,
+      displayTvShowsMenu,
+      displayPeopleMenu,
+      displayMoreMenu,
+      displayAddMenu,
+      displayLanguagesMenu,
+      displayAccountMenu
+    ];
+    return(
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        {items.map(item => <MenuItem>{item}</MenuItem>)}
+      </Menu>
+    )
+  }
 
   return (
     <div className={classes.grow}>
@@ -419,12 +407,12 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
-      {renderPeopleMenu}
-      {renderMoreMenu}
-      {renderMoviesMenu}
-      {renderTVShowsMenu}
-      {renderMobileMenu}
-      {renderMenu}
+      {renderPeopleMenu()}
+      {renderMoreMenu()}
+      {renderMoviesMenu()}
+      {renderTVShowsMenu()}
+      {renderMobileMenu()}
+      {renderMenu()}
     </div>
   );
 }
