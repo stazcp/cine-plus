@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
+  // TODO INSTEAD OF ONE HOOK FOR EACH ANCHOR YOU CAN HAVE ONE HOOK THAT TAKES AN OBJECT WITH DATA ON EACH ANCHOR
   const [moreAnchor, setMoreAnchor] = React.useState(null);
   const [peopleAnchor, setPeopleAnchor] = React.useState(null);
   const [tvShowsAnchor, setTvShowsAnchor] = React.useState(null);
@@ -76,6 +77,7 @@ export default function PrimarySearchAppBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  // TODO YOU CAN MERGE THESE FUNCTIONS
   const handleMoviesMenuOpen = (event) => {
     setMoviesAnchor(event.currentTarget);
     event.preventDefault();
@@ -129,6 +131,9 @@ export default function PrimarySearchAppBar() {
       open={isMoviesMenuOpen}
       onClose={handleMenuClose}
     >
+    {/* TODO: THE ONLY DIFFERENCE HERE IS THE TEXT. YOU CAN MAP AN ARRAY OF STRINGS TO MAKE THIS LOOK CLEANER.
+        APPLIES TO THE MENUES BELOW AS WELL.
+     */}
       <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
       <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
       <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
