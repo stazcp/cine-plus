@@ -7,6 +7,7 @@ import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../utils/deadpool.jpg';
+import { useStylesSm } from '../styles/MovieCardStyles';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -31,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '3em',
     fontWeight: '700',
   },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
   scroller: {
     display: 'flex',
     overflowX: 'auto',
@@ -57,7 +54,7 @@ const doNothing = ()=>{
 
 const cards = Array.from(Array(25).keys());
 
-export default function Album() {
+export default function StartPage() {
   const classes = useStyles();
 
   return (
@@ -104,7 +101,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={'A'+card} href={'http://localhost:3000/'} />
+              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm}/>
             ))}
           </Box>
           <ColumnHeader
@@ -120,7 +117,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={'B'+card} href={'http://localhost:3000/'} />
+              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
             ))}
           </Box>
           <ColumnHeader
@@ -134,7 +131,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={'C'+card} href={'http://localhost:3000/'} />
+              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
             ))}
           </Box>
           <ColumnHeader
@@ -146,7 +143,7 @@ export default function Album() {
           />
           <Box className={classes.scroller}>
             {cards.map((card) => (
-              <MovieCard key={'D'+card} href={'http://localhost:3000/'} />
+              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
             ))}
           </Box>
         </main>

@@ -12,6 +12,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Link from '@material-ui/core/Link';
 import AddIcon from '@material-ui/icons/Add';
 import LanguageIcon from '@material-ui/icons/Language';
+import { Link as L } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -60,51 +61,84 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const styles = {
+  routingLink: {
+    textDecoration: 'none',
+    color: 'inherit',
+  },
+};
+
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [moreAnchor, setMoreAnchor] = React.useState(null);
   const [peopleAnchor, setPeopleAnchor] = React.useState(null);
   const [tvShowsAnchor, setTvShowsAnchor] = React.useState(null);
   const [moviesAnchor, setMoviesAnchor] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [accountAnchor, setAccountAnchor] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMoreMenuOpen = Boolean(moreAnchor)
   const isPeopleMenuOpen = Boolean(peopleAnchor);
   const isTvShowsMenuOpen = Boolean(tvShowsAnchor);
   const isMoviesMenuOpen = Boolean(moviesAnchor);
-  const isMenuOpen = Boolean(anchorEl);
+  const isMenuOpen = Boolean(accountAnchor);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMoviesMenuOpen = (event) => {
     setMoviesAnchor(event.currentTarget);
     event.preventDefault();
+    setAccountAnchor(null);
+    setMoreAnchor(null);
+    setPeopleAnchor(null);
+    setTvShowsAnchor(null);
+    handleMobileMenuClose();
   };
 
   const handleTvShowsMenuOpen = (event) => {
     setTvShowsAnchor(event.currentTarget);
     event.preventDefault();
+    setAccountAnchor(null);
+    setMoviesAnchor(null);
+    setMoreAnchor(null);
+    setPeopleAnchor(null);
+    handleMobileMenuClose();
   };
 
   const handleMoreMenuOpen = (event) => {
     setMoreAnchor(event.currentTarget);
     event.preventDefault();
+    setAccountAnchor(null);
+    setMoviesAnchor(null);
+    setPeopleAnchor(null);
+    setTvShowsAnchor(null);
+    handleMobileMenuClose();
   }
 
   const handlePeopleMenuOpen = (event) => {
     setPeopleAnchor(event.currentTarget);
     event.preventDefault();
+    setAccountAnchor(null);
+    setMoviesAnchor(null);
+    setMoreAnchor(null);
+    setTvShowsAnchor(null);
+    handleMobileMenuClose();
   }
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+    setAccountAnchor(event.currentTarget);
     setMoviesAnchor(null);
     setMoreAnchor(null);
     setPeopleAnchor(null);
+    setTvShowsAnchor(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMenuClose = () => {
+    setAccountAnchor(null);
+    setMoviesAnchor(null);
+    setMoreAnchor(null);
+    setPeopleAnchor(null);
+    setTvShowsAnchor(null);
     handleMobileMenuClose();
   };
 
@@ -129,7 +163,11 @@ export default function PrimarySearchAppBar() {
       open={isMoviesMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Popular</MenuItem>
+      <MenuItem>
+        <L to="/DisplayPage" style={styles.routingLink}>
+          Popular
+        </L>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>Now Playing</MenuItem>
       <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
       <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
@@ -193,14 +231,14 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
-  const menuId = 'primary-search-account-menu';
+  const accountMenuId = 'account-menu';
   const renderMenu = (
     <Menu
-      anchorEl={anchorEl}
+      anchorEl={accountAnchor}
       getContentAnchorEl={null}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={menuId}
+      id={accountMenuId}
       keepMounted
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -292,7 +330,7 @@ export default function PrimarySearchAppBar() {
     <IconButton
       edge="end"
       aria-label="account of current user"
-      aria-controls={menuId}
+      aria-controls={accountMenuId}
       aria-haspopup="true"
       onClick={handleProfileMenuOpen}
       // onMouseOver={handleProfileMenuOpen}
@@ -320,7 +358,7 @@ export default function PrimarySearchAppBar() {
     </IconButton>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = 'mobile-menu';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}

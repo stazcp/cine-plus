@@ -6,42 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: '20px',
-    borderRadius: '5px',
-    marginTop: '20px',
-  },
-  cardMedia: {
-    width: '150px',
-    height: '225px',
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  link: {
-    fontWeight: '700',
-    fontSize: '16px',
-    lineHeight: '1',
-  },
-  caption: {
-    fontSize: '16px',
-    fontWeight: '400',
-    color: 'rgba(0,0,0,0.6)',
-  },
-}));
 
 export default function MovieCard(props){
-  const classes = useStyles();
+  const classes = props.useStyles();
 
   return(
     <div className="CardComponent">
