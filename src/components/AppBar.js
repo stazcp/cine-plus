@@ -1,3 +1,10 @@
+// improvements needed:
+// 1. Menu's open on hover
+// 2. Menu's close on mouseOut
+// 3. Menu's close when reaching destination
+// 4. Menu's are on top of mobile menu and not under
+// 5. Build pop-over's for + and Lang
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -96,10 +103,10 @@ export default function PrimarySearchAppBar() {
   const moviesMenuId = 'movies-menu';
   const renderMoviesMenu = () => {
     const items = [
-      { title: 'Popular', to: '/PopularMovies' },
-      { title: 'Now Playing', to: '/' },
-      { title: 'Upcoming', to: '/' },
-      { title: 'Top Rated', to: '/' },
+      { title: 'Popular', to: '/Popular-movies' },
+      { title: 'Now Playing', to: '/NowPlaying-movies' },
+      { title: 'Upcoming', to: '/Upcoming-movies' },
+      { title: 'Top Rated', to: '/TopRated-movies' },
     ];
     return (
       <Menu
@@ -127,10 +134,10 @@ export default function PrimarySearchAppBar() {
   const tvShowsMenuId = 'tv-shows-menu';
   const renderTVShowsMenu = () => {
     const items = [
-      { title: 'Popular', to: '/' },
-      { title: 'Airing Today', to: '/' },
-      { title: 'On TV', to: '/' },
-      { title: 'Top Rated', to: '/' },
+      { title: 'Popular', to: '/Popular-tvShows' },
+      { title: 'Airing Today', to: '/AiringToday-tvShows' },
+      { title: 'On TV', to: '/OnTv-tvShows' },
+      { title: 'Top Rated', to: '/TopRated-tvShows' },
     ]
     return (
       <Menu
@@ -157,7 +164,7 @@ export default function PrimarySearchAppBar() {
 
   const peopleMenuId = 'people-menu';
   const renderPeopleMenu = () => {
-    const items = [{ title: 'Popular People', to: '/' }];
+    const items = [{ title: 'Popular People', to: '/People' }];
     return (
       <Menu
         elevation={0}
@@ -184,10 +191,10 @@ export default function PrimarySearchAppBar() {
   const moreMenuId = 'more-menu';
   const renderMoreMenu = () => {
     const items = [
-      { title: 'Discussions', to: '/' },
-      { title: 'Leaderboard', to: '/' },
-      { title: 'Support', to: '/' },
-      { title: 'API', to: '/' },
+      { title: 'Discussions', to: '/Discussions' },
+      { title: 'Leaderboard', to: '/Leaderboard' },
+      { title: 'Support', to: '/Support' },
+      { title: 'API', to: '/Api' },
     ];
     return (
       <Menu
@@ -215,8 +222,8 @@ export default function PrimarySearchAppBar() {
   const accountMenuId = 'account-menu';
   const renderMenu = () => {
     const items = [
-      { title: 'Profile', to: '/' },
-      { title: 'My account', to: '/' },
+      { title: 'Login', to: '/Login' },
+      { title: 'Join Cine+', to: '/Join' },
     ]
     return(
       <Menu
@@ -239,8 +246,6 @@ export default function PrimarySearchAppBar() {
       </Menu>
     )
   }
-
-  //
 
   const displayMoviesMenu = (
       <Typography
