@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { getConfig, get } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({
   column_header: {
@@ -42,8 +43,12 @@ export default function ColumnHeader(props){
   const [activeIndex, setActiveIndex] = useState(0);
   const classes = useStyles();
 
-  const handleClick = (e,i) => {
-    setActiveIndex(i)
+  //click fires a new get request with new parameters and resets component
+  const handleClick = (e,i, _option) => {
+    setActiveIndex(i);
+    get(...props.data.conf, _option).then((data) =>
+      props.setOption({ movies: [...data], conf: [...props.data.conf], option: _option })
+    );
     e.preventDefault();
   }
 
@@ -51,17 +56,16 @@ export default function ColumnHeader(props){
     <Grid container direction="row" alignItems="center">
       <Typography className={classes.column_header}>{props.header}</Typography>
       <Grid container style={styles.borderStyler}>
-        {props.titles.map( (ele,i)=> 
+        {props.options.map( (movie,i)=> 
           <Typography className={classes.link} key={i}>
             <Link
-              href={ele.url}
               color="inherit"
               underline="none"
               className="nav-link"
               style={activeIndex === i ? styles.selected : styles.unselected}
-              onClick={e => handleClick(e,i)}
+              onClick={e => handleClick(e,i,movie.option)}
             >
-              {ele.title}
+              {movie.title}
             </Link>
           </Typography>
         )}

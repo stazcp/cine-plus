@@ -1,3 +1,9 @@
+// improvements needed:
+// 1. No scrolling up-down inside columns
+// 2. Clicker should be finger not text editor
+// 3. Figure out what am I going to show
+// 4.fix eslint bug with useEffect
+
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +14,7 @@ import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
 import { useStylesSm } from '../styles/MovieCardStyles';
-import { getConfig, get, api_key } from '../utils/movieDB';
+import { getConfig, get } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -53,33 +59,39 @@ const doNothing = ()=>{
 
 }
 
-const cards = Array.from(Array(25).keys());
-
 export default function StartPage() {
   const classes = useStyles();
-  const [movies,setMovies] = useState([])
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [popularShows, setPopularShows] = useState([]);
+  const [trending, setTrending] = useState({movies:[], conf:['trending', 'all'], option:'day'});
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
+  //will upgrade all gets -> good way to manage states?
   useEffect(() => {
     getConfig().then((data) => setBasePosterUrl(data.images.secure_base_url));
-    get('movie','popular').then((data) => setMovies([...data]));
-    // console.log(movies);  this doesnt work -> eslint??
-  }, [])
+    get('movie', 'popular').then(data => setPopularMovies([...data]));
+    get('tv', 'popular').then(data => setPopularShows([...data]));
+    getTrending();
+  },[])
 
-  console.log(movies);
+  const getTrending =()=>{
+    get(...trending.conf, trending.option).then((data) =>
+      setTrending({ movies: [...data], conf: [...trending.conf], option: trending.option })
+    );
+  }
 
-  
+  console.log(trending);
 
-  const displayMovies = (movies) => {
+  const display = (movies) => {
     return movies.map((movie) => {
       return (
         <MovieCard
           key={movie.id}
           href={'http://localhost:3000/'}
           useStyles={useStylesSm}
-          title={movie.original_title}
-          date={movie.release_date}
+          title={movie.original_title || movie.name }
+          date={movie.release_date || movie.first_air_date}
           poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
         />
       );
@@ -121,61 +133,46 @@ export default function StartPage() {
           {/* End hero unit */}
           <ColumnHeader
             header="What's Popular"
-            titles={[
-              { title: 'Streaming', url: '/' },
-              { title: 'On Tv', url: '/' },
-              { title: 'For Rent', url: '/' },
-              { title: 'In Theaters', url: '/' },
+            options={[
+              { title: 'Streaming', option: '' },
+              { title: 'On Tv', option: '' },
+              { title: 'For Rent', option: '' },
+              { title: 'In Theaters', option: '' },
             ]}
           />
-          <Box className={classes.scroller}>
-           { displayMovies(movies)}
-            {/* {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm}/>
-            ))} */}
-          </Box>
+          <Box className={classes.scroller}>{display(popularShows)}</Box>
           <ColumnHeader
             header="Free To Watch"
-            options={{
-              titles: ['Movies', 'Tv'],
-              urls: ['/', '/'],
-            }}
-            titles={[
-              { title: 'Movies', url: '/' },
-              { title: 'Tv', url: '/' },
+            options={[
+              { title: 'Movies', option: '' },
+              { title: 'Tv', option: '' },
             ]}
           />
           <Box className={classes.scroller}>
-            {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
-            ))}
+            <Box className={classes.scroller}>{display(popularShows)}</Box>
           </Box>
           <ColumnHeader
             header="Latest Trailers"
-            titles={[
-              { title: 'Streaming', url: '/' },
-              { title: 'On Tv', url: '/' },
-              { title: 'For Rent', url: '/' },
-              { title: 'In Theaters', url: '/' },
+            options={[
+              { title: 'Streaming', option: '' },
+              { title: 'On Tv', option: '' },
+              { title: 'For Rent', option: '' },
+              { title: 'In Theaters', option: '' },
             ]}
           />
           <Box className={classes.scroller}>
-            {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
-            ))}
+            <Box className={classes.scroller}>{display(popularShows)}</Box>
           </Box>
           <ColumnHeader
             header="Trending"
-            titles={[
-              { title: 'Today', url: '/' },
-              { title: 'This Week', url: '/' },
+            options={[
+              { title: 'Today', option: 'day' },
+              { title: 'This Week', option: 'week' },
             ]}
+            setOption={setTrending}
+            data={trending}
           />
-          <Box className={classes.scroller}>
-            {cards.map((card) => (
-              <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm} />
-            ))}
-          </Box>
+          <Box className={classes.scroller}>{display(trending.movies)}</Box>
         </main>
       </Container>
     </React.Fragment>

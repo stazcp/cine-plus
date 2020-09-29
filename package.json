@@ -42,6 +42,6 @@
     "webpack-cli": "^3.3.12"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": false
   }
 }

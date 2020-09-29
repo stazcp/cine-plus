@@ -16,8 +16,10 @@ export const getConfig = async () => {
   return data.json();
 }
 
-export const get = async (type,category) => {
-  let url = `${base_url}${type}/${category}?api_key=${api_key}`;
+export const get = async (type,category,extra) => {
+  let url = extra
+    ? `${base_url}${type}/${category}/${extra}?api_key=${api_key}`
+    : `${base_url}${type}/${category}?api_key=${api_key}`;
   return await fetch(url).then(response => response.json() )
   .then(jsonResponse =>{
     if(jsonResponse){
