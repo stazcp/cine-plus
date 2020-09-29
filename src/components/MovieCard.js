@@ -1,3 +1,9 @@
+//improvements needed:
+//1. User score %
+//2. options button right left for ratings
+//3. box size, margin, and shadows
+// random image link: https://source.unsplash.com/random
+
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -15,17 +21,17 @@ export default function MovieCard(props){
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}
-          image="https://source.unsplash.com/random"
+          image={props.poster}
           title="Image title"
         />
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
             <Link href="#" color="inherit" underline="none" className="nav-link">
-              The Movie Title
+              {props.title}
             </Link>
           </Typography>
           <Typography variant="caption" component="p" className={classes.caption}>
-            Aug 20, 2020
+            {props.date}
           </Typography>
         </CardContent>
       </Card>

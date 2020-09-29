@@ -1,3 +1,9 @@
+// improvements needed:
+// 1. sort
+// 2. Filter
+// 3. Where to watch
+// 4. API
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';

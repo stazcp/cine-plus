@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -6,8 +6,9 @@ import MovieCard from '../components/MovieCard'
 import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
-import Image from '../utils/deadpool.jpg';
+import Image from '../img/deadpool.jpg';
 import { useStylesSm } from '../styles/MovieCardStyles';
+import { getConfig, get, api_key } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -56,6 +57,34 @@ const cards = Array.from(Array(25).keys());
 
 export default function StartPage() {
   const classes = useStyles();
+  const [movies,setMovies] = useState([])
+  const [basePosterUrl, setBasePosterUrl] = useState(null);
+  let posterSize = 'w300';
+
+  useEffect(() => {
+    getConfig().then((data) => setBasePosterUrl(data.images.secure_base_url));
+    get('movie','popular').then((data) => setMovies([...data]));
+    // console.log(movies);  this doesnt work -> eslint??
+  }, [])
+
+  console.log(movies);
+
+  
+
+  const displayMovies = (movies) => {
+    return movies.map((movie) => {
+      return (
+        <MovieCard
+          key={movie.id}
+          href={'http://localhost:3000/'}
+          useStyles={useStylesSm}
+          title={movie.original_title}
+          date={movie.release_date}
+          poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+        />
+      );
+    });
+  };
 
   return (
     <React.Fragment>
@@ -100,9 +129,10 @@ export default function StartPage() {
             ]}
           />
           <Box className={classes.scroller}>
-            {cards.map((card) => (
+           { displayMovies(movies)}
+            {/* {cards.map((card) => (
               <MovieCard key={card} href={'http://localhost:3000/'} useStyles={useStylesSm}/>
-            ))}
+            ))} */}
           </Box>
           <ColumnHeader
             header="Free To Watch"

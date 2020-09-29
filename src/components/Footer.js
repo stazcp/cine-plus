@@ -1,3 +1,6 @@
+// improvements needed:
+// 1. firgure out what to put here
+
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
