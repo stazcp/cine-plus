@@ -13,28 +13,28 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
-export default function MovieCard(props){
-  const classes = props.useStyles();
+export default function MovieCard({date, title, poster, useStyles }){
+  const classes = useStyles();
 
-  return(
+  return (
     <div className="CardComponent">
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}
-          image={props.poster}
+          image={poster || 'https://source.unsplash.com/random'}
           title="Image title"
         />
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
             <Link href="#" color="inherit" underline="none" className="nav-link">
-              {props.title}
+              {title}
             </Link>
           </Typography>
           <Typography variant="caption" component="p" className={classes.caption}>
-            {props.date}
+            {date}
           </Typography>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MovieCard from '../../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,6 +30,14 @@ const cards = Array.from(Array(20).keys());
 
 export default function PopularMovies(props) {
   const classes = useStyles();
+  const [movies, setMovies] = useState()
+
+  useEffect(() => {
+    const movies = window.localStorage.getItem('popularMovies')
+    setMovies(JSON.parse(movies));
+  }, [])
+
+  console.log(movies)
 
   return (
     <React.Fragment>

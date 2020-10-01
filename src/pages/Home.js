@@ -61,29 +61,42 @@ const doNothing = ()=>{
 
 export default function StartPage() {
   const classes = useStyles();
+  const [popular, setPopular] = useState({movies: [],conf: ['popular']});
   const [popularMovies, setPopularMovies] = useState([]);
   const [popularShows, setPopularShows] = useState([]);
-  const [trending, setTrending] = useState({movies:[], conf:['trending', 'all'], option:'day'});
+  const [trending, setTrending] = useState({movies:[], conf:['trending', 'all']});
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
   //will upgrade all gets -> good way to manage states?
   useEffect(() => {
-    getConfig().then((data) => setBasePosterUrl(data.images.secure_base_url));
+    //add fallback image
+    getConfig().then((data) =>
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+    );
     get('movie', 'popular').then(data => setPopularMovies([...data]));
     get('tv', 'popular').then(data => setPopularShows([...data]));
-    getTrending();
+    getPopular('movie');
+    getTrending('day');
   },[])
 
-  const getTrending =()=>{
-    get(...trending.conf, trending.option).then((data) =>
-      setTrending({ movies: [...data], conf: [...trending.conf], option: trending.option })
+  const getPopular = option =>{
+    get(option, popular.conf.toString()).then((data) =>{
+      setPopular({ movies: data, conf: popular.conf })
+      window.localStorage.setItem('popularMovies', JSON.stringify(data));
+    });
+  }
+
+  const getTrending = option =>{
+    get(...trending.conf, option).then((data) =>
+      setTrending({ movies: data, conf: trending.conf })
     );
   }
 
-  console.log(trending);
-
-  const display = (movies) => {
+  const display = movies => {
+    if(!movies){
+      return null
+    }
     return movies.map((movie) => {
       return (
         <MovieCard
@@ -134,19 +147,21 @@ export default function StartPage() {
           <ColumnHeader
             header="What's Popular"
             options={[
-              { title: 'Streaming', option: '' },
-              { title: 'On Tv', option: '' },
-              { title: 'For Rent', option: '' },
-              { title: 'In Theaters', option: '' },
+              { title: 'Movies', option: 'movie' },
+              { title: 'Tv Shows', option: 'tv' },
             ]}
+            setOption={getPopular}
+            data={popular}
           />
-          <Box className={classes.scroller}>{display(popularShows)}</Box>
+          <Box className={classes.scroller}>{display(popular.movies)}</Box>
           <ColumnHeader
             header="Free To Watch"
             options={[
               { title: 'Movies', option: '' },
               { title: 'Tv', option: '' },
             ]}
+            setOption={setTrending}
+            data={trending}
           />
           <Box className={classes.scroller}>
             <Box className={classes.scroller}>{display(popularShows)}</Box>
@@ -159,6 +174,8 @@ export default function StartPage() {
               { title: 'For Rent', option: '' },
               { title: 'In Theaters', option: '' },
             ]}
+            setOption={getTrending}
+            data={trending}
           />
           <Box className={classes.scroller}>
             <Box className={classes.scroller}>{display(popularShows)}</Box>

@@ -20,6 +20,7 @@ import Api from './pages/more/Api';
 import Login from './pages/account/Login';
 import Join from './pages/account/Join';
 
+// lowercase routes
 function App() {
   return (
     <Router>

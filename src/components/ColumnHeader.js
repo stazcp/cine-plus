@@ -39,36 +39,34 @@ const styles = {
   },
 };
 
-export default function ColumnHeader(props){
+export default function ColumnHeader({data, options, header, setOption}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const classes = useStyles();
 
   //click fires a new get request with new parameters and resets component
-  const handleClick = (e,i, _option) => {
+  const handleClick = (e, i, option) => {
     setActiveIndex(i);
-    get(...props.data.conf, _option).then((data) =>
-      props.setOption({ movies: [...data], conf: [...props.data.conf], option: _option })
-    );
+    setOption(option);
     e.preventDefault();
-  }
+  };
 
   return (
     <Grid container direction="row" alignItems="center">
-      <Typography className={classes.column_header}>{props.header}</Typography>
+      <Typography className={classes.column_header}>{header}</Typography>
       <Grid container style={styles.borderStyler}>
-        {props.options.map( (movie,i)=> 
+        {options.map((movie, i) => (
           <Typography className={classes.link} key={i}>
             <Link
               color="inherit"
               underline="none"
               className="nav-link"
               style={activeIndex === i ? styles.selected : styles.unselected}
-              onClick={e => handleClick(e,i,movie.option)}
+              onClick={(e) => handleClick(e, i, movie.option)}
             >
               {movie.title}
             </Link>
           </Typography>
-        )}
+        ))}
       </Grid>
     </Grid>
   );

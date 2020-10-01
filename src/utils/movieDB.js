@@ -12,6 +12,7 @@ export const getConfig = async () => {
   return data.json();
 }
 
+// send in object for more options
 export const get = async (type,category,extra) => {
   let url = extra
     ? `${base_url}${type}/${category}/${extra}?api_key=${api_key}`
