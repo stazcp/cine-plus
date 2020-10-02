@@ -186,7 +186,7 @@ export default function StartPage() {
               { title: 'Today', option: 'day' },
               { title: 'This Week', option: 'week' },
             ]}
-            setOption={setTrending}
+            setOption={getTrending}
             data={trending}
           />
           <Box className={classes.scroller}>{display(trending.movies)}</Box>
