@@ -19,6 +19,8 @@ export const get = async (type,category,extra) => {
     : `${base_url}${type}/${category}?api_key=${api_key}`;
   return await fetch(url).then(response => response.json() )
   .then(jsonResponse =>{
+    // console.log(url);
+    // console.log(jsonResponse);
     if(jsonResponse){
       return jsonResponse.results.map( movie => {
         return movie

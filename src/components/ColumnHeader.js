@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { getConfig, get } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({
   column_header: {
@@ -39,7 +38,7 @@ const styles = {
   },
 };
 
-export default function ColumnHeader({data, options, header, setOption}) {
+export default function ColumnHeader({ options, header, setOption}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const classes = useStyles();
 

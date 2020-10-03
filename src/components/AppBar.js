@@ -103,10 +103,10 @@ export default function PrimarySearchAppBar() {
   const moviesMenuId = 'movies-menu';
   const renderMoviesMenu = () => {
     const items = [
-      { title: 'Popular', to: '/Popular-movies' },
-      { title: 'Now Playing', to: '/NowPlaying-movies' },
-      { title: 'Upcoming', to: '/Upcoming-movies' },
-      { title: 'Top Rated', to: '/TopRated-movies' },
+      { title: 'Popular', to: '/popular-movies' },
+      { title: 'Now Playing', to: '/now-playing-movies' },
+      { title: 'Upcoming', to: '/upcoming-movies' },
+      { title: 'Top Rated', to: '/top-rated-movies' },
     ];
     return (
       <Menu
@@ -134,10 +134,10 @@ export default function PrimarySearchAppBar() {
   const tvShowsMenuId = 'tv-shows-menu';
   const renderTVShowsMenu = () => {
     const items = [
-      { title: 'Popular', to: '/Popular-tvShows' },
-      { title: 'Airing Today', to: '/AiringToday-tvShows' },
-      { title: 'On TV', to: '/OnTv-tvShows' },
-      { title: 'Top Rated', to: '/TopRated-tvShows' },
+      { title: 'Popular', to: '/popular-shows' },
+      { title: 'Airing Today', to: '/airing-today-shows' },
+      { title: 'On TV', to: '/tv-shows' },
+      { title: 'Top Rated', to: '/top-rated-shows' },
     ]
     return (
       <Menu
@@ -164,7 +164,7 @@ export default function PrimarySearchAppBar() {
 
   const peopleMenuId = 'people-menu';
   const renderPeopleMenu = () => {
-    const items = [{ title: 'Popular People', to: '/People' }];
+    const items = [{ title: 'Popular People', to: '/people' }];
     return (
       <Menu
         elevation={0}
@@ -191,10 +191,10 @@ export default function PrimarySearchAppBar() {
   const moreMenuId = 'more-menu';
   const renderMoreMenu = () => {
     const items = [
-      { title: 'Discussions', to: '/Discussions' },
-      { title: 'Leaderboard', to: '/Leaderboard' },
-      { title: 'Support', to: '/Support' },
-      { title: 'API', to: '/Api' },
+      { title: 'Discussions', to: '/discussions' },
+      { title: 'Leaderboard', to: '/leaderboard' },
+      { title: 'Support', to: '/support' },
+      { title: 'API', to: '/api' },
     ];
     return (
       <Menu
@@ -222,8 +222,8 @@ export default function PrimarySearchAppBar() {
   const accountMenuId = 'account-menu';
   const renderMenu = () => {
     const items = [
-      { title: 'Login', to: '/Login' },
-      { title: 'Join Cine+', to: '/Join' },
+      { title: 'Login', to: '/login' },
+      { title: 'Join Cine+', to: '/join' },
     ]
     return(
       <Menu

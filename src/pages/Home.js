@@ -59,30 +59,45 @@ const doNothing = ()=>{
 
 }
 
-export default function StartPage() {
+export default function Home() {
   const classes = useStyles();
   const [popular, setPopular] = useState({movies: [],conf: ['popular']});
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [popularShows, setPopularShows] = useState([]);
+  const [topRated, setTopRated] = useState({movies: [], conf:['top_rated'] });
   const [trending, setTrending] = useState({movies:[], conf:['trending', 'all']});
+  const [trailers, setTrailers] = useState({ movies: [] });
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
   //will upgrade all gets -> good way to manage states?
   useEffect(() => {
-    //add fallback image
+    getFrontPage();
+  },[])
+
+  const getFrontPage=()=>{
     getConfig().then((data) =>
       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
     );
-    get('movie', 'popular').then(data => setPopularMovies([...data]));
-    get('tv', 'popular').then(data => setPopularShows([...data]));
     getPopular('movie');
+    getTopRated('movie');
     getTrending('day');
-  },[])
+    getTrailers();
+  }
 
-  const getPopular = option =>{
-    get(option, popular.conf.toString()).then((data) =>{
-      setPopular({ movies: data, conf: popular.conf })
+  const getTrailers = () => {
+    get('movie', 'now_playing').then((data) => {
+      setTrailers({ movies: data });
+    }).then(console.log(trailers));
+  };
+
+  const getTopRated = option => {
+    get(option, topRated.conf).then((data) => {
+      setTopRated({ movies: data, conf: topRated.conf });
+    });
+  }
+
+  const getPopular = option => {
+    get(option, popular.conf).then((data) => {
+      setPopular({ movies: data, conf: popular.conf });
       window.localStorage.setItem('popularMovies', JSON.stringify(data));
     });
   }
@@ -94,8 +109,20 @@ export default function StartPage() {
   }
 
   const display = movies => {
+    // fallback card in case no movies are fetched
     if(!movies){
-      return null
+      const expand = [...Array(10).keys()];
+      return expand.map(sample => {
+        return (
+          <MovieCard
+            key={sample}
+            href={'http://localhost:3000/'}
+            useStyles={useStylesSm}
+            title={'Movies not Found'}
+            poster={'https://source.unsplash.com/random'}
+          />
+        );
+      }) 
     }
     return movies.map((movie) => {
       return (
@@ -151,20 +178,18 @@ export default function StartPage() {
               { title: 'Tv Shows', option: 'tv' },
             ]}
             setOption={getPopular}
-            data={popular}
           />
           <Box className={classes.scroller}>{display(popular.movies)}</Box>
           <ColumnHeader
-            header="Free To Watch"
+            header="Top Rated"
             options={[
-              { title: 'Movies', option: '' },
-              { title: 'Tv', option: '' },
+              { title: 'Movies', option: 'movie' },
+              { title: 'Tv Shows', option: 'tv' },
             ]}
-            setOption={setTrending}
-            data={trending}
+            setOption={getTopRated}
           />
           <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{display(popularShows)}</Box>
+            <Box className={classes.scroller}>{display(topRated.movies)}</Box>
           </Box>
           <ColumnHeader
             header="Latest Trailers"
@@ -175,10 +200,9 @@ export default function StartPage() {
               { title: 'In Theaters', option: '' },
             ]}
             setOption={getTrending}
-            data={trending}
           />
           <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{display(popularShows)}</Box>
+            <Box className={classes.scroller}>{display(trending.movies)}</Box>
           </Box>
           <ColumnHeader
             header="Trending"
@@ -187,7 +211,6 @@ export default function StartPage() {
               { title: 'This Week', option: 'week' },
             ]}
             setOption={getTrending}
-            data={trending}
           />
           <Box className={classes.scroller}>{display(trending.movies)}</Box>
         </main>
