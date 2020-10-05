@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
 import { useStylesSm } from '../styles/MovieCardStyles';
-import { getConfig, get } from '../utils/movieDB';
+import { getConfig, get, getTrailer } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -61,58 +61,72 @@ const doNothing = ()=>{
 
 export default function Home() {
   const classes = useStyles();
-  const [popular, setPopular] = useState({movies: [],conf: ['popular']});
-  const [topRated, setTopRated] = useState({movies: [], conf:['top_rated'] });
-  const [trending, setTrending] = useState({movies:[], conf:['trending', 'all']});
+  const [popular, setPopular] = useState({ movies: [], conf: ['popular'] });
+  const [topRated, setTopRated] = useState({ movies: [], conf: ['top_rated'] });
+  const [trending, setTrending] = useState({ movies: [], conf: ['trending', 'all'] });
   const [trailers, setTrailers] = useState({ movies: [] });
+  const [nowPlaying, setNowPlaying] = useState({ movies: [] });
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
   //will upgrade all gets -> good way to manage states?
   useEffect(() => {
     getFrontPage();
-  },[])
+  }, []);
 
-  const getFrontPage=()=>{
+  const getFrontPage = () => {
     getConfig().then((data) =>
       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
     );
     getPopular('movie');
     getTopRated('movie');
     getTrending('day');
-    getTrailers();
-  }
 
-  const getTrailers = () => {
-    get('movie', 'now_playing').then((data) => {
-      setTrailers({ movies: data });
-    }).then(console.log(trailers));
+    //returns an Array of fullfilled promises!!!
+    getNowPlaying().then(movies => {
+      console.log(movies)
+    })
   };
 
-  const getTopRated = option => {
+  const getNowPlaying = async () => {
+    let movies = await get('movie', 'now_playing')
+    let movieTrailers = await getTrailers(movies)
+    return movieTrailers
+  }
+ 
+
+  const getTrailers = movies => {
+    return movies.map(movie => {
+      return getTrailer(movie.id)
+    })
+  }
+
+//  ==================
+
+  const getTopRated = (option) => {
     get(option, topRated.conf).then((data) => {
       setTopRated({ movies: data, conf: topRated.conf });
     });
-  }
+  };
 
-  const getPopular = option => {
+  const getPopular = (option) => {
     get(option, popular.conf).then((data) => {
       setPopular({ movies: data, conf: popular.conf });
       window.localStorage.setItem('popularMovies', JSON.stringify(data));
     });
-  }
+  };
 
-  const getTrending = option =>{
+  const getTrending = (option) => {
     get(...trending.conf, option).then((data) =>
       setTrending({ movies: data, conf: trending.conf })
     );
-  }
+  };
 
-  const display = movies => {
+  const display = (movies) => {
     // fallback card in case no movies are fetched
-    if(!movies){
+    if (!movies) {
       const expand = [...Array(10).keys()];
-      return expand.map(sample => {
+      return expand.map((sample) => {
         return (
           <MovieCard
             key={sample}
@@ -122,7 +136,7 @@ export default function Home() {
             poster={'https://source.unsplash.com/random'}
           />
         );
-      }) 
+      });
     }
     return movies.map((movie) => {
       return (
@@ -130,7 +144,7 @@ export default function Home() {
           key={movie.id}
           href={'http://localhost:3000/'}
           useStyles={useStylesSm}
-          title={movie.original_title || movie.name }
+          title={movie.original_title || movie.name}
           date={movie.release_date || movie.first_air_date}
           poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
         />
