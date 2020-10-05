@@ -89,14 +89,31 @@ export default function Home() {
 
   const getMovieTrailers = async () => {
     let movies = await get('movie', 'now_playing')
-    movies.map(async movie=> {
-        let trailer = await getTrailer(movie.id)
-        setTrailers({ movies: trailers.movies.push(trailer) })
-      })
+    
+    const getTrailers = async movies => {
+      const array = [];
+      await movies.map(async (movie) => {
+        let trailer = await getTrailer(movie.id);
+        if (typeof trailer === 'object') {
+          array.push(trailer);
+          // setTrailers({ movies: trailers.movies.push(trailer) })
+        }
+      });
+      return array
+    }
+
+    getTrailers(movies).then(array => {
+      setTrailers({ movies: array })
+    });
+
   }
 
   //finally I can get an array with the movie keys
-  // setTimeout(() => console.log(trailers.movies), 1000);
+  // setTimeout(() => {
+  //   console.log(typeof trailers.movies)
+  //   console.log(trailers)
+  //   }
+  // ,1000)
 //  ==================
 
   const getTopRated = (option) => {
@@ -132,11 +149,12 @@ export default function Home() {
           />
         );
       });
-    } else if((movies === "trailers") && (trailers.movies.length > 1)){
-      console.log(trailers.movies);
-      return trailers.movies.map( trailer => {
-        return <Player url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; 
-      })
+    } else if(movies === "trailers") {
+      console.log('getting trailers')
+        return trailers.movies.map((trailer) => {
+          return <Player url="https://www.youtube.com/watch?v=VhkfnPVQyaY" />;
+          // `https://www.youtube.com/watch?v=${_trailer.videos.results[0].key}`
+        })
     } else {
       const expand = [...Array(10).keys()];
       return expand.map((sample) => {
@@ -217,6 +235,7 @@ export default function Home() {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>
+            {/* page renders before videos are fetched, delayed render required or async await */}
             <Box className={classes.scroller}>{display("trailers")}</Box>
           </Box>
           <ColumnHeader
