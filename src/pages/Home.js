@@ -65,7 +65,7 @@ export default function Home() {
   const [topRated, setTopRated] = useState({ movies: [], conf: ['top_rated'] });
   const [trending, setTrending] = useState({ movies: [], conf: ['trending', 'all'] });
   const [trailers, setTrailers] = useState({ movies: [] });
-  const [nowPlaying, setNowPlaying] = useState({ movies: [] });
+  // const [nowPlaying, setNowPlaying] = useState({ movies: [] });
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
@@ -83,24 +83,19 @@ export default function Home() {
     getTrending('day');
 
     //returns an Array of fullfilled promises!!!
-    getNowPlaying().then(movies => {
-      console.log(movies)
-    })
-  };
+    getNowPlaying();
+  }
 
   const getNowPlaying = async () => {
     let movies = await get('movie', 'now_playing')
-    let movieTrailers = await getTrailers(movies)
-    return movieTrailers
-  }
- 
-
-  const getTrailers = movies => {
-    return movies.map(movie => {
-      return getTrailer(movie.id)
-    })
+    movies.map(async movie=> {
+        let trailer = await getTrailer(movie.id)
+        setTrailers({ movies: trailers.movies.push(trailer) })
+      })
   }
 
+  //finally I can get an array with the movie keys
+  setTimeout(() => console.log(trailers.movies), 1000);
 //  ==================
 
   const getTopRated = (option) => {

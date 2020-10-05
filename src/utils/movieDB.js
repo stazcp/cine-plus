@@ -16,7 +16,7 @@ export const getConfig = async () => {
   }
 }
 
-// send in object for more options
+// send in object for more options, in that case I would have to include a / for each option
 export const get = async (type,category,extra) => {
   try{
     let url = extra
@@ -34,7 +34,8 @@ export const get = async (type,category,extra) => {
 
 // http://api.themoviedb.org/3/movie/157336?api_key=###&append_to_response=videos
 // ^^ to get video info and trailer with one fetch.
-// http://api.themoviedb.org/3/movie/157336?api_key=### just video from movie
+// https://api.themoviedb.org/3/movie/694919/videos?api_key=6d46d44f7f8f21704305048480d2f128&language=en-US
+// just trailer
 
 export const getTrailer = async (id) => {
   try {
