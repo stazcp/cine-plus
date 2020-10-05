@@ -120,9 +120,9 @@ export default function PrimarySearchAppBar() {
         open={Boolean(anchorEl.movies)}
         onClose={handleMenuClose}
       >
-        {items.map((item) => {
+        {items.map((item,i) => {
           return (
-            <MenuItem>
+            <MenuItem key={i}>
               <L to={item.to} style={styles.routingLink}> {item.title} </L>
             </MenuItem>
           );
@@ -151,9 +151,9 @@ export default function PrimarySearchAppBar() {
         open={Boolean(anchorEl.tvShows)}
         onClose={handleMenuClose}
       >
-        {items.map((item) => {
+        {items.map((item,i) => {
           return (
-            <MenuItem>
+            <MenuItem key={i}>
               <L to={item.to} style={styles.routingLink}> {item.title} </L>
             </MenuItem>
           )
@@ -177,12 +177,14 @@ export default function PrimarySearchAppBar() {
         open={Boolean(anchorEl.people)}
         onClose={handleMenuClose}
       >
-        {items.map((item) => {
-          return(
-          <MenuItem>
-            <L to={item.to} style={styles.routingLink}> {item.title} </L>
-          </MenuItem>
-          )
+        {items.map((item,i) => {
+          return (
+            <MenuItem key={i}>
+              <L to={item.to} style={styles.routingLink}>
+                {' '}{item.title}{' '}
+              </L>
+            </MenuItem>
+          );
         })}
       </Menu>
     );
@@ -208,9 +210,9 @@ export default function PrimarySearchAppBar() {
         open={Boolean(anchorEl.more)}
         onClose={handleMenuClose}
       >
-        {items.map((item) => {
+        {items.map((item,i) => {
           return (
-            <MenuItem>
+            <MenuItem key={i}>
               <L to={item.to} style={styles.routingLink}> {item.title} </L>
             </MenuItem>
           );
@@ -236,9 +238,9 @@ export default function PrimarySearchAppBar() {
         open={Boolean(anchorEl.account)}
         onClose={handleMenuClose}
       >
-        {items.map((item) => {
+        {items.map((item,i) => {
           return (
-            <MenuItem>
+            <MenuItem key={i}>
               <L to={item.to} style={styles.routingLink}> {item.title} </L>
             </MenuItem>
           );
@@ -373,7 +375,7 @@ export default function PrimarySearchAppBar() {
         open={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
       >
-        {items.map(item => <MenuItem>{item}</MenuItem>)}
+        {items.map((item,i) => <MenuItem key={i}>{item}</MenuItem>)}
       </Menu>
     )
   }

@@ -15,6 +15,7 @@ import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
 import { useStylesSm } from '../styles/MovieCardStyles';
 import { getConfig, get, getTrailer } from '../utils/movieDB';
+import { ReactPlayer as Player } from 'react-player';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -95,7 +96,7 @@ export default function Home() {
   }
 
   //finally I can get an array with the movie keys
-  setTimeout(() => console.log(trailers.movies), 1000);
+  // setTimeout(() => console.log(trailers.movies), 1000);
 //  ==================
 
   const getTopRated = (option) => {
@@ -118,8 +119,25 @@ export default function Home() {
   };
 
   const display = (movies) => {
-    // fallback card in case no movies are fetched
-    if (!movies) {
+    if (Array.isArray(movies) && movies.length > 1) {
+      return movies.map((movie) => {
+        return (
+          <MovieCard
+            key={movie.id}
+            href={'http://localhost:3000/'}
+            useStyles={useStylesSm}
+            title={movie.original_title || movie.name}
+            date={movie.release_date || movie.first_air_date}
+            poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+          />
+        );
+      });
+    } else if((movies === "trailers") && (trailers.movies.length > 1)){
+      console.log(trailers.movies);
+      return trailers.movies.map( trailer => {
+        return <Player url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; 
+      })
+    } else {
       const expand = [...Array(10).keys()];
       return expand.map((sample) => {
         return (
@@ -133,18 +151,6 @@ export default function Home() {
         );
       });
     }
-    return movies.map((movie) => {
-      return (
-        <MovieCard
-          key={movie.id}
-          href={'http://localhost:3000/'}
-          useStyles={useStylesSm}
-          title={movie.original_title || movie.name}
-          date={movie.release_date || movie.first_air_date}
-          poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
-        />
-      );
-    });
   };
 
   return (
@@ -211,7 +217,7 @@ export default function Home() {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{display(trending.movies)}</Box>
+            <Box className={classes.scroller}>{display("trailers")}</Box>
           </Box>
           <ColumnHeader
             header="Trending"
