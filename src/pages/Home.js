@@ -84,10 +84,10 @@ export default function Home() {
     getTrending('day');
 
     //returns an Array of fullfilled promises!!!
-    getNowPlaying();
+    getMovieTrailers();
   }
 
-  const getNowPlaying = async () => {
+  const getMovieTrailers = async () => {
     let movies = await get('movie', 'now_playing')
     movies.map(async movie=> {
         let trailer = await getTrailer(movie.id)
