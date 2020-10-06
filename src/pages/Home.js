@@ -80,35 +80,47 @@ export default function Home() {
     getFrontPage()
   }, []);
 
-  const getFrontPage = async () => {
+  const getFrontPage = () => {
     getConfig().then((data) =>
       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
     );
     getPopular('movie');
     getTopRated('movie');
     getTrending('day');
+    // getting trailers
+    fetchMovies()
+    // .then(movies => {
+    //   getTrailers(movies)
+    // })
   }
 
-  const getNowPlaying = async () => {
-    let movies = await get('movie', 'now_playing');
-    setNowPlaying({ movies: movies });
-    return movies
-  };
+  const fetchMovies = async () => {
+      get('movie', 'now_playing').then(movies =>
+        setTrailers({ movies: movies })
+      )
+      // return movies
+  }
 
-  const getTrailers = async (movies) => {
-    let array = Promise.all(movies.map( (movie) => {
-      let trailer = getTrailer(movie.id);
-        return trailer
-    }));
-    setTrailers({ movies: array})
-    return array;
-  };
+  // const getTrailers = movies =>{
+  //   let movieTrailers = [];
+  //   if (Array.isArray(movies) && movies.length > 1) {
+  //     movies.map((movie) => {
+  //       let trailer = getTrailer(movie.id);
+  //       if(typeof trailer === 'object'){
+  //         movieTrailers.push(trailer)
+  //       }
+  //     });
+  //   }
+  //   if (movieTrailers.length > 1) {
+  //     setTrailers({ movies: movieTrailers });
+  //   }
+  // };
 
   // where are my trailers?
-  setTimeout(() => {
-    console.log(trailers)
-    }
-  ,3000)
+  // setTimeout(() => {
+  //   console.log(trailers)
+  //   }
+  // ,3000)
 //  ==================
 
   const getTopRated = (option) => {
@@ -130,24 +142,23 @@ export default function Home() {
     );
   };
 
-  const renderTrailers = async () => {
-    let movies = await getNowPlaying()
-    let movieTrailers = await getTrailers(movies)
-    console.log(movieTrailers)
-    return movieTrailers.map((trailer) => {
-      return (
-        <MovieCard
-          key={trailer.id}
-          href={'http://localhost:3000/'}
-          useStyles={useStylesTrailer}
-          title={`${trailer.original_title} Trailer` || trailer.name}
-          date={trailer.release_date || trailer.first_air_date}
-          video={`https://www.youtube.com/watch?v=VhkfnPVQyaY`}
-          // {/* <ReactPlayer key={i} url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; */}
-        />
-      );
-    });
-  }
+  const renderTrailers = (movies) => {
+    if(Array.isArray(movies) && movies.length > 1){
+      console.log(movies)
+      return movies.map((movie) => {
+        return (
+          <MovieCard
+            key={movie.id}
+            href={'http://localhost:3000/'}
+            useStyles={useStylesTrailer}
+            title={`${movie.original_title} Trailer` || `${movie.name} Trailer`}
+            date={movie.release_date || movie.first_air_date}
+            poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+          />
+        );
+      });
+    }
+  };
 
   const display = (movies) => {
     if (Array.isArray(movies) && movies.length > 1) {
@@ -244,9 +255,7 @@ export default function Home() {
           />
           <Box className={classes.scroller}>
             {/* page renders before videos are fetched, delayed render required or async await */}
-            <Box className={classes.scroller}>
-              {renderTrailers()}
-            </Box>
+            <Box className={classes.scroller}>{renderTrailers(trailers.movies)}</Box>
           </Box>
           <ColumnHeader
             header="Trending"

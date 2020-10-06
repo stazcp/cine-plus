@@ -16,14 +16,19 @@ import ReactPlayer from 'react-player';
 
 export default function MovieCard({date, title, poster, useStyles, video }){
   const classes = useStyles();
-
+    /* <CardMedia>
+            <ReactPlayer url={video}/>
+          </CardMedia> */
   return (
     <div className="CardComponent">
       <Card className={classes.card}>
         {video ? 
-          <CardMedia>
-            <ReactPlayer url={video}/>
-          </CardMedia>
+          
+          <CardMedia
+            className={classes.cardMedia}
+            image={poster || 'https://source.unsplash.com/random'}
+            title="Image title"
+          />
         :
           <CardMedia
             className={classes.cardMedia}
