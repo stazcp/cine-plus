@@ -60,3 +60,31 @@ export const useStylesMd = makeStyles((theme) => ({
   },
 }));
 
+export const useStylesTrailer = makeStyles((theme) => ({
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: '20px',
+    borderRadius: '5px',
+    marginTop: '20px',
+  },
+  cardMedia: {
+    width: '300px',
+    height: '168.53px',
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  link: {
+    fontWeight: '700',
+    fontSize: '16px',
+    lineHeight: '1',
+  },
+  caption: {
+    fontSize: '16px',
+    fontWeight: '400',
+    color: 'rgba(0,0,0,0.6)',
+  },
+}));
+

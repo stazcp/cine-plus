@@ -13,9 +13,9 @@ import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
-import { useStylesSm } from '../styles/MovieCardStyles';
+import { useStylesSm, useStylesTrailer } from '../styles/MovieCardStyles';
 import { getConfig, get, getTrailer } from '../utils/movieDB';
-import { ReactPlayer as Player } from 'react-player';
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -50,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2em',
     fontWeight: '600',
   },
+  trailer: {
+    width: '300px',
+    height: '168.53px',
+    display: 'flex'
+  }
 }));
 
 const search = () => {
@@ -66,54 +71,44 @@ export default function Home() {
   const [topRated, setTopRated] = useState({ movies: [], conf: ['top_rated'] });
   const [trending, setTrending] = useState({ movies: [], conf: ['trending', 'all'] });
   const [trailers, setTrailers] = useState({ movies: [] });
-  // const [nowPlaying, setNowPlaying] = useState({ movies: [] });
+  const [nowPlaying, setNowPlaying] = useState({ movies: [] });
   const [basePosterUrl, setBasePosterUrl] = useState(null);
   let posterSize = 'w300';
 
   //will upgrade all gets -> good way to manage states?
   useEffect(() => {
-    getFrontPage();
+    getFrontPage()
   }, []);
 
-  const getFrontPage = () => {
+  const getFrontPage = async () => {
     getConfig().then((data) =>
       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
     );
     getPopular('movie');
     getTopRated('movie');
     getTrending('day');
-
-    //returns an Array of fullfilled promises!!!
-    getMovieTrailers();
   }
 
-  const getMovieTrailers = async () => {
-    let movies = await get('movie', 'now_playing')
-    
-    const getTrailers = async movies => {
-      const array = [];
-      await movies.map(async (movie) => {
-        let trailer = await getTrailer(movie.id);
-        if (typeof trailer === 'object') {
-          array.push(trailer);
-          // setTrailers({ movies: trailers.movies.push(trailer) })
-        }
-      });
-      return array
+  const getNowPlaying = async () => {
+    let movies = await get('movie', 'now_playing');
+    setNowPlaying({ movies: movies });
+    return movies
+  };
+
+  const getTrailers = async (movies) => {
+    let array = Promise.all(movies.map( (movie) => {
+      let trailer = getTrailer(movie.id);
+        return trailer
+    }));
+    setTrailers({ movies: array})
+    return array;
+  };
+
+  // where are my trailers?
+  setTimeout(() => {
+    console.log(trailers)
     }
-
-    getTrailers(movies).then(array => {
-      setTrailers({ movies: array })
-    });
-
-  }
-
-  //finally I can get an array with the movie keys
-  // setTimeout(() => {
-  //   console.log(typeof trailers.movies)
-  //   console.log(trailers)
-  //   }
-  // ,1000)
+  ,3000)
 //  ==================
 
   const getTopRated = (option) => {
@@ -135,6 +130,25 @@ export default function Home() {
     );
   };
 
+  const renderTrailers = async () => {
+    let movies = await getNowPlaying()
+    let movieTrailers = await getTrailers(movies)
+    console.log(movieTrailers)
+    return movieTrailers.map((trailer) => {
+      return (
+        <MovieCard
+          key={trailer.id}
+          href={'http://localhost:3000/'}
+          useStyles={useStylesTrailer}
+          title={`${trailer.original_title} Trailer` || trailer.name}
+          date={trailer.release_date || trailer.first_air_date}
+          video={`https://www.youtube.com/watch?v=VhkfnPVQyaY`}
+          // {/* <ReactPlayer key={i} url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; */}
+        />
+      );
+    });
+  }
+
   const display = (movies) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
@@ -149,12 +163,6 @@ export default function Home() {
           />
         );
       });
-    } else if(movies === "trailers") {
-      console.log('getting trailers')
-        return trailers.movies.map((trailer) => {
-          return <Player url="https://www.youtube.com/watch?v=VhkfnPVQyaY" />;
-          // `https://www.youtube.com/watch?v=${_trailer.videos.results[0].key}`
-        })
     } else {
       const expand = [...Array(10).keys()];
       return expand.map((sample) => {
@@ -163,7 +171,7 @@ export default function Home() {
             key={sample}
             href={'http://localhost:3000/'}
             useStyles={useStylesSm}
-            title={'Movies not Found'}
+            title={'Looking for Movies...'}
             poster={'https://source.unsplash.com/random'}
           />
         );
@@ -236,7 +244,9 @@ export default function Home() {
           />
           <Box className={classes.scroller}>
             {/* page renders before videos are fetched, delayed render required or async await */}
-            <Box className={classes.scroller}>{display("trailers")}</Box>
+            <Box className={classes.scroller}>
+              {renderTrailers()}
+            </Box>
           </Box>
           <ColumnHeader
             header="Trending"

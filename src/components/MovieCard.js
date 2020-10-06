@@ -12,18 +12,25 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import ReactPlayer from 'react-player';
 
-export default function MovieCard({date, title, poster, useStyles }){
+export default function MovieCard({date, title, poster, useStyles, video }){
   const classes = useStyles();
 
   return (
     <div className="CardComponent">
       <Card className={classes.card}>
-        <CardMedia
-          className={classes.cardMedia}
-          image={poster || 'https://source.unsplash.com/random'}
-          title="Image title"
-        />
+        {video ? 
+          <CardMedia>
+            <ReactPlayer url={video}/>
+          </CardMedia>
+        :
+          <CardMedia
+            className={classes.cardMedia}
+            image={poster || 'https://source.unsplash.com/random'}
+            title="Image title"
+          />
+        }
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
             <Link href="#" color="inherit" underline="none" className="nav-link">
