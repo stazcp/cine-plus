@@ -70,11 +70,40 @@ export const useStylesTrailer = makeStyles((theme) => ({
     marginTop: '20px',
   },
   cardMedia: {
-    width: '300px',
-    height: '168.53px',
+    width: '206px',
+    height: '312px',
   },
   cardContent: {
     flexGrow: 1,
+    wordWrap: 'break-word',
+  },
+  link: {
+    fontWeight: '700',
+    fontSize: '16px',
+    lineHeight: '1',
+  },
+  caption: {
+    fontSize: '16px',
+    fontWeight: '400',
+    color: 'rgba(0,0,0,0.6)',
+  },
+}));
+
+export const useStylesPerson = makeStyles((theme) => ({
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: '0px',
+    marginTop: '20px',
+  },
+  cardMedia: {
+    width: '235px',
+    height: '235px',
+  },
+  cardContent: {
+    flexGrow: 1,
+    wordWrap: 'break-word',
   },
   link: {
     fontWeight: '700',

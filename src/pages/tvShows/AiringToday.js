@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MovieCard from '../../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
-import { useStylesMd } from '../../styles/MovieCardStyles';
+import { useStylesMd as cardStyle } from '../../styles/MovieCardStyles';
 import Container from '@material-ui/core/Container';
 import Accordion from '../../components/Accordion';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import { get, getConfig } from '../../utils/movieDB'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
@@ -26,10 +27,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = Array.from(Array(20).keys());
-
-export default function PopularMovies(props) {
+export default (props) => {
   const classes = useStyles();
+  const [movies, setMovies] = useState()
+  const [basePosterUrl, setBasePosterUrl] = useState(null);
+  let posterSize = 'w780';
+
+  useEffect(() => {
+    getPosterUrl();
+    getMovies();
+  }, [])
+
+  const getPosterUrl = () => {
+    let posterUrl = window.localStorage.getItem('poster_url');
+    if (posterUrl) {
+      setBasePosterUrl(JSON.parse(posterUrl));
+    } else {
+      getConfig().then((data) =>
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      );
+    }
+  };
+
+  const getMovies = () => {
+    let jsonMovies = window.localStorage.getItem('airing_today_tv');
+    if(jsonMovies){
+      let data = JSON.parse(jsonMovies);
+      setMovies(data);
+    } else {
+      get('tv','airing_today').then(data => {
+        setMovies(data);
+        window.localStorage.setItem('airing_today_tv', JSON.stringify(data));
+      })  
+    }
+  }
+
+  //grid item xs(4) the only way to not get cards distorted?
+  const renderMovies = () => {
+    if (Array.isArray(movies) && movies.length > 1) {
+      return movies.map((movie) => {
+        return (
+          <Grid item xs={3} key={movie.id}>
+            <MovieCard
+              href={'http://localhost:3000/'}
+              useStyles={cardStyle}
+              title={movie.original_title || movie.name}
+              date={movie.release_date || movie.first_air_date}
+              poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+            />
+          </Grid>
+        );
+      });
+    } else {
+      return <Grid item xs={3}> <h1>No movies found...</h1> </Grid>
+    }
+}
 
   return (
     <React.Fragment>
@@ -45,15 +97,14 @@ export default function PopularMovies(props) {
               <Accordion />
               <Container maxWidth="md">
                 <Grid container spacing={1}>
-                  <Grid container item xs={12} spacing={3}>
-                    {cards.map((card) => (
+                  {renderMovies()}
+                  {/* {cards.map((card) => (
                       <MovieCard
                         key={card}
                         href={'http://localhost:3000/'}
                         useStyles={useStylesMd}
                       />
-                    ))}
-                  </Grid>
+                    ))} */}
                 </Grid>
               </Container>
             </Box>

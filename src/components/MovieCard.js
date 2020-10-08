@@ -27,13 +27,13 @@ export default function MovieCard({date, title, poster, useStyles, video }){
           <CardMedia
             className={classes.cardMedia}
             image={poster || 'https://source.unsplash.com/random'}
-            title="Image title"
+            title={title}
           />
         :
           <CardMedia
             className={classes.cardMedia}
             image={poster || 'https://source.unsplash.com/random'}
-            title="Image title"
+            title={title}
           />
         }
         <CardContent className={classes.cardContent}>

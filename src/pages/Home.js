@@ -65,7 +65,7 @@ const doNothing = ()=>{
 
 }
 
-export default function Home() {
+export default (props) => {
   const classes = useStyles();
   const [popular, setPopular] = useState({ movies: [], conf: ['popular'] });
   const [topRated, setTopRated] = useState({ movies: [], conf: ['top_rated'] });
@@ -77,29 +77,40 @@ export default function Home() {
 
   //will upgrade all gets -> good way to manage states?
   useEffect(() => {
-    getFrontPage()
+    getFrontPage();
   }, []);
 
   const getFrontPage = () => {
-    getConfig().then((data) =>
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-    );
+    getPosterUrl();
     getPopular('movie');
     getTopRated('movie');
     getTrending('day');
+    getUpcoming();
     // getting trailers
-    fetchMovies()
+    getNowPlaying();
     // .then(movies => {
     //   getTrailers(movies)
     // })
-  }
+  };
 
-  const fetchMovies = async () => {
-      get('movie', 'now_playing').then(movies =>
-        setTrailers({ movies: movies })
-      )
-      // return movies
-  }
+  const getPosterUrl = () => {
+    getConfig().then((data) => {
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url);
+      window.localStorage.setItem(
+        'poster_url',
+        JSON.stringify(data.images.secure_base_url || data.images.base_url)
+      );
+    });
+  };
+
+  const getNowPlaying = async () => {
+    get('movie', 'now_playing').then((data) => {
+      setTrailers({ movies: data });
+      setNowPlaying({ movies: data });
+      window.localStorage.setItem('now_playing_movie', JSON.stringify(data));
+    });
+    // return movies
+  };
 
   // const getTrailers = movies =>{
   //   let movieTrailers = [];
@@ -121,30 +132,38 @@ export default function Home() {
   //   console.log(trailers)
   //   }
   // ,3000)
-//  ==================
+  //  ==================
+
+  const getUpcoming = () => {
+    get('movie', 'upcoming').then((data) => {
+      window.localStorage.setItem('upcoming_movie', JSON.stringify(data));
+    });
+  };
 
   const getTopRated = (option) => {
     get(option, topRated.conf).then((data) => {
       setTopRated({ movies: data, conf: topRated.conf });
+      window.localStorage.setItem(`top_rated_${option}`, JSON.stringify(data));
     });
   };
 
   const getPopular = (option) => {
     get(option, popular.conf).then((data) => {
       setPopular({ movies: data, conf: popular.conf });
-      window.localStorage.setItem('popularMovies', JSON.stringify(data));
+      window.localStorage.setItem(`popular_${option}`, JSON.stringify(data));
     });
   };
 
   const getTrending = (option) => {
-    get(...trending.conf, option).then((data) =>
-      setTrending({ movies: data, conf: trending.conf })
-    );
+    get(...trending.conf, option).then((data) => {
+      setTrending({ movies: data, conf: trending.conf });
+      window.localStorage.setItem(`trending_${option}`, JSON.stringify(data));
+    });
   };
 
   const renderTrailers = (movies) => {
-    if(Array.isArray(movies) && movies.length > 1){
-      console.log(movies)
+    if (Array.isArray(movies) && movies.length > 1) {
+      console.log(movies);
       return movies.map((movie) => {
         return (
           <MovieCard
@@ -270,4 +289,4 @@ export default function Home() {
       </Container>
     </React.Fragment>
   );
-}
+};
