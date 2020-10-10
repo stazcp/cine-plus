@@ -13,7 +13,7 @@ import ColumnHeader from '../components/ColumnHeader';
 import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
-import { useStylesSm, useStylesTrailer } from '../styles/MovieCardStyles';
+import { useStylesSm, useStylesTrailer } from '../styles/CardStyles';
 import { getConfig, get, getTrailer } from '../utils/movieDB';
 
 
@@ -182,14 +182,16 @@ export default (props) => {
   const display = (movies) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
+        let { id, original_title, name, release_date, first_air_date, poster_path } = movie;
+        let route = `/display/movie/${id}`;
         return (
           <MovieCard
-            key={movie.id}
-            href={'http://localhost:3000/'}
+            key={id}
+            to={route}
             useStyles={useStylesSm}
-            title={movie.original_title || movie.name}
-            date={movie.release_date || movie.first_air_date}
-            poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+            title={original_title || name}
+            date={release_date || first_air_date}
+            poster={`${basePosterUrl}${posterSize}${poster_path}`}
           />
         );
       });

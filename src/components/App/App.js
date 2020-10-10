@@ -19,6 +19,7 @@ import Support from '../../pages/more/Support';
 import Api from '../../pages/more/Api';
 import Login from '../../pages/account/Login';
 import Join from '../../pages/account/Join';
+import Display from '../../pages/Display';
 
 // lowercase routes
 function App() {
@@ -69,12 +70,15 @@ function App() {
         <Route path="/api">
           <Api />
         </Route>
-        {/* people */}
+        {/* other */}
         <Route path="/login">
           <Login />
         </Route>
         <Route path="/join">
           <Join />
+        </Route>
+        <Route path="/display/:type/:id">
+          <Display />
         </Route>
         {/* main */}
         <Route path="/">

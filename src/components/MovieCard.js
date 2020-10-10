@@ -13,12 +13,22 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import ReactPlayer from 'react-player';
+import { Route, MemoryRouter } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default function MovieCard({date, title, poster, useStyles, video }){
+export default function MovieCard({date, title, poster, useStyles, video, to }){
   const classes = useStyles();
     /* <CardMedia>
             <ReactPlayer url={video}/>
           </CardMedia> */
+
+  const renderLink = React.useMemo(
+    () =>
+      React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
+    [to],
+  );
+
   return (
     <div className="CardComponent">
       <Card className={classes.card}>
@@ -38,7 +48,7 @@ export default function MovieCard({date, title, poster, useStyles, video }){
         }
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
-            <Link href="#" color="inherit" underline="none" className="nav-link">
+            <Link component={renderLink} color="inherit" underline="none" className="nav-link">
               {title}
             </Link>
           </Typography>

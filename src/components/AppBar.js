@@ -7,16 +7,9 @@
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import {AppBar, Toolbar, Typography, Link, Menu, MenuItem, Badge, IconButton} from '@material-ui/core';
+import {AccountCircle} from '@material-ui/icons/';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Link from '@material-ui/core/Link';
 import AddIcon from '@material-ui/icons/Add';
 import LanguageIcon from '@material-ui/icons/Language';
 import { Link as L } from 'react-router-dom';
@@ -35,10 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+    display: 'flex'
   },
   sectionMobile: {
     display: 'flex',
@@ -260,7 +250,7 @@ export default function PrimarySearchAppBar() {
         className={classes.h5Link}
         variant="h5"
       >
-        <Link href="/" color="inherit" underline="none" className="nav-link">
+        <Link color="inherit" underline="none" className="nav-link">
           Movies
         </Link>
       </Typography>
@@ -277,7 +267,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link href="/" color="inherit" underline="none" className="nav-link">
+      <Link color="inherit" underline="none" className="nav-link">
         TV Shows
       </Link>
     </Typography>
@@ -296,7 +286,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link href="/" color="inherit" underline="none" className="nav-link">
+      <Link color="inherit" underline="none" className="nav-link">
         People
       </Link>
     </Typography>
@@ -315,7 +305,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link href="/" color="inherit" underline="none" className="nav-link">
+      <Link color="inherit" underline="none" className="nav-link">
         More
       </Link>
     </Typography>
@@ -361,9 +351,6 @@ export default function PrimarySearchAppBar() {
       displayTvShowsMenu,
       displayPeopleMenu,
       displayMoreMenu,
-      displayAddMenu,
-      displayLanguagesMenu,
-      displayAccountMenu
     ];
     return(
       <Menu

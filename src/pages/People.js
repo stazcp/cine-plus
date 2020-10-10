@@ -1,13 +1,11 @@
 // improvements needed:
-// 1. Different Style cards
-// 2. API
-// 3. style
+// 1. Add links to person page
 
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MovieCard from '../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
-import { useStylesPerson } from '../styles/MovieCardStyles';
+import { useStylesPerson } from '../styles/CardStyles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -70,7 +68,7 @@ export default (props) => {
               href={'http://localhost:3000/'}
               useStyles={useStylesPerson}
               title={person.name}
-              date={person.known_for[0].original_title}
+              date={person.known_for[0].original_title || person.known_for[0].name}
               poster={`${basePosterUrl}${posterSize}${person.profile_path}`}
             />
           </Grid>
