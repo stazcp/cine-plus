@@ -19,12 +19,7 @@ export const useStylesSm = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
-  },
-  link: {
-    fontWeight: '700',
-    fontSize: '16px',
-    lineHeight: '1',
-  },
+  }, 
   caption: {
     fontSize: '16px',
     fontWeight: '400',
@@ -47,11 +42,6 @@ export const useStylesMd = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
-  },
-  link: {
-    fontWeight: '700',
-    fontSize: '16px',
-    lineHeight: '1',
   },
   caption: {
     fontSize: '16px',
@@ -77,11 +67,6 @@ export const useStylesTrailer = makeStyles((theme) => ({
     flexGrow: 1,
     wordWrap: 'break-word',
   },
-  link: {
-    fontWeight: '700',
-    fontSize: '16px',
-    lineHeight: '1',
-  },
   caption: {
     fontSize: '16px',
     fontWeight: '400',
@@ -104,11 +89,6 @@ export const useStylesPerson = makeStyles((theme) => ({
   cardContent: {
     flexGrow: 1,
     wordWrap: 'break-word',
-  },
-  link: {
-    fontWeight: '700',
-    fontSize: '16px',
-    lineHeight: '1',
   },
   caption: {
     fontSize: '16px',

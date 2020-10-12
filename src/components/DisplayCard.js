@@ -11,22 +11,22 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import ReactPlayer from 'react-player';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function MovieCard({date, title, poster, useStyles, to, movie, key }){
   const classes = useStyles();
-    /* <CardMedia>
-            <ReactPlayer url={video}/>
-          </CardMedia> */
-          
 
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef((itemProps, ref  ) => <RouterLink to={to} ref={ref} {...itemProps} />),
-    [to],
-  );
+  const styles = {
+    link: {
+      color: 'inherit',
+      textDecoration: 'none',
+      fontWeight: '700',
+      fontSize: '16px',
+      lineHeight: '1',
+    }
+  }
 
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
@@ -43,7 +43,7 @@ export default function MovieCard({date, title, poster, useStyles, to, movie, ke
         />
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
-            <Link component={renderLink} color="inherit" underline="none" className="nav-link" onClick={() => handleClick()}>
+            <Link to={to} style={styles.link} onClick={() => handleClick()}>
               {title}
             </Link>
           </Typography>
