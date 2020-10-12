@@ -45,7 +45,7 @@ const styles = {
 
 export default (props) => {
   const [poster, setPoster] = useState('https://source.unsplash.com/random')
-  let { type, id } = useParams();
+  let { id } = useParams();
   let movie = JSON.parse(window.localStorage.getItem(id));
   const classes = useStylesDisplay();
   const location = useLocation();
@@ -92,7 +92,7 @@ export default (props) => {
             <Typography component="h1" variant="h4" style={styles.h1}>
               {title}{` `}{date.slice(0,4)}
             </Typography>
-            <Typography>{`Type: ${type} ID: ${id}`}</Typography>
+            <Typography>{`ID: ${id}`}</Typography>
             <Typography>Like Score Star etc</Typography>
             <Typography> location: {location.pathname} </Typography>
             <Box display="flex">
