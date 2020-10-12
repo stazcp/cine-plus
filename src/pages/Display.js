@@ -20,13 +20,15 @@ const styles = {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
     color: 'white',
+    width: '100%'
   },
   headerSection: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
     flexDirection: 'column',
-    paddingLeft: 80
+    paddingLeft: 80,
+    paddingRight: 40
   },
   h1: {
     fontSize: 35.2,
@@ -40,6 +42,10 @@ const styles = {
   },
   bot: {
     height: 200
+  },
+  h2: {
+    fontSize: 20.8,
+    fontWeight: 600,
   }
 };
 
@@ -51,7 +57,7 @@ export default (props) => {
   const location = useLocation();
   let posterSize = 'w342';
   let date = movie.release_date || movie.first_air_date;
-  let title = movie.original_title || movie.name;
+  let title = movie.original_title || movie.name || movie.title;
 
   useEffect(() => {
     getPosterUrl();
@@ -70,6 +76,8 @@ export default (props) => {
     }   
     setPoster(`${basePosterUrl}${posterSize}${movie.poster_path}`);
   }
+
+  console.log(movie);
 
   return (
     <>
@@ -90,11 +98,17 @@ export default (props) => {
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
             <Typography component="h1" variant="h4" style={styles.h1}>
-              {title}{` `}{date.slice(0,4)}
+              {title}
+              {` `}({date.slice(0, 4)})
             </Typography>
-            <Typography>{`ID: ${id}`}</Typography>
-            <Typography>Like Score Star etc</Typography>
-            <Typography> location: {location.pathname} </Typography>
+            <Typography>{date} •</Typography>
+            <br />
+            <Typography component="h2" variant="h5" style={styles.h2}>
+              Overview
+            </Typography>
+            <br />
+            <Typography> {movie.overview} </Typography>
+            <br />
             <Box display="flex">
               <Typography>Actor1</Typography>
               <Typography>Actor2</Typography>
