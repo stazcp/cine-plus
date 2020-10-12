@@ -77,7 +77,7 @@ function App() {
         <Route path="/join">
           <Join />
         </Route>
-        <Route path="/display/:type/:id">
+        <Route path="/display/:id">
           <Display />
         </Route>
         {/* main */}

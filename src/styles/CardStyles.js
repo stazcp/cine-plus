@@ -120,6 +120,7 @@ export const useStylesPerson = makeStyles((theme) => ({
 export const useStylesDisplay = makeStyles((theme) => ({
   root: {
     maxWidth: 300,
+    minWidth: 300,
     marginLeft: 40,
   },
   media: {

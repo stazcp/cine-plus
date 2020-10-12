@@ -163,7 +163,6 @@ export default (props) => {
 
   const renderTrailers = (movies) => {
     if (Array.isArray(movies) && movies.length > 1) {
-      console.log(movies);
       return movies.map((movie) => {
         return (
           <MovieCard
@@ -179,36 +178,26 @@ export default (props) => {
     }
   };
 
-  const display = (movies) => {
-    if (Array.isArray(movies) && movies.length > 1) {
-      return movies.map((movie) => {
-        let { id, original_title, name, release_date, first_air_date, poster_path } = movie;
-        let route = `/display/movie/${id}`;
-        return (
-          <MovieCard
-            key={id}
-            to={route}
-            useStyles={useStylesSm}
-            title={original_title || name}
-            date={release_date || first_air_date}
-            poster={`${basePosterUrl}${posterSize}${poster_path}`}
-          />
-        );
-      });
-    } else {
-      const expand = [...Array(10).keys()];
-      return expand.map((sample) => {
-        return (
-          <MovieCard
-            key={sample}
-            href={'http://localhost:3000/'}
-            useStyles={useStylesSm}
-            title={'Looking for Movies...'}
-            poster={'https://source.unsplash.com/random'}
-          />
-        );
-      });
+  // pass down data to render on display page
+  const renderCards = (movies) => {
+    if (!Array.isArray(movies) && movies.length < 1) {
+      return <p>No movies found</p>;
     }
+    return movies.map((movie) => {
+      let { id, original_title, name, release_date, first_air_date, poster_path } = movie;
+      let route = `/display/${id}`;
+      return (
+        <MovieCard
+          key={id}
+          to={route}
+          useStyles={useStylesSm}
+          title={original_title || name}
+          date={release_date || first_air_date}
+          poster={`${basePosterUrl}${posterSize}${poster_path}`}
+          movie={movie}
+        />
+      );
+    });
   };
 
   return (
@@ -252,7 +241,7 @@ export default (props) => {
             ]}
             setOption={getPopular}
           />
-          <Box className={classes.scroller}>{display(popular.movies)}</Box>
+          <Box className={classes.scroller}>{renderCards(popular.movies)}</Box>
           <ColumnHeader
             header="Top Rated"
             options={[
@@ -262,7 +251,7 @@ export default (props) => {
             setOption={getTopRated}
           />
           <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{display(topRated.movies)}</Box>
+            <Box className={classes.scroller}>{renderCards(topRated.movies)}</Box>
           </Box>
           <ColumnHeader
             header="Latest Trailers"
@@ -286,7 +275,7 @@ export default (props) => {
             ]}
             setOption={getTrending}
           />
-          <Box className={classes.scroller}>{display(trending.movies)}</Box>
+          <Box className={classes.scroller}>{renderCards(trending.movies)}</Box>
         </main>
       </Container>
     </React.Fragment>
