@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {Grid, Typography, Box, Container} from '@material-ui/core';
-import MovieCard from '../components/MovieCard';
+import DisplayCard from '../components/DisplayCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStylesPerson } from '../styles/CardStyles';
 import { get, getConfig } from '../utils/movieDB';
@@ -61,7 +61,7 @@ export default (props) => {
       return people.map((person) => {
         return (
           <Grid item key={person.id} style={{ padding: 5}} xs>
-            <MovieCard
+            <DisplayCard
               href={'http://localhost:3000/'}
               useStyles={useStylesPerson}
               title={person.name}

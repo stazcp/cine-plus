@@ -3,7 +3,6 @@ import {
   Card,
   CardActionArea,
   CardActions,
-  CardContent,
   CardMedia,
   Button,
   Grid,
@@ -13,7 +12,7 @@ import {
 import { useParams, useLocation } from 'react-router-dom';
 import { useStylesDisplay } from '../styles/CardStyles' 
 import Image from '../img/deadpool.jpg';
-import { getConfig } from '../utils/movieDB';
+import { get, getConfig } from '../utils/movieDB';
 
 const styles = {
   box: {
@@ -51,7 +50,7 @@ const styles = {
 
 export default (props) => {
   const [poster, setPoster] = useState('https://source.unsplash.com/random')
-  let { id } = useParams();
+  let { type, id } = useParams();
   let movie = JSON.parse(window.localStorage.getItem(id));
   const classes = useStylesDisplay();
   const location = useLocation();
@@ -75,6 +74,14 @@ export default (props) => {
       );
     }   
     setPoster(`${basePosterUrl}${posterSize}${movie.poster_path}`);
+  }
+
+  //gotta know if tv or movie to get credits
+
+  const getCast = () => {
+    get(type,id,'credits').then( data => {
+      console.log(data)
+    })
   }
 
   console.log(movie);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Box, Container } from '@material-ui/core';
-import MovieCard from '../../components/MovieCard';
+import DisplayCard from '../../components/DisplayCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStylesMd as cardStyle } from '../../styles/CardStyles';
 import Accordion from '../../components/Accordion';
@@ -58,34 +58,31 @@ export default (props) => {
   const renderMovies = () => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
+        const {id, original_title, name, release_date, first_air_date, poster_path} = movie;
+        let route = `/display/movie/${id}`;
         return (
           <Grid item xs={3} key={movie.id}>
-            <MovieCard
-              href={'http://localhost:3000/'}
+            <DisplayCard
+              key={id}
+              to={route}
               useStyles={cardStyle}
-              title={movie.original_title || movie.name}
-              date={movie.release_date || movie.first_air_date}
-              poster={`${basePosterUrl}${posterSize}${movie.poster_path}`}
+              title={original_title || name}
+              date={release_date || first_air_date}
+              poster={`${basePosterUrl}${posterSize}${poster_path}`}
+              movie={movie}
             />
           </Grid>
         );
       });
     } else {
-      const expand = [...Array(10).keys()];
-      return expand.map((sample) => {
-        return (
-          <Grid item key={sample} xs={3}>
-            <MovieCard
-              href={'http://localhost:3000/'}
-              useStyles={cardStyle}
-              title={'Looking for Movies...'}
-              poster={'https://source.unsplash.com/random'}
-            />
-          </Grid>
-        );
-      });
+      return (
+        <Grid item xs={3}>
+          {' '}
+          <h1>No movies found...</h1>{' '}
+        </Grid>
+      )
     }
-  };
+  }
 
   return (
     <React.Fragment>
@@ -117,4 +114,4 @@ export default (props) => {
       </Container>
     </React.Fragment>
   );
-};
+}

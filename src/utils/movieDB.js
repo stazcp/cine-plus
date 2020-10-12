@@ -24,8 +24,14 @@ export const get = async (type,category,extra) => {
       : `${base_url}${type}/${category}?api_key=${api_key}`;
 
     let response = await fetch(url)
-    let movies = await response.json()
-    return movies.results
+    let result = await response.json()
+    if(result.results){
+      return result.results
+    } else if(result.cast){
+      return result.cast
+    } else {
+      return result
+    }
   } catch (error) {
     console.log(error)
   }

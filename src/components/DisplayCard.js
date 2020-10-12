@@ -15,7 +15,7 @@ import Link from '@material-ui/core/Link';
 import ReactPlayer from 'react-player';
 import { Link as RouterLink } from 'react-router-dom';
 
-export default function MovieCard({date, title, poster, useStyles, video, to, movie }){
+export default function MovieCard({date, title, poster, useStyles, to, movie, key }){
   const classes = useStyles();
     /* <CardMedia>
             <ReactPlayer url={video}/>
@@ -30,26 +30,17 @@ export default function MovieCard({date, title, poster, useStyles, video, to, mo
 
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
-    window.localStorage.setItem( movie.id, JSON.stringify(movie));
+    window.localStorage.setItem( key, JSON.stringify(movie));
   }
 
   return (
     <div className="CardComponent">
       <Card className={classes.card}>
-        {video ? 
-          
-          <CardMedia
-            className={classes.cardMedia}
-            image={poster || 'https://source.unsplash.com/random'}
-            title={title}
-          />
-        :
-          <CardMedia
-            className={classes.cardMedia}
-            image={poster || 'https://source.unsplash.com/random'}
-            title={title}
-          />
-        }
+        <CardMedia
+          className={classes.cardMedia}
+          image={poster || 'https://source.unsplash.com/random'}
+          title={title}
+        />
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
             <Link component={renderLink} color="inherit" underline="none" className="nav-link" onClick={() => handleClick()}>
