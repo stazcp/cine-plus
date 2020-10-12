@@ -5,12 +5,10 @@
 // 4.fix eslint bug with useEffect
 
 import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
+import {Typography, Box, Container} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import MovieCard from '../components/MovieCard'
 import ColumnHeader from '../components/ColumnHeader';
-import Box from '@material-ui/core/Box';
 import SearchBar from 'material-ui-search-bar';
 import Image from '../img/deadpool.jpg';
 import { useStylesSm, useStylesTrailer } from '../styles/CardStyles';

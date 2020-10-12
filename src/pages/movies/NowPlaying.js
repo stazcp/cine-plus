@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
+import { Grid, Typography, Box, Container } from '@material-ui/core';
 import MovieCard from '../../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStylesMd as cardStyle } from '../../styles/CardStyles';
-import Container from '@material-ui/core/Container';
 import Accordion from '../../components/Accordion';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { getConfig } from '../../utils/movieDB'
 
 const useStyles = makeStyles((theme) => ({

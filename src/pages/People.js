@@ -2,13 +2,10 @@
 // 1. Add links to person page
 
 import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
+import {Grid, Typography, Box, Container} from '@material-ui/core';
 import MovieCard from '../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStylesPerson } from '../styles/CardStyles';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { get, getConfig } from '../utils/movieDB';
 
 const useStyles = makeStyles((theme) => ({

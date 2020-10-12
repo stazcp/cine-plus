@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
 import MovieCard from '../../components/MovieCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStylesMd as cardStyle } from '../../styles/CardStyles';
-import Container from '@material-ui/core/Container';
+import {Container, Typography, Box, Grid} from '@material-ui/core';
 import Accordion from '../../components/Accordion';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { getConfig } from '../../utils/movieDB'
+import { get, getConfig } from '../../utils/movieDB'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
@@ -51,8 +48,15 @@ export default (props) => {
 
   const getMovies = () => {
     const jsonMovies = window.localStorage.getItem('top_rated_tv');
-    const movies = JSON.parse(jsonMovies);
-    setMovies(movies);
+    if (jsonMovies) {
+      let data = JSON.parse(jsonMovies);
+      setMovies(data);
+    } else {
+      get('tv', 'top_rated').then((data) => {
+        setMovies(data);
+        window.localStorage.setItem('top_rated_tv', JSON.stringify(data));
+      });
+    }
   };
 
   //grid item xs(4) the only way to not get cards distorted?
