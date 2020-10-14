@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App/App';
-import * as serviceWorker from './serviceWorker';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import React from "react"
+import ReactDOM from "react-dom"
+import "./index.css"
+import App from "./components/App/App"
+import * as serviceWorker from "./serviceWorker"
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"
 
 // put in utils -> theme
 const theme = createMuiTheme({
   typography: {
-    fontFamily: ['Source Sans Pro','Arial','sans-serif'].join(','),
-    fontWeightBold: '700',
-    fontWeightRegular: '400',
+    fontFamily: ["Source Sans Pro", "Arial", "sans-serif"].join(","),
+    fontWeightBold: "700",
+    fontWeightRegular: "400",
   },
-});
+})
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,10 +20,10 @@ ReactDOM.render(
       <App />
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
-);
+  document.getElementById("root")
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.unregister()

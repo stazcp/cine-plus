@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+// @flow
+import React, { useState, useEffect } from "react"
 import {
   Card,
   CardActionArea,
@@ -8,83 +9,108 @@ import {
   Grid,
   Box,
   Typography,
-} from '@material-ui/core';
-import { useParams, useLocation } from 'react-router-dom';
-import { useStylesDisplay } from '../styles/CardStyles' 
-import Image from '../img/deadpool.jpg';
-import { get, getConfig } from '../utils/movieDB';
+} from "@material-ui/core"
+import { useParams, useLocation } from "react-router-dom"
+import { useStylesDisplay } from "../styles/CardStyles"
+import Image from "../img/deadpool.jpg"
+import { get, getConfig } from "../utils/movieDB"
+import DisplayCard from "../components/DisplayCard"
+import { useStylesSm } from "../styles/CardStyles"
 
 const styles = {
   box: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
-    color: 'white',
-    width: '100%'
+    color: "white",
+    width: "100%",
   },
   headerSection: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    flexDirection: 'column',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flexDirection: "column",
     paddingLeft: 80,
-    paddingRight: 40
+    paddingRight: 40,
   },
   h1: {
     fontSize: 35.2,
     fontWeight: 700,
   },
   cardColor: {
-    backgroundColor: '#032541',
+    backgroundColor: "#032541",
   },
   topBar: {
     height: 46,
   },
   bot: {
-    height: 200
+    height: 200,
   },
   h2: {
     fontSize: 20.8,
     fontWeight: 600,
-  }
-};
+  },
+}
 
-export default (props) => {
-  const [poster, setPoster] = useState('https://source.unsplash.com/random')
-  let { type, id } = useParams();
-  let movie = JSON.parse(window.localStorage.getItem(id));
-  const classes = useStylesDisplay();
-  const location = useLocation();
-  let posterSize = 'w342';
-  let date = movie.release_date || movie.first_air_date;
-  let title = movie.original_title || movie.name || movie.title;
+export default function Display(): React$Element<React$FragmentType> {
+  const [poster, setPoster] = useState("https://source.unsplash.com/random")
+  const [cast, setCast] = useState()
+  let { type, id } = useParams()
+  let movie = JSON.parse(window.localStorage.getItem(id))
+  const classes = useStylesDisplay()
+  const location = useLocation()
+  let basePosterUrl
+  let posterSize = "w342"
+  let profileSize = "original"
+  let date = movie.release_date || movie.first_air_date
+  let title = movie.original_title || movie.name || movie.title
 
   useEffect(() => {
-    getPosterUrl();
+    getPosterUrl()
+    getCast()
   }, [])
 
-  //get posterUrl
   const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem('poster_url');
-    let basePosterUrl;
+    let posterUrl = window.localStorage.getItem("poster_url")
     if (posterUrl) {
       basePosterUrl = JSON.parse(posterUrl)
-    } else { 
-      getConfig().then((data) =>
-        basePosterUrl = data.images.secure_base_url || data.images.base_url
-      );
-    }   
-    setPoster(`${basePosterUrl}${posterSize}${movie.poster_path}`);
+    } else {
+      getConfig().then((data) => {
+        if (data) {
+          basePosterUrl = data.images.secure_base_url || data.images.base_url
+        }
+      })
+    }
+    setPoster(`${basePosterUrl}${posterSize}${movie.poster_path}`)
   }
 
-  //gotta know if tv or movie to get credits
-
   const getCast = () => {
-    get(type,id,'credits').then( data => {
-      console.log(data)
+    get(type, id, "credits").then((data) => {
+      setCast(data)
     })
   }
 
-  console.log(movie);
+  // note to create a Person page
+  const renderCast = () => {
+    if (cast) {
+      return cast.map((actor) => {
+        console.log(actor)
+        let { character, name, profile_path, id } = actor
+        let route = `/person/${id}`
+        return (
+          <DisplayCard
+            key={id}
+            to={route}
+            useStyles={useStylesSm}
+            title={name}
+            date={character}
+            poster={`${basePosterUrl}${profileSize}${profile_path}`}
+            movie={actor}
+          />
+        )
+      })
+    }
+    return <h5>Cast Loading...</h5>
+  }
 
   return (
     <>
@@ -94,7 +120,11 @@ export default (props) => {
           <Grid item xs={3}>
             <Card className={classes.root} style={styles.cardColor}>
               <CardActionArea>
-                <CardMedia className={classes.media} image={poster} title="Contemplative Reptile" />
+                <CardMedia
+                  className={classes.media}
+                  image={poster}
+                  title={title}
+                />
               </CardActionArea>
               <CardActions>
                 <Button size="small" color="primary">
@@ -116,15 +146,13 @@ export default (props) => {
             <br />
             <Typography> {movie.overview} </Typography>
             <br />
-            <Box display="flex">
-              <Typography>Actor1</Typography>
-              <Typography>Actor2</Typography>
-              <Typography>Actor3</Typography>
-            </Box>
+            <Box display="flex">{/* render directors */}</Box>
           </Grid>
         </Grid>
       </Box>
-      <Box style={styles.bot}></Box>
+      <Box style={styles.bot} flexDirection="row" display="flex">
+        {renderCast()}
+      </Box>
     </>
-  );
+  )
 }

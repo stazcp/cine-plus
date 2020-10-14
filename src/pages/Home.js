@@ -4,16 +4,17 @@
 // 3. Figure out what am I going to show
 // 4.fix eslint bug with useEffect
 
-import React, { useState, useEffect } from 'react';
-import {Typography, Box, Container} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect, useContext } from 'react'
+import { Typography, Box, Container } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import DisplayCard from '../components/DisplayCard'
-import ColumnHeader from '../components/ColumnHeader';
-import SearchBar from 'material-ui-search-bar';
-import Image from '../img/deadpool.jpg';
-import { useStylesSm, useStylesTrailer } from '../styles/CardStyles';
-import { getConfig, get, getTrailer } from '../utils/movieDB';
-
+import ColumnHeader from '../components/ColumnHeader'
+import SearchBar from 'material-ui-search-bar'
+import Image from '../img/deadpool.jpg'
+import TrailerModal from '../components/TrailerModal'
+import { useStylesSm, useStylesTrailer } from '../styles/CardStyles'
+import { getConfig, get, getTrailer } from '../utils/movieDB'
+import { MovieContext } from '../components/MovieContext'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -51,107 +52,104 @@ const useStyles = makeStyles((theme) => ({
   trailer: {
     width: '300px',
     height: '168.53px',
-    display: 'flex'
-  }
-}));
+    display: 'flex',
+  },
+}))
 
-const search = () => {
+const search = () => {}
 
-}
-
-const doNothing = ()=>{
-
-}
+const doNothing = () => {}
 
 export default (props) => {
-  const classes = useStyles();
-  const [popular, setPopular] = useState({ movies: [], conf: ['popular'], type: 'movie' });
-  const [topRated, setTopRated] = useState({ movies: [], conf: ['top_rated'], type: 'movie'});
-  const [trending, setTrending] = useState({ movies: [], conf: ['trending', 'all'], type: 'mixed' });
-  const [trailers, setTrailers] = useState({ movies: [] });
-  const [nowPlaying, setNowPlaying] = useState({ movies: [], type: 'movie' });
-  const [basePosterUrl, setBasePosterUrl] = useState(null);
-  let posterSize = 'w300';
+  const classes = useStyles()
+  const { popular, setPopular } = useContext(MovieContext)
+  const { topRated, setTopRated } = useContext(MovieContext)
+  const { trending, setTrending } = useContext(MovieContext)
+  const { trailers, setTrailers } = useContext(MovieContext)
+  const { nowPlaying, setNowPlaying } = useContext(MovieContext)
+  const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  let posterSize = 'w300'
 
-  //will upgrade all gets -> good way to manage states?
   useEffect(() => {
-    getFrontPage();
-  }, []);
+    getFrontPage()
+  }, [])
 
   const getFrontPage = () => {
-    getPosterUrl();
-    getPopular(popular.type);
-    getTopRated(topRated.type);
-    getTrending('day');
-    getNowPlaying();
-  };
+    getPosterUrl()
+    getPopular(popular.type)
+    getTopRated(topRated.type)
+    getTrending('day')
+    getNowPlaying()
+  }
 
   const getPosterUrl = () => {
     getConfig().then((data) => {
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url);
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       window.localStorage.setItem(
         'poster_url',
         JSON.stringify(data.images.secure_base_url || data.images.base_url)
-      );
-    });
-  };
+      )
+    })
+  }
 
   const getNowPlaying = async () => {
     get('movie', 'now_playing').then((data) => {
-      setTrailers({ movies: data });
-      setNowPlaying({ movies: data });
-      window.localStorage.setItem('now_playing_movie', JSON.stringify(data));
-    });
-
-  };
+      setTrailers({ movies: data })
+      setNowPlaying({ movies: data })
+      window.localStorage.setItem('now_playing_movie', JSON.stringify(data))
+    })
+  }
 
   const getTopRated = (option) => {
     get(option, topRated.conf).then((data) => {
-      setTopRated({ movies: data, conf: topRated.conf, type: option });
-      window.localStorage.setItem(`top_rated_${option}`, JSON.stringify(data));
-    });
-  };
+      setTopRated({ movies: data, conf: topRated.conf, type: option })
+      window.localStorage.setItem(`top_rated_${option}`, JSON.stringify(data))
+    })
+  }
 
   const getPopular = (option) => {
     get(option, popular.conf).then((data) => {
-      setPopular({ movies: data, conf: popular.conf, type: option});
-      window.localStorage.setItem(`popular_${option}`, JSON.stringify(data));
-    });
-  };
+      setPopular({ movies: data, conf: popular.conf, type: option })
+      window.localStorage.setItem(`popular_${option}`, JSON.stringify(data))
+    })
+  }
 
   const getTrending = (option) => {
     get(...trending.conf, option).then((data) => {
-      setTrending({ movies: data, conf: trending.conf });
-      window.localStorage.setItem(`trending_${option}`, JSON.stringify(data));
-    });
-  };
+      setTrending({ movies: data, conf: trending.conf })
+      window.localStorage.setItem(`trending_${option}`, JSON.stringify(data))
+    })
+  }
 
+  // will render a pop-up
   const renderTrailers = (movies) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        const {id, original_title, first_air_date, poster_path, name, release_date} = movie;
+        const { id, original_title, first_air_date, poster_path, name, release_date } = movie
         return (
           <DisplayCard
             key={id}
-            href={'http://localhost:3000/'}
             useStyles={useStylesTrailer}
             title={`${original_title} Trailer` || `${name} Trailer`}
             date={release_date || first_air_date}
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
+            to={'/'}
+            movie={movie}
+            modal={<TrailerModal />}
           />
-        );
-      });
+        )
+      })
     }
-  };
+  }
 
   // pass down data to render on display page
-  const renderCards = (movies,type) => {
+  const renderCards = (movies, type) => {
     if (!Array.isArray(movies) && movies.length < 1) {
-      return <p>No movies found</p>;
+      return <p>No movies found</p>
     }
     return movies.map((movie) => {
-      let { id, original_title, name, release_date, first_air_date, poster_path } = movie;
-      let route = `/display/${type}/${id}`;
+      let { id, original_title, name, release_date, first_air_date, poster_path } = movie
+      let route = `/display/${type}/${id}`
       return (
         <DisplayCard
           key={id}
@@ -162,9 +160,9 @@ export default (props) => {
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
           movie={movie}
         />
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <React.Fragment>
@@ -207,7 +205,7 @@ export default (props) => {
             ]}
             setOption={getPopular}
           />
-          <Box className={classes.scroller}>{renderCards(popular.movies,popular.type)}</Box>
+          <Box className={classes.scroller}>{renderCards(popular.movies, popular.type)}</Box>
           <ColumnHeader
             header="Top Rated"
             options={[
@@ -217,7 +215,7 @@ export default (props) => {
             setOption={getTopRated}
           />
           <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{renderCards(topRated.movies,topRated.type)}</Box>
+            <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
           </Box>
           <ColumnHeader
             header="Latest Trailers"
@@ -241,9 +239,9 @@ export default (props) => {
             ]}
             setOption={getTrending}
           />
-          <Box className={classes.scroller}>{renderCards(trending.movies,trending.type)}</Box>
+          <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
         </main>
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
