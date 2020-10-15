@@ -20,7 +20,8 @@ export const MovieProvider = (props) => {
   })
   const [nowPlaying, setNowPlaying] = useState({ movies: [], type: 'movie' })
   const [trailers, setTrailers] = useState({ movies: [] })
-  const [basePosterUrl, setBasePosterUrl] = useState(null)
+  const [basePosterUrl, setBasePosterUrl] = useState()
+  const [display, setDisplay] = useState()
   return (
     <MovieContext.Provider
       value={{
@@ -36,6 +37,8 @@ export const MovieProvider = (props) => {
         setNowPlaying,
         basePosterUrl,
         setBasePosterUrl,
+        display,
+        setDisplay,
       }}
     >
       {props.children}

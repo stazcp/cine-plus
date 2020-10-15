@@ -62,12 +62,20 @@ const doNothing = () => {}
 
 export default (props) => {
   const classes = useStyles()
-  const { popular, setPopular } = useContext(MovieContext)
-  const { topRated, setTopRated } = useContext(MovieContext)
-  const { trending, setTrending } = useContext(MovieContext)
-  const { trailers, setTrailers } = useContext(MovieContext)
-  const { nowPlaying, setNowPlaying } = useContext(MovieContext)
-  const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  const {
+    popular,
+    setPopular,
+    topRated,
+    setTopRated,
+    trending,
+    setTrending,
+    trailers,
+    setTrailers,
+    nowPlaying,
+    setNowPlaying,
+    basePosterUrl,
+    setBasePosterUrl,
+  } = useContext(MovieContext)
   let posterSize = 'w300'
 
   useEffect(() => {

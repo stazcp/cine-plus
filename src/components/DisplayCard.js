@@ -4,48 +4,41 @@
 //3. box size, margin, and shadows
 // random image link: https://source.unsplash.com/random
 
-import React from "react"
-import Button from "@material-ui/core/Button"
-import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
-import CardContent from "@material-ui/core/CardContent"
-import CardMedia from "@material-ui/core/CardMedia"
-import Typography from "@material-ui/core/Typography"
+import React, { useContext } from 'react'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
 // import Link from '@material-ui/core/Link';
-import ReactPlayer from "react-player"
-import { Link } from "react-router-dom"
+import ReactPlayer from 'react-player'
+import { Link } from 'react-router-dom'
+import { MovieContext } from './MovieContext'
 
-export default function MovieCard({
-  date,
-  title,
-  poster,
-  useStyles,
-  to,
-  movie,
-}) {
+export default function MovieCard({ date, title, poster, useStyles, to, movie }) {
   const classes = useStyles()
+  const { setDisplay } = useContext(MovieContext)
 
   const styles = {
     link: {
-      color: "inherit",
-      textDecoration: "none",
-      fontWeight: "700",
-      fontSize: "16px",
-      lineHeight: "1",
+      color: 'inherit',
+      textDecoration: 'none',
+      fontWeight: '700',
+      fontSize: '16px',
+      lineHeight: '1',
     },
   }
 
   //stores the clicked movie to present it in Display page.
-  const handleClick = () => {
-    window.localStorage.setItem(movie.id, JSON.stringify(movie))
-  }
+  const handleClick = () => setDisplay(movie)
 
   return (
     <div className="CardComponent">
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}
-          image={poster || "https://source.unsplash.com/random"}
+          image={poster || 'https://source.unsplash.com/random'}
           title={title}
         />
         <CardContent className={classes.cardContent}>
@@ -54,11 +47,7 @@ export default function MovieCard({
               {title}
             </Link>
           </Typography>
-          <Typography
-            variant="caption"
-            component="p"
-            className={classes.caption}
-          >
+          <Typography variant="caption" component="p" className={classes.caption}>
             {date}
           </Typography>
         </CardContent>

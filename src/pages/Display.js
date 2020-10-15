@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Card,
   CardActionArea,
@@ -9,26 +9,27 @@ import {
   Grid,
   Box,
   Typography,
-} from "@material-ui/core"
-import { useParams, useLocation } from "react-router-dom"
-import { useStylesDisplay } from "../styles/CardStyles"
-import Image from "../img/deadpool.jpg"
-import { get, getConfig } from "../utils/movieDB"
-import DisplayCard from "../components/DisplayCard"
-import { useStylesSm } from "../styles/CardStyles"
+} from '@material-ui/core'
+import { useParams, useLocation } from 'react-router-dom'
+import { useStylesDisplay } from '../styles/CardStyles'
+import Image from '../img/deadpool.jpg'
+import { get, getConfig } from '../utils/movieDB'
+import DisplayCard from '../components/DisplayCard'
+import { useStylesSm } from '../styles/CardStyles'
+import { MovieContext } from '../components/MovieContext'
 
 const styles = {
   box: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
-    color: "white",
-    width: "100%",
+    color: 'white',
+    width: '100%',
   },
   headerSection: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    flexDirection: "column",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
     paddingLeft: 80,
     paddingRight: 40,
   },
@@ -37,7 +38,7 @@ const styles = {
     fontWeight: 700,
   },
   cardColor: {
-    backgroundColor: "#032541",
+    backgroundColor: '#032541',
   },
   topBar: {
     height: 46,
@@ -52,39 +53,31 @@ const styles = {
 }
 
 export default function Display(): React$Element<React$FragmentType> {
-  const [poster, setPoster] = useState("https://source.unsplash.com/random")
+  const { display, basePosterUrl } = useContext(MovieContext)
+  console.log(display)
+  // if page is refreshed display dissapears
   const [cast, setCast] = useState()
   let { type, id } = useParams()
-  let movie = JSON.parse(window.localStorage.getItem(id))
   const classes = useStylesDisplay()
-  const location = useLocation()
-  let basePosterUrl
-  let posterSize = "w342"
-  let profileSize = "original"
-  let date = movie.release_date || movie.first_air_date
-  let title = movie.original_title || movie.name || movie.title
+  let posterSize = 'w342'
+  const {
+    release_date,
+    first_air_date,
+    original_title,
+    name,
+    title,
+    poster_path,
+    overview,
+  } = display
+  let date = release_date || first_air_date
+  let movieTitle = original_title || name || title
 
   useEffect(() => {
-    getPosterUrl()
     getCast()
   }, [])
 
-  const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem("poster_url")
-    if (posterUrl) {
-      basePosterUrl = JSON.parse(posterUrl)
-    } else {
-      getConfig().then((data) => {
-        if (data) {
-          basePosterUrl = data.images.secure_base_url || data.images.base_url
-        }
-      })
-    }
-    setPoster(`${basePosterUrl}${posterSize}${movie.poster_path}`)
-  }
-
   const getCast = () => {
-    get(type, id, "credits").then((data) => {
+    get(type, id, 'credits').then((data) => {
       setCast(data)
     })
   }
@@ -93,7 +86,6 @@ export default function Display(): React$Element<React$FragmentType> {
   const renderCast = () => {
     if (cast) {
       return cast.map((actor) => {
-        console.log(actor)
         let { character, name, profile_path, id } = actor
         let route = `/person/${id}`
         return (
@@ -103,7 +95,7 @@ export default function Display(): React$Element<React$FragmentType> {
             useStyles={useStylesSm}
             title={name}
             date={character}
-            poster={`${basePosterUrl}${profileSize}${profile_path}`}
+            poster={`${basePosterUrl}${classes.profileSize}${profile_path}`}
             movie={actor}
           />
         )
@@ -122,7 +114,7 @@ export default function Display(): React$Element<React$FragmentType> {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={poster}
+                  image={`${basePosterUrl}${posterSize}${poster_path}`}
                   title={title}
                 />
               </CardActionArea>
@@ -144,7 +136,7 @@ export default function Display(): React$Element<React$FragmentType> {
               Overview
             </Typography>
             <br />
-            <Typography> {movie.overview} </Typography>
+            <Typography> {overview} </Typography>
             <br />
             <Box display="flex">{/* render directors */}</Box>
           </Grid>
