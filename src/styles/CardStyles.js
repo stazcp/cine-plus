@@ -95,6 +95,7 @@ export const useStylesPerson = makeStyles((theme) => ({
     fontWeight: '400',
     color: 'rgba(0,0,0,0.6)',
   },
+  posterSize: 'w235_and_h235_face',
 }))
 
 export const useStylesDisplay = makeStyles((theme) => ({
@@ -106,5 +107,4 @@ export const useStylesDisplay = makeStyles((theme) => ({
   media: {
     height: 450,
   },
-  profileSize: 'original',
 }))

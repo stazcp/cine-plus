@@ -25,6 +25,7 @@ export const getConfig = async (): Promise<{
 //if flow complains
 //$FlowFixMe
 
+// custom flow setting
 // type getT = {
 //   results?: Array<any>,
 //   cast?: Array<any>

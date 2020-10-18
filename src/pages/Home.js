@@ -56,27 +56,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+// perform a search, to be enineered soon
 const search = () => {}
-
 const doNothing = () => {}
 
-export default (props) => {
-  const classes = useStyles()
-  const {
-    popular,
-    setPopular,
-    topRated,
-    setTopRated,
-    trending,
-    setTrending,
-    trailers,
-    setTrailers,
-    nowPlaying,
-    setNowPlaying,
-    basePosterUrl,
-    setBasePosterUrl,
-  } = useContext(MovieContext)
-  let posterSize = 'w300'
+export default function Home(props) {
+  const classes = useStyles(),
+    {
+      popular,
+      setPopular,
+      topRated,
+      setTopRated,
+      trending,
+      setTrending,
+      trailers,
+      setTrailers,
+      nowPlaying,
+      setNowPlaying,
+      basePosterUrl,
+      setBasePosterUrl,
+    } = useContext(MovieContext),
+    posterSize = 'w300'
 
   useEffect(() => {
     getFrontPage()

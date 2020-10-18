@@ -1,4 +1,6 @@
 // @flow
+// persist page data with window storage
+
 import React, { useState, useEffect, useContext } from 'react'
 import {
   Card,
@@ -44,7 +46,11 @@ const styles = {
     height: 46,
   },
   bot: {
-    height: 200,
+    paddingTop: 20,
+    paddingBottom: 30,
+    display: 'flex',
+    overflowX: 'auto',
+    alignItems: 'flexStart',
   },
   h2: {
     fontSize: 20.8,
@@ -54,12 +60,10 @@ const styles = {
 
 export default function Display(): React$Element<React$FragmentType> {
   const { display, basePosterUrl } = useContext(MovieContext)
-  console.log(display)
   // if page is refreshed display dissapears
   const [cast, setCast] = useState()
   let { type, id } = useParams()
   const classes = useStylesDisplay()
-  let posterSize = 'w342'
   const {
     release_date,
     first_air_date,
@@ -83,6 +87,7 @@ export default function Display(): React$Element<React$FragmentType> {
   }
 
   // note to create a Person page
+  // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast) {
       return cast.map((actor) => {
@@ -95,7 +100,11 @@ export default function Display(): React$Element<React$FragmentType> {
             useStyles={useStylesSm}
             title={name}
             date={character}
-            poster={`${basePosterUrl}${classes.profileSize}${profile_path}`}
+            poster={
+              profile_path
+                ? `${basePosterUrl}w138_and_h175_face${profile_path}`
+                : 'https://source.unsplash.com/random'
+            }
             movie={actor}
           />
         )
@@ -114,7 +123,7 @@ export default function Display(): React$Element<React$FragmentType> {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={`${basePosterUrl}${posterSize}${poster_path}`}
+                  image={`${basePosterUrl}w342${poster_path}`}
                   title={title}
                 />
               </CardActionArea>
