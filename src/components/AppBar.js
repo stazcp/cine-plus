@@ -5,13 +5,14 @@
 // 4. Menu's are on top of mobile menu and not under
 // 5. Build pop-over's for + and Lang
 
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Toolbar, Typography, Menu, MenuItem, Badge, IconButton } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import AddIcon from '@material-ui/icons/Add'
 import LanguageIcon from '@material-ui/icons/Language'
 import { Link } from 'react-router-dom'
+import { FirebaseContext } from '../Firebase/FirebaseContext'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -88,6 +89,14 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+  // returns user or false -> user.displayName = name
+  const { user } = useContext(FirebaseContext)
+
+  // if (user) {
+  //   console.log(user.displayName)
+  // } else {
+  //   console.log('no user')
+  // }
 
   const handleOpenMenu = (e, anchor) => {
     setAnchorEl({ ...MENU_ANCHORS, [anchor]: e.currentTarget })
@@ -280,7 +289,9 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link style={styles.link}>Movies</Link>
+      <Link to="" style={styles.link}>
+        Movies
+      </Link>
     </Typography>
   )
 
@@ -295,7 +306,9 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link style={styles.link}>TV Shows</Link>
+      <Link to="" style={styles.link}>
+        TV Shows
+      </Link>
     </Typography>
   )
 
@@ -312,7 +325,9 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link style={styles.link}>People</Link>
+      <Link to="" style={styles.link}>
+        People
+      </Link>
     </Typography>
   )
 
@@ -329,7 +344,9 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link style={styles.link}>More</Link>
+      <Link to="" style={styles.link}>
+        More
+      </Link>
     </Typography>
   )
 
@@ -409,7 +426,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static" className={classes.AppBar}>
         <Toolbar>
           <Typography className={classes.h2Link} variant="h2" noWrap>
-            <Link href="/" style={styles.link}>
+            <Link to="/" style={styles.link}>
               Cine+
             </Link>
           </Typography>

@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore'
 
@@ -12,10 +12,16 @@ firebase.initializeApp({
   appId: '1:72873491968:web:c15487bc930230b0bee2e5',
 })
 
+// export const user = firebase.auth().currentUser
+
 const db = firebase.firestore()
 export const FirebaseContext = createContext(db)
 const provider = new firebase.auth.GoogleAuthProvider()
 // composition
 export function FirebaseProvider({ children }) {
-  return <FirebaseContext.Provider value={{ db, provider }}>{children}</FirebaseContext.Provider>
+  firebase.auth().onAuthStateChanged((user) => setUser(user))
+  const [user, setUser] = useState()
+  return (
+    <FirebaseContext.Provider value={{ db, provider, user }}>{children}</FirebaseContext.Provider>
+  )
 }
