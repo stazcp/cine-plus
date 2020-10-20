@@ -2,8 +2,9 @@
 // 1. Menu's open on hover
 // 2. Menu's close on mouseOut
 // 3. Menu's close when reaching destination
-// 4. Menu's are on top of mobile menu and not under
+// 4. Mobile version
 // 5. Build pop-over's for + and Lang
+// 6. icons go right on account switch
 
 import React, { useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,10 +14,11 @@ import AddIcon from '@material-ui/icons/Add'
 import LanguageIcon from '@material-ui/icons/Language'
 import { Link } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 3,
+    flexGrow: 2,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -29,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: 'flex',
+    alignItems: 'flex-start',
   },
   sectionMobile: {
     display: 'flex',
@@ -75,6 +78,9 @@ const styles = {
     color: 'inherit',
     textDecoration: 'none',
   },
+  // account: {
+  //   paddingTop: 10,
+  // },
 }
 
 export default function PrimarySearchAppBar() {
@@ -84,7 +90,6 @@ export default function PrimarySearchAppBar() {
     people: null,
     tvShows: null,
     more: null,
-    profile: null,
   }
   const [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
@@ -247,37 +252,6 @@ export default function PrimarySearchAppBar() {
     )
   }
 
-  const accountMenuId = 'account-menu'
-  const renderMenu = () => {
-    const items = [
-      { title: 'Login', to: '/login' },
-      { title: 'Join Cine+', to: '/join' },
-    ]
-    return (
-      <Menu
-        anchorEl={anchorEl.account}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        id={accountMenuId}
-        keepMounted
-        open={Boolean(anchorEl.account)}
-        onClose={handleMenuClose}
-      >
-        {items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.routingLink}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    )
-  }
-
   const renderMovies = (
     <Typography
       edge="end"
@@ -319,8 +293,6 @@ export default function PrimarySearchAppBar() {
       aria-controls={peopleMenuId}
       aria-haspopup="true"
       onClick={(e) => handleOpenMenu(e, 'people')}
-      // onMouseOver={handlePeopleMenuOpen}
-      // onMouseLeave={handleMenuClose} crashes
       color="inherit"
       className={classes.h5Link}
       variant="h5"
@@ -338,8 +310,6 @@ export default function PrimarySearchAppBar() {
       aria-controls={moreMenuId}
       aria-haspopup="true"
       onClick={(e) => handleOpenMenu(e, 'more')}
-      // onMouseOver={handleMoreMenuOpen}
-      // onMouseLeave={handleMenuClose} crashes
       color="inherit"
       className={classes.h5Link}
       variant="h5"
@@ -351,15 +321,7 @@ export default function PrimarySearchAppBar() {
   )
 
   const renderLogin = (
-    <Typography
-      edge="end"
-      aria-label="people menu"
-      aria-controls={peopleMenuId}
-      aria-haspopup="true"
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
+    <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5">
       <Link to="/login" style={styles.link}>
         Login
       </Link>
@@ -367,59 +329,55 @@ export default function PrimarySearchAppBar() {
   )
 
   const renderJoin = (
-    <Typography
-      edge="end"
-      aria-label="people menu"
-      aria-controls={peopleMenuId}
-      aria-haspopup="true"
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
+    <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5">
       <Link to="/join" style={styles.link}>
         Join Cine+
       </Link>
     </Typography>
   )
 
+  const renderAccount = (
+    <IconButton aria-label="show" color="inherit">
+      <Link to="/account" style={styles.link}>
+        <AccountCircleIcon />
+      </Link>
+    </IconButton>
+  )
+
   const renderLanguages = (
     <IconButton aria-label="show" color="inherit">
-      <Badge color="secondary">
-        {/* languages? */}
-        <LanguageIcon />
-      </Badge>
+      {/* languages? */}
+      <LanguageIcon />
     </IconButton>
   )
 
   const renderAdd = (
-    <IconButton aria-label="show" color="inherit">
-      <Badge color="secondary">
-        {/* popup goes here */}
-        <AddIcon />
-      </Badge>
+    <IconButton aria-label="show" color="inherit" style={styles.account}>
+      {/* popup goes here */}
+      <AddIcon />
     </IconButton>
   )
 
   // menus show under mobile menu?
-  const mobileMenuId = 'mobile-menu'
-  const renderMobileMenu = () => {
-    const items = [renderMovies, renderTvShows, renderPeople, renderMore]
-    return (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-      >
-        {items.map((item, i) => (
-          <MenuItem key={i}>{item}</MenuItem>
-        ))}
-      </Menu>
-    )
-  }
+  // const mobileMenuId = 'mobile-menu'
+  // const renderMobileMenu = () => {
+  //   const items = [renderMovies, renderTvShows, renderPeople, renderMore]
+  //   return (
+  //     <Menu
+  //       anchorEl={mobileMoreAnchorEl}
+  //       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+  //       id={mobileMenuId}
+  //       keepMounted
+  //       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+  //       open={isMobileMenuOpen}
+  //       onClose={handleMobileMenuClose}
+  //     >
+  //       {items.map((item, i) => (
+  //         <MenuItem key={i}>{item}</MenuItem>
+  //       ))}
+  //     </Menu>
+  //   )
+  // }
 
   return (
     <div className={classes.grow}>
@@ -440,13 +398,13 @@ export default function PrimarySearchAppBar() {
           <div className={classes.sectionDesktop}>
             {renderAdd}
             {renderLanguages}
+            {user && renderAccount}
           </div>
           <div className={classes.rightMenu}>
-            {renderLogin}
-            {renderJoin}
+            {user ? user && user.displayName : renderLogin}
+            {!user && renderJoin}
           </div>
-
-          <div className={classes.sectionMobile}>
+          {/* <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
@@ -456,15 +414,14 @@ export default function PrimarySearchAppBar() {
             >
               <MoreIcon />
             </IconButton>
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
       {renderPeopleMenu()}
       {renderMoreMenu()}
       {renderMoviesMenu()}
       {renderTVShowsMenu()}
-      {renderMobileMenu()}
-      {renderMenu()}
+      {/* {renderMobileMenu()} */}
     </div>
   )
 }

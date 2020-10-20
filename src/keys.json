@@ -1,3 +1,11 @@
 {
-  "api_key": "6d46d44f7f8f21704305048480d2f128"
+  "api_key": "6d46d44f7f8f21704305048480d2f128",
+  "firebase_api_key" : "AIzaSyDdS5fvH8ExrjqF8DCmIbNuKgTdRWg_4zs",
+  "authDomain": "cine-plus-6090b.firebaseapp.com",
+  "databaseURL": "https://cine-plus-6090b.firebaseio.com",
+  "projectId": "cine-plus-6090b",
+  "storageBucket": "cine-plus-6090b.appspot.com",
+  "messagingSenderId": "72873491968",
+  "firebase_api_id": "1:72873491968:web:c15487bc930230b0bee2e5"
+
 }

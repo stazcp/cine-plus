@@ -16,9 +16,9 @@ import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
 
-export default function MovieCard({ date, title, poster, useStyles, to, movie }) {
+export default function MovieCard({ date, title, poster, useStyles, to, movie, person }) {
   const classes = useStyles()
-  const { setDisplay } = useContext(MovieContext)
+  const { setDisplay, setPerson } = useContext(MovieContext)
 
   const styles = {
     link: {
@@ -31,7 +31,10 @@ export default function MovieCard({ date, title, poster, useStyles, to, movie })
   }
 
   //stores the clicked movie to present it in Display page.
-  const handleClick = () => setDisplay(movie)
+  const handleClick = () => {
+    movie && setDisplay(movie)
+    person && setPerson(person)
+  }
 
   return (
     <div className="CardComponent">

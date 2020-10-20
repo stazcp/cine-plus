@@ -23,6 +23,8 @@ import { FirebaseProvider } from '../../Firebase/FirebaseContext'
 import FirebaseTester from '../FirebaseTester'
 import Login from '../../pages/account/Login'
 import Join from '../../pages/account/Join'
+import Account from '../../pages/account/Account'
+import Person from '../../pages/Person'
 
 // lowercase routes
 function App() {
@@ -82,8 +84,14 @@ function App() {
             <Route path="/join">
               <Join />
             </Route>
+            <Route path="/account">
+              <Account />
+            </Route>
             <Route path="/display/:type/:id">
               <Display />
+            </Route>
+            <Route path="/person/:id">
+              <Person />
             </Route>
             {/* main */}
             <Route path="/">

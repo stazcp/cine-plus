@@ -1,12 +1,13 @@
 // improvements needed:
 // 1. Add links to person page
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
 import DisplayCard from '../components/DisplayCard'
 import { makeStyles } from '@material-ui/core/styles'
 import { useStylesPerson } from '../styles/CardStyles'
 import { get, getConfig } from '../utils/movieDB'
+import { MovieContext } from '../components/MovieContext'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
@@ -29,23 +30,22 @@ const useStyles = makeStyles((theme) => ({
 export default (props) => {
   const classes = useStyles()
   const [people, setPeople] = useState()
-  const [basePosterUrl, setBasePosterUrl] = useState()
+  const { basePosterUrl } = useContext(MovieContext)
 
   useEffect(() => {
-    getPosterUrl()
     getPeople()
   }, [])
 
-  const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem('poster_url')
-    if (posterUrl) {
-      setBasePosterUrl(JSON.parse(posterUrl))
-    } else {
-      getConfig().then((data) =>
-        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      )
-    }
-  }
+  // const getPosterUrl = () => {
+  //   let posterUrl = window.localStorage.getItem('poster_url')
+  //   if (posterUrl) {
+  //     setBasePosterUrl(JSON.parse(posterUrl))
+  //   } else {
+  //     getConfig().then((data) =>
+  //       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+  //     )
+  //   }
+  // }
 
   const getPeople = () => {
     get('person', 'popular').then((data) => {
@@ -62,11 +62,12 @@ export default (props) => {
         return (
           <Grid item key={person.id} style={{ padding: 5 }} xs>
             <DisplayCard
-              to="/"
+              to={`/person/${person.id}`}
               useStyles={useStylesPerson}
               title={name}
               date={title}
-              poster={`${basePosterUrl}${classes.posterSize}${profile_path}`}
+              poster={`${basePosterUrl}w235_and_h235_face${profile_path}`}
+              person={person}
             />
           </Grid>
         )

@@ -1,15 +1,27 @@
 import React, { createContext, useState } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore'
+import keys from '../keys.json'
 
+const {
+  firebase_api_key,
+  authDomain,
+  databaseURL,
+  projectId,
+  storageBucket,
+  messagingSenderId,
+  firebase_api_id,
+} = keys
+
+// move these to keys
 firebase.initializeApp({
-  apiKey: 'AIzaSyDdS5fvH8ExrjqF8DCmIbNuKgTdRWg_4zs',
-  authDomain: 'cine-plus-6090b.firebaseapp.com',
-  databaseURL: 'https://cine-plus-6090b.firebaseio.com',
-  projectId: 'cine-plus-6090b',
-  storageBucket: 'cine-plus-6090b.appspot.com',
-  messagingSenderId: '72873491968',
-  appId: '1:72873491968:web:c15487bc930230b0bee2e5',
+  apiKey: firebase_api_key,
+  authDomain,
+  databaseURL,
+  projectId,
+  storageBucket,
+  messagingSenderId,
+  appId: firebase_api_id,
 })
 
 // export const user = firebase.auth().currentUser
