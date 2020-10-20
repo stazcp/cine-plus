@@ -3,7 +3,15 @@
 // 1. potentially want to use token as well?
 // 2. optimize
 
-import { api_key } from '../keys.json'
+let api_key
+
+if (process.env.node_env === 'production') {
+  let keys = process.env
+  api_key = keys.api_key
+} else {
+  let keys = require('../keys.json')
+  api_key = keys.api_key
+}
 
 const base_url = 'https://api.themoviedb.org/3/'
 
@@ -13,6 +21,7 @@ export const getConfig = async (): Promise<{
   images: any,
 } | void> => {
   try {
+    //$FlowFixMe
     let url = `${base_url}configuration?api_key=${api_key}`
     const data = await fetch(url)
     let result = await data.json()
