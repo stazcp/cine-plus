@@ -1,7 +1,13 @@
 import React, { createContext, useState } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore'
-import keys from '../keys.json'
+let keys
+
+if (process.env.node_env === 'production') {
+  keys = process.env
+} else {
+  keys = require('../keys.json')
+}
 
 const {
   firebase_api_key,
