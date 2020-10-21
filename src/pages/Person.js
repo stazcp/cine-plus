@@ -7,12 +7,14 @@ import { Box, Grid, Card, CardActionArea, CardActions, Button, Typography } from
 import firebase from 'firebase'
 import { MovieContext } from '../components/MovieContext'
 import { useStylesDisplay } from '../styles/CardStyles'
+import { useParams } from 'react-router-dom'
+import { get, getConfig } from '../utils/movieDB'
 
 const styles = {
   box: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
-    color: 'white',
+    color: 'inherit',
     width: '100%',
   },
   headerSection: {
@@ -48,9 +50,27 @@ const styles = {
 
 export default function Person() {
   const classes = useStylesDisplay()
-  const { person, basePosterUrl } = useContext(MovieContext)
-  const { name, known_for, profile_path } = person
-  let title = known_for[0].original_title || known_for[0].name
+  let { id } = useParams()
+  let { person, basePosterUrl, setPerson, setBasePosterUrl } = useContext(MovieContext)
+  let image
+
+  if (!person) {
+    get('person', id).then((data) => {
+      setPerson(data)
+    })
+  }
+
+  if (!basePosterUrl) {
+    getConfig().then((data) => {
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+    })
+  }
+
+  if (person) {
+    image = `${basePosterUrl}w342${person.profile_path}`
+  } else {
+    image = 'https://source.unsplash.com/random'
+  }
 
   const handleGoogleSignout = (e) => {
     firebase
@@ -74,8 +94,8 @@ export default function Person() {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={`${basePosterUrl}w342${profile_path}`}
-                  title={title}
+                  image={image}
+                  title={person ? person.name : 'fetching'}
                 />
               </CardActionArea>
               <CardActions>
@@ -87,7 +107,7 @@ export default function Person() {
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
             <Typography component="h1" variant="h4" style={styles.h1}>
-              {name}
+              {person ? person.name : 'fetching actor'}
             </Typography>
             <br />
             <Typography component="h2" variant="h5" style={styles.h2}>

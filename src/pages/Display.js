@@ -90,8 +90,9 @@ export default function Display(): React$Element<React$FragmentType> {
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast) {
-      return cast.map((actor) => {
-        let { character, name, profile_path, id } = actor
+      console.log(cast)
+      return cast.map((person) => {
+        let { character, name, profile_path, id } = person
         let route = `/person/${id}`
         return (
           <DisplayCard
@@ -105,7 +106,7 @@ export default function Display(): React$Element<React$FragmentType> {
                 ? `${basePosterUrl}w138_and_h175_face${profile_path}`
                 : 'https://source.unsplash.com/random'
             }
-            movie={actor}
+            person={person}
           />
         )
       })

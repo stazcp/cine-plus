@@ -3,7 +3,7 @@
 // 1. potentially want to use token as well?
 // 2. optimize
 
-let api_key
+let api_key = ''
 
 if (process.env.node_env === 'production') {
   let keys = process.env

@@ -32,8 +32,12 @@ export default function MovieCard({ date, title, poster, useStyles, to, movie, p
 
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
-    movie && setDisplay(movie)
-    person && setPerson(person)
+    if (movie) {
+      setDisplay(movie)
+    } else if (person) {
+      setPerson(person)
+    }
+    //handle
   }
 
   return (
