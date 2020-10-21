@@ -59,22 +59,31 @@ const styles = {
 }
 
 export default function Display(): React$Element<React$FragmentType> {
-  const { display, basePosterUrl } = useContext(MovieContext)
-  // if page is refreshed display dissapears
-  const [cast, setCast] = useState()
+  const { display, basePosterUrl, cast, setCast, setDisplay, setBasePosterUrl } = useContext(
+    MovieContext
+  )
   let { type, id } = useParams()
   const classes = useStylesDisplay()
-  const {
-    release_date,
-    first_air_date,
-    original_title,
-    name,
-    title,
-    poster_path,
-    overview,
-  } = display
-  let date = release_date || first_air_date
-  let movieTitle = original_title || name || title
+  let date, movieTitle
+
+  if (!display) {
+    //$FlowFixMe
+    get(type, id).then((data) => {
+      setDisplay(data)
+    })
+  }
+
+  if (!basePosterUrl) {
+    getConfig().then((data) => {
+      //$FlowFixMe
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+    })
+  }
+
+  if (display) {
+    date = display.release_date || display.first_air_date
+    movieTitle = display.original_title || display.name || display.title
+  }
 
   useEffect(() => {
     getCast()
@@ -90,7 +99,6 @@ export default function Display(): React$Element<React$FragmentType> {
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast) {
-      console.log(cast)
       return cast.map((person) => {
         let { character, name, profile_path, id } = person
         let route = `/person/${id}`
@@ -124,8 +132,12 @@ export default function Display(): React$Element<React$FragmentType> {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={`${basePosterUrl}w342${poster_path}`}
-                  title={title}
+                  image={
+                    display
+                      ? `${basePosterUrl}w342${display.poster_path}`
+                      : 'https://source.unsplash.com/random'
+                  }
+                  title={display && display.title}
                 />
               </CardActionArea>
               <CardActions>
@@ -137,8 +149,9 @@ export default function Display(): React$Element<React$FragmentType> {
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
             <Typography component="h1" variant="h4" style={styles.h1}>
-              {title}
-              {` `}({date.slice(0, 4)})
+              {display && display.title}
+              {/* $FlowFixMe */}
+              {` `}({display && date.slice(0, 4)})
             </Typography>
             <Typography>{date} •</Typography>
             <br />
@@ -146,7 +159,7 @@ export default function Display(): React$Element<React$FragmentType> {
               Overview
             </Typography>
             <br />
-            <Typography> {overview} </Typography>
+            <Typography> {display && display.overview} </Typography>
             <br />
             <Box display="flex">{/* render directors */}</Box>
           </Grid>

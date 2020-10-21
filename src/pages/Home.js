@@ -93,10 +93,6 @@ export default function Home(props) {
   const getPosterUrl = () => {
     getConfig().then((data) => {
       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      window.localStorage.setItem(
-        'poster_url',
-        JSON.stringify(data.images.secure_base_url || data.images.base_url)
-      )
     })
   }
 
