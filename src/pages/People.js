@@ -56,7 +56,6 @@ export default (props) => {
 
   const renderPeople = () => {
     if (Array.isArray(people) && people.length > 1) {
-      console.log(people)
       return people.map((person) => {
         const { name, known_for, profile_path } = person
         let title = known_for[0].original_title || known_for[0].name

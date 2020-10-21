@@ -3,10 +3,11 @@
 // 1. use token
 // 2. optimize
 
-let api_key = 'no key'
+let api_key: string = 'no key'
 
 if (process.env.node_env === 'production') {
   let keys = process.env
+  //$FlowFixMe
   api_key = keys.api_key
 } else {
   let keys = require('../keys.json')
@@ -20,7 +21,6 @@ export const getConfig = async (): Promise<{
   images: any,
 } | void> => {
   try {
-    //$FlowFixMe
     let url = `${base_url}configuration?api_key=${api_key}`
     const data = await fetch(url)
     let result = await data.json()
@@ -33,8 +33,8 @@ export const getConfig = async (): Promise<{
 // potentially receives object, phase B
 export const get = async (type: string, category: string, extra: string): Promise<any> => {
   try {
-    let url = extra //$FlowFixMe
-      ? `${base_url}${type}/${category}/${extra}?api_key=${api_key}` //$FlowFixMe
+    let url = extra
+      ? `${base_url}${type}/${category}/${extra}?api_key=${api_key}`
       : `${base_url}${type}/${category}?api_key=${api_key}`
 
     let response = await fetch(url)
@@ -59,7 +59,6 @@ export const get = async (type: string, category: string, extra: string): Promis
 export const getTrailer = async (id: string): Promise<any> => {
   try {
     if (id) {
-      //$FlowFixMe
       let url = `${base_url}movie/${id}?api_key=${api_key}&append_to_response=videos`
       let response = await fetch(url)
       let data = await response.json()

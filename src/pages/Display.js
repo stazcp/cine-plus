@@ -64,29 +64,29 @@ export default function Display(): React$Element<React$FragmentType> {
   )
   let { type, id } = useParams()
   const classes = useStylesDisplay()
-  let date, movieTitle
-
-  if (!display) {
-    //$FlowFixMe
-    get(type, id).then((data) => {
-      setDisplay(data)
-    })
-  }
-
-  if (!basePosterUrl) {
-    getConfig().then((data) => {
-      //$FlowFixMe
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-    })
-  }
-
-  if (display) {
-    date = display.release_date || display.first_air_date
-    movieTitle = display.original_title || display.name || display.title
-  }
+  const [date, setDate] = useState()
+  const [title, setTitle] = useState()
 
   useEffect(() => {
+    if (!display) {
+      //$FlowFixMe
+      get(type, id).then((data) => {
+        setDisplay(data)
+      })
+    }
+
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
+        //$FlowFixMe
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      })
+    }
     getCast()
+
+    if (display) {
+      setDate(display.release_date || display.first_air_date)
+      setTitle(display.original_title || display.name || display.title)
+    }
   }, [])
 
   const getCast = () => {
@@ -99,7 +99,6 @@ export default function Display(): React$Element<React$FragmentType> {
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast) {
-      console.log(cast)
       return cast.map((person) => {
         let { character, name, profile_path, id } = person
         let route = `/person/${id}`
@@ -150,9 +149,9 @@ export default function Display(): React$Element<React$FragmentType> {
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
             <Typography component="h1" variant="h4" style={styles.h1}>
-              {display && display.title}
+              {title && title}
               {/* $FlowFixMe */}
-              {` `}({display && date.slice(0, 4)})
+              {` `}({date && date.slice(0, 4)})
             </Typography>
             <Typography>{date} •</Typography>
             <br />

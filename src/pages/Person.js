@@ -59,13 +59,13 @@ export default function Person() {
     get('person', id).then((data) => {
       setPerson(data)
     })
-  }, [])
 
-  if (!basePosterUrl) {
-    getConfig().then((data) => {
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-    })
-  }
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      })
+    }
+  }, [])
 
   if (person) {
     image = `${basePosterUrl}w342${person.profile_path}`
@@ -112,13 +112,13 @@ export default function Person() {
                 {person.name}
               </Typography>
             )}
-            {person && (
+            {person && person.birthday && (
               <Typography component="h1" variant="h4" style={styles.h1}>
                 ({person.birthday.slice(0, 4)})
               </Typography>
             )}
             <br />
-            {person && (
+            {person && person.biography && (
               <Typography component="h2" variant="h5" style={styles.h2}>
                 Biography
               </Typography>
