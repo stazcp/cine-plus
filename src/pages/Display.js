@@ -99,6 +99,7 @@ export default function Display(): React$Element<React$FragmentType> {
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast) {
+      console.log(cast)
       return cast.map((person) => {
         let { character, name, profile_path, id } = person
         let route = `/person/${id}`

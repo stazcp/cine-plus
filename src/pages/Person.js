@@ -1,6 +1,7 @@
-//to be completed
+//improvements:
+//add movies he acted in?
 
-import React, { useContext, useStyles } from 'react'
+import React, { useContext, useStyles, useEffect } from 'react'
 import { Paper, Container, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Card, CardActionArea, CardActions, Button, Typography } from '@material-ui/core'
@@ -54,11 +55,11 @@ export default function Person() {
   let { person, basePosterUrl, setPerson, setBasePosterUrl } = useContext(MovieContext)
   let image
 
-  if (!person) {
+  useEffect(() => {
     get('person', id).then((data) => {
       setPerson(data)
     })
-  }
+  }, [])
 
   if (!basePosterUrl) {
     getConfig().then((data) => {
@@ -106,13 +107,27 @@ export default function Person() {
             </Card>
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
-            <Typography component="h1" variant="h4" style={styles.h1}>
-              {person ? person.name : 'fetching actor'}
-            </Typography>
+            {person && (
+              <Typography component="h1" variant="h4" style={styles.h1}>
+                {person.name}
+              </Typography>
+            )}
+            {person && (
+              <Typography component="h1" variant="h4" style={styles.h1}>
+                ({person.birthday.slice(0, 4)})
+              </Typography>
+            )}
             <br />
-            <Typography component="h2" variant="h5" style={styles.h2}>
-              Overview
-            </Typography>
+            {person && (
+              <Typography component="h2" variant="h5" style={styles.h2}>
+                Biography
+              </Typography>
+            )}
+            {person && (
+              <Typography component="p" variant="p">
+                {person.biography}
+              </Typography>
+            )}
             <br />
             <Box display="flex">{/* render directors */}</Box>
           </Grid>
