@@ -149,21 +149,12 @@ export default function Login() {
         ) : (
           <Redirect to="/account" />
         )}
-        {!user ? (
-          <GoogleButton
-            label="Sign in with Google"
-            type="light" // can be light or dark
-            onClick={() => handleGoogleSignup()}
-            style={styles.googleBtn}
-          />
-        ) : (
-          <GoogleButton
-            label="Sign Out"
-            type="dark" // can be light or dark
-            onClick={() => handleGoogleSignout()}
-            style={styles.googleBtn}
-          />
-        )}
+        <GoogleButton
+          label="Sign in with Google"
+          type="light" // can be light or dark
+          onClick={() => handleGoogleSignup()}
+          style={styles.googleBtn}
+        />
       </div>
     </Container>
   )
