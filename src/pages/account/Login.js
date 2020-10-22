@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container'
 import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
+import { Redirect } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,7 +46,7 @@ const styles = {
 
 export default function Login() {
   const classes = useStyles()
-  const { provider } = useContext(FirebaseContext)
+  const { provider, user } = useContext(FirebaseContext)
 
   const handleGoogleSignup = (e) => {
     firebase
@@ -54,11 +55,9 @@ export default function Login() {
       .then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken
-        console.log('token', token)
+        // console.log('token', token)
         // The signed-in user info.
-        var user = result.user
-        console.log('user', user)
-        // ...
+        // var user = result.user
       })
       .catch(function (error) {
         console.log(error)
@@ -89,73 +88,82 @@ export default function Login() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login to your account
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
+        {!user ? (
+          <>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Login to your account
+            </Typography>
+            <form className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </>
+        ) : (
+          <Redirect to="/account" />
+        )}
+        {!user ? (
+          <GoogleButton
+            label="Sign in with Google"
+            type="light" // can be light or dark
+            onClick={() => handleGoogleSignup()}
+            style={styles.googleBtn}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+        ) : (
+          <GoogleButton
+            label="Sign Out"
+            type="dark" // can be light or dark
+            onClick={() => handleGoogleSignout()}
+            style={styles.googleBtn}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-        <GoogleButton
-          label="Sign in with Google"
-          type="light" // can be light or dark
-          onClick={() => handleGoogleSignup()}
-          style={styles.googleBtn}
-        />
-        <GoogleButton
-          label="Sign Out"
-          type="dark" // can be light or dark
-          onClick={() => handleGoogleSignout()}
-          style={styles.googleBtn}
-        />
+        )}
       </div>
     </Container>
   )

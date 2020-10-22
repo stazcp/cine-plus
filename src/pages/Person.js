@@ -1,7 +1,7 @@
 //improvements:
 //add movies he acted in?
 
-import React, { useContext, useStyles, useEffect } from 'react'
+import React, { useContext, useStyles, useEffect, useState } from 'react'
 import { Paper, Container, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Card, CardActionArea, CardActions, Button, Typography } from '@material-ui/core'
@@ -53,7 +53,7 @@ export default function Person() {
   const classes = useStylesDisplay()
   let { id } = useParams()
   let { person, basePosterUrl, setPerson, setBasePosterUrl } = useContext(MovieContext)
-  let image
+  const [image, setImage] = useState('https://source.unsplash.com/random')
 
   useEffect(() => {
     get('person', id).then((data) => {
@@ -65,13 +65,11 @@ export default function Person() {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
     }
-  }, [])
 
-  if (person) {
-    image = `${basePosterUrl}w342${person.profile_path}`
-  } else {
-    image = 'https://source.unsplash.com/random'
-  }
+    if (person) {
+      setImage(`${basePosterUrl}w342${person.profile_path}`)
+    }
+  }, [])
 
   const handleGoogleSignout = (e) => {
     firebase

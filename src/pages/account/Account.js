@@ -20,6 +20,7 @@ import { MovieContext } from '../../components/MovieContext'
 import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
+import { Redirect } from 'react-router-dom'
 
 const styles = {
   box: {
@@ -63,7 +64,6 @@ const styles = {
 
 export default function Account(): React$Element<React$FragmentType> {
   const { user } = useContext(FirebaseContext)
-  console.log(user)
   const { display, basePosterUrl } = useContext(MovieContext)
   // if page is refreshed display dissapears
   const [cast, setCast] = useState()
@@ -85,47 +85,53 @@ export default function Account(): React$Element<React$FragmentType> {
 
   return (
     <>
-      <Box style={styles.topBar}></Box>
-      <Box style={styles.box}>
-        <Grid container spacing={6}>
-          <Grid item xs={3}>
-            <Card className={classes.root} style={styles.cardColor}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image="https://source.unsplash.com/random"
-                  title="title"
-                />
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  X
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={9} style={styles.headerSection}>
-            <Typography component="h1" variant="h4" style={styles.h1}>
-              {user ? user.displayName : 'Goodbye!'}
-            </Typography>
-            <br />
-            <Typography component="h2" variant="h5" style={styles.h2}>
-              Account
-            </Typography>
-            <br />
-            <br />
-            <Box display="flex">{/* render directors */}</Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box style={styles.bot} flexDirection="row" display="flex">
-        <GoogleButton
-          label="Sign Out"
-          type="dark" // can be light or dark
-          onClick={() => handleGoogleSignout()}
-          style={styles.googleBtn}
-        />
-      </Box>
+      {user ? (
+        <>
+          <Box style={styles.topBar}></Box>
+          <Box style={styles.box}>
+            <Grid container spacing={6}>
+              <Grid item xs={3}>
+                <Card className={classes.root} style={styles.cardColor}>
+                  <CardActionArea>
+                    <CardMedia
+                      className={classes.media}
+                      image="https://source.unsplash.com/random"
+                      title="title"
+                    />
+                  </CardActionArea>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      X
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+              <Grid item xs={9} style={styles.headerSection}>
+                <Typography component="h1" variant="h4" style={styles.h1}>
+                  {user ? user.displayName : 'Goodbye!'}
+                </Typography>
+                <br />
+                <Typography component="h2" variant="h5" style={styles.h2}>
+                  Account
+                </Typography>
+                <br />
+                <br />
+                <Box display="flex">{/* render directors */}</Box>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box style={styles.bot} flexDirection="row" display="flex">
+            <GoogleButton
+              label="Sign Out"
+              type="dark" // can be light or dark
+              onClick={() => handleGoogleSignout()}
+              style={styles.googleBtn}
+            />
+          </Box>
+        </>
+      ) : (
+        <Redirect to="/" />
+      )}
     </>
   )
 }
