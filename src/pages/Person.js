@@ -41,6 +41,7 @@ const styles = {
     paddingBottom: 30,
     display: 'flex',
     overflowX: 'auto',
+    overflowY: 'hidden',
     alignItems: 'flexStart',
   },
   h2: {

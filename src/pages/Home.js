@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
   scroller: {
     display: 'flex',
-    overflowX: 'auto',
+    overflowX: 'scroll',
+    overflowY: 'hidden',
     alignItems: 'flexStart',
   },
   heroSubtitle: {
@@ -98,30 +99,26 @@ export default function Home(props) {
 
   const getNowPlaying = async () => {
     get('movie', 'now_playing').then((data) => {
-      setTrailers({ movies: data })
+      setTrailers({ movies: data, type: trailers.type })
       setNowPlaying({ movies: data })
-      window.localStorage.setItem('now_playing_movie', JSON.stringify(data))
     })
   }
 
   const getTopRated = (option) => {
     get(option, topRated.conf).then((data) => {
       setTopRated({ movies: data, conf: topRated.conf, type: option })
-      window.localStorage.setItem(`top_rated_${option}`, JSON.stringify(data))
     })
   }
 
   const getPopular = (option) => {
     get(option, popular.conf).then((data) => {
       setPopular({ movies: data, conf: popular.conf, type: option })
-      window.localStorage.setItem(`popular_${option}`, JSON.stringify(data))
     })
   }
 
   const getTrending = (option) => {
     get(...trending.conf, option).then((data) => {
       setTrending({ movies: data, conf: trending.conf })
-      window.localStorage.setItem(`trending_${option}`, JSON.stringify(data))
     })
   }
 
@@ -139,7 +136,7 @@ export default function Home(props) {
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
             to={'/'}
             movie={movie}
-            modal={<TrailerModal />}
+            // modal={<TrailerModal />}
           />
         )
       })
@@ -221,18 +218,8 @@ export default function Home(props) {
           <Box className={classes.scroller}>
             <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
           </Box>
-          <ColumnHeader
-            header="Latest Trailers"
-            options={[
-              { title: 'Streaming', option: '' },
-              { title: 'On Tv', option: '' },
-              { title: 'For Rent', option: '' },
-              { title: 'In Theaters', option: '' },
-            ]}
-            setOption={getTrending}
-          />
+          <ColumnHeader header="Latest Trailers" setOption={getTrending} />
           <Box className={classes.scroller}>
-            {/* page renders before videos are fetched, delayed render required or async await */}
             <Box className={classes.scroller}>{renderTrailers(trailers.movies)}</Box>
           </Box>
           <ColumnHeader
