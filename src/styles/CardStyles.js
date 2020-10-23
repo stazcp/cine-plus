@@ -1,11 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 export const useStylesSm = makeStyles((theme) => ({
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
+  root: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -21,14 +17,14 @@ export const useStylesSm = makeStyles((theme) => ({
     flexGrow: 1,
   },
   caption: {
-    fontSize: '16px',
-    fontWeight: '400',
+    fontSize: theme.typography.htmlFontSize, //16
+    fontWeight: theme.typography.fontWeightBold, //700
     color: 'rgba(0,0,0,0.6)',
   },
 }))
 
 export const useStylesMd = makeStyles((theme) => ({
-  card: {
+  root: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -44,14 +40,13 @@ export const useStylesMd = makeStyles((theme) => ({
     flexGrow: 1,
   },
   caption: {
-    fontSize: '16px',
-    fontWeight: '400',
+    fontSize: theme.typography.htmlFontSize, //16
     color: 'rgba(0,0,0,0.6)',
   },
 }))
 
 export const useStylesTrailer = makeStyles((theme) => ({
-  card: {
+  root: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -68,14 +63,13 @@ export const useStylesTrailer = makeStyles((theme) => ({
     wordWrap: 'break-word',
   },
   caption: {
-    fontSize: '16px',
-    fontWeight: '400',
+    fontSize: theme.typography.htmlFontSize, //16
     color: 'rgba(0,0,0,0.6)',
   },
 }))
 
 export const useStylesPerson = makeStyles((theme) => ({
-  card: {
+  root: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -91,8 +85,7 @@ export const useStylesPerson = makeStyles((theme) => ({
     wordWrap: 'break-word',
   },
   caption: {
-    fontSize: '16px',
-    fontWeight: '400',
+    fontSize: theme.typography.htmlFontSize, //16
     color: 'rgba(0,0,0,0.6)',
   },
 }))

@@ -62,6 +62,7 @@ const search = () => {}
 const doNothing = () => {}
 
 export default function Home(props) {
+  const [openTrailer, setOpenTrailer] = React.useState(false)
   const classes = useStyles(),
     {
       popular,
@@ -136,7 +137,6 @@ export default function Home(props) {
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
             to={'/'}
             movie={movie}
-            // modal={<TrailerModal />}
           />
         )
       })
@@ -215,13 +215,9 @@ export default function Home(props) {
             ]}
             setOption={getTopRated}
           />
-          <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
-          </Box>
+          <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
           <ColumnHeader header="Latest Trailers" setOption={getTrending} />
-          <Box className={classes.scroller}>
-            <Box className={classes.scroller}>{renderTrailers(trailers.movies)}</Box>
-          </Box>
+          <Box className={classes.scroller}>{renderTrailers(trailers.movies)}</Box>
           <ColumnHeader
             header="Trending"
             options={[
@@ -231,6 +227,7 @@ export default function Home(props) {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
+          <TrailerModal open={openTrailer} setOpen={setOpenTrailer} />
         </main>
       </Container>
     </React.Fragment>

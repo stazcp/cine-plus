@@ -56,7 +56,12 @@ export default function ColumnHeader({ options, header, setOption }) {
         {/* trailers don't have options */}
         {options &&
           options.map((movie, i) => (
-            <Typography className={classes.link} key={i}>
+            <Typography
+              className={classes.link}
+              key={i}
+              component="a"
+              style={{ cursor: 'pointer' }}
+            >
               <Link
                 color="inherit"
                 underline="none"

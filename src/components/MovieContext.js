@@ -19,7 +19,7 @@ export const MovieProvider = (props) => {
     type: 'mixed',
   })
   const [nowPlaying, setNowPlaying] = useState({ movies: [], type: 'movie' })
-  const [trailers, setTrailers] = useState({ movies: [], type: 'mixed' })
+  const [trailers, setTrailers] = useState({ movies: [], type: 'trailer' })
   const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
   const [display, setDisplay] = useState()
   const [person, setPerson] = useState()
