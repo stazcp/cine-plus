@@ -23,7 +23,9 @@ export const MovieProvider = (props) => {
   const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
   const [display, setDisplay] = useState()
   const [person, setPerson] = useState()
-  const [cast, setCast] = useState()
+  const [cast, setCast] = useState({ people: [], type: 'person' })
+  const [openTrailer, setOpenTrailer] = useState(false)
+  const [trailer, setTrailer] = useState()
   return (
     <MovieContext.Provider
       value={{
@@ -45,6 +47,10 @@ export const MovieProvider = (props) => {
         setPerson,
         cast,
         setCast,
+        openTrailer,
+        setOpenTrailer,
+        trailer,
+        setTrailer,
       }}
     >
       {props.children}

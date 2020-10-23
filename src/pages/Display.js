@@ -92,7 +92,7 @@ export default function Display(): React$Element<React$FragmentType> {
 
   const getCast = () => {
     get(type, id, 'credits').then((data) => {
-      setCast(data)
+      setCast({ people: data, type: cast.type })
     })
   }
 

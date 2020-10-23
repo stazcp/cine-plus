@@ -124,7 +124,7 @@ export default function Home(props) {
   }
 
   // will render a pop-up
-  const renderTrailers = (movies) => {
+  const renderTrailers = (movies, type) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
         const { id, original_title, first_air_date, poster_path, name, release_date } = movie
@@ -135,11 +135,14 @@ export default function Home(props) {
             title={`${original_title} Trailer` || `${name} Trailer`}
             date={release_date || first_air_date}
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
-            to={'/'}
+            to={'#'}
             movie={movie}
+            type={type}
           />
         )
       })
+    } else {
+      return <p>No trailers found</p>
     }
   }
 
@@ -160,6 +163,7 @@ export default function Home(props) {
           date={release_date || first_air_date}
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
           movie={movie}
+          type={type}
         />
       )
     })
@@ -217,7 +221,7 @@ export default function Home(props) {
           />
           <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
           <ColumnHeader header="Latest Trailers" setOption={getTrending} />
-          <Box className={classes.scroller}>{renderTrailers(trailers.movies)}</Box>
+          <Box className={classes.scroller}>{renderTrailers(trailers.movies, trailers.type)}</Box>
           <ColumnHeader
             header="Trending"
             options={[
@@ -227,7 +231,7 @@ export default function Home(props) {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
-          <TrailerModal open={openTrailer} setOpen={setOpenTrailer} />
+          <TrailerModal />
         </main>
       </Container>
     </React.Fragment>

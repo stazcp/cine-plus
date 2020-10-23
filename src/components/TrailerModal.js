@@ -1,8 +1,9 @@
 // needs work
 
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
+import { MovieContext } from './MovieContext'
 
 {
   /* <ReactPlayer key={i} url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; */
@@ -35,17 +36,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function SimpleModal({ open, setOpen }) {
+export default function SimpleModal() {
   const classes = useStyles()
+  const { openTrailer, setOpenTrailer, trailer } = useContext(MovieContext)
+  const [open, setOpen] = useState(false)
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle)
 
+  useEffect(() => {
+    setOpen(openTrailer)
+  })
+
   const handleOpen = () => {
-    setOpen(true)
+    setOpenTrailer(true)
   }
 
   const handleClose = () => {
-    setOpen(false)
+    setOpenTrailer(false)
   }
 
   const body = (
@@ -60,9 +67,6 @@ export default function SimpleModal({ open, setOpen }) {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
       <Modal
         open={open}
         onClose={handleClose}
