@@ -5,6 +5,7 @@
 
 let api_key: string = 'no key'
 
+//app determines if its running locally or on Versel app, since keys will be in different locations
 if (process.env.node_env === 'production') {
   let keys = process.env
   //$FlowFixMe
@@ -16,6 +17,7 @@ if (process.env.node_env === 'production') {
 
 const base_url = 'https://api.themoviedb.org/3/'
 
+//used to get the basePosterUrl and more
 export const getConfig = async (): Promise<{
   change_keys: any,
   images: any,
@@ -31,6 +33,7 @@ export const getConfig = async (): Promise<{
 }
 
 // potentially receives object, phase B
+// used for fetching movies, tvShows, and people
 export const get = async (type: string, category: string, extra: string): Promise<any> => {
   try {
     let url = extra

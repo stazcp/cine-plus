@@ -69,20 +69,23 @@ export default function Display(): React$Element<React$FragmentType> {
   const [title, setTitle] = useState()
 
   useEffect(() => {
-    if (!display) {
-      //$FlowFixMe
-      get(type, id).then((data) => {
-        setDisplay(data)
-      })
-    }
-
     if (!basePosterUrl) {
       getConfig().then((data) => {
         //$FlowFixMe
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
     }
-    getCast()
+
+    if (cast.people.length < 1) {
+      getCast()
+    }
+
+    if (!display || !title || !date) {
+      //$FlowFixMe
+      get(type, id).then((data) => {
+        setDisplay(data)
+      })
+    }
 
     if (display) {
       setDate(display.release_date || display.first_air_date)
@@ -99,8 +102,8 @@ export default function Display(): React$Element<React$FragmentType> {
   // note to create a Person page
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
-    if (cast) {
-      return cast.map((person) => {
+    if (cast.people.length > 0) {
+      return cast.people.map((person) => {
         let { character, name, profile_path, id } = person
         let route = `/person/${id}`
         return (

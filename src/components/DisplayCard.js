@@ -21,7 +21,7 @@ import { MovieContext } from './MovieContext'
 
 export default function MovieCard({ date, title, poster, useStyles, to, movie, person, type }) {
   const classes = useStyles()
-  const { setDisplay, setPerson, setOpenTrailer } = useContext(MovieContext)
+  const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
 
   const styles = {
     link: {
@@ -42,6 +42,7 @@ export default function MovieCard({ date, title, poster, useStyles, to, movie, p
     }
     //open trailer
     if (type === 'trailer') {
+      setMovie(movie)
       setOpenTrailer(true)
     }
   }

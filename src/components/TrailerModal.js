@@ -1,14 +1,10 @@
-// needs work
-
 import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 import { MovieContext } from './MovieContext'
-
-{
-  /* <ReactPlayer key={i} url={`https://www.youtube.com/watch?v=${trailer.videos.results[0].key}`} />; */
-}
-// here I will build the trailer pop-ups
+import ReactPlayer from 'react-player'
+import { getTrailer } from '../utils/movieDB'
+import { Slider, Direction } from 'react-player-controls'
 
 function rand() {
   return Math.round(Math.random() * 20) - 10
@@ -28,24 +24,40 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    width: 'auto',
+    height: 'auto',
+  },
+  playerWrapper: {
+    height: 'auto',
+    width: 'auto',
   },
 }))
 
-export default function SimpleModal() {
+export default function SimpleModal({ open }) {
   const classes = useStyles()
-  const { openTrailer, setOpenTrailer, trailer } = useContext(MovieContext)
-  const [open, setOpen] = useState(false)
-  // getModalStyle is not a pure function, we roll the style only on the first render
+  //receives movie from Home > DisplayCard > MovieContext
+  const { setOpenTrailer, movie, setMovie } = useContext(MovieContext)
+  const [trailer, setTrailer] = useState()
+  const [key, setKey] = useState()
+
+  // getModalStyle is not a pure function, we roll the style only on the first render ??
   const [modalStyle] = React.useState(getModalStyle)
 
-  useEffect(() => {
-    setOpen(openTrailer)
-  })
+  // useEffect(() => {
+  //   if (movie && (!key || !trailer)) {
+  //     getTrailer(movie.id).then((data) => {
+  //       setKey(data.videos.results[0].key)
+  //       setTrailer(data)
+  //     })
+  //   }
+  // }, [])
+
+  if (movie && (!key || !trailer)) {
+    getTrailer(movie.id).then((data) => {
+      setKey(data.videos.results[0].key)
+      setTrailer(data)
+    })
+  }
 
   const handleOpen = () => {
     setOpenTrailer(true)
@@ -53,14 +65,24 @@ export default function SimpleModal() {
 
   const handleClose = () => {
     setOpenTrailer(false)
+    setMovie(undefined)
+    setTrailer(undefined)
+    setKey(undefined)
   }
+
+  const renderVideo = (
+    <>
+      {key && (
+        <div className="playerWrapper">
+          <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
+        </div>
+      )}
+    </>
+  )
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
+      {renderVideo}
       <SimpleModal />
     </div>
   )
@@ -68,7 +90,7 @@ export default function SimpleModal() {
   return (
     <div>
       <Modal
-        open={open}
+        open={open || false}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

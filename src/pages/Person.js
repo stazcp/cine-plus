@@ -123,7 +123,7 @@ export default function Person() {
               </Typography>
             )}
             {person && (
-              <Typography component="p" variant="p">
+              <Typography component="p" variant="body1">
                 {person.biography}
               </Typography>
             )}

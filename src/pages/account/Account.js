@@ -66,7 +66,6 @@ export default function Account(): React$Element<React$FragmentType> {
   const { user } = useContext(FirebaseContext)
   const { display, basePosterUrl } = useContext(MovieContext)
   // if page is refreshed display dissapears
-  const [cast, setCast] = useState()
   const classes = useStylesDisplay()
 
   useEffect(() => {}, [])

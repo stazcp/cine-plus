@@ -62,7 +62,6 @@ const search = () => {}
 const doNothing = () => {}
 
 export default function Home(props) {
-  const [openTrailer, setOpenTrailer] = React.useState(false)
   const classes = useStyles(),
     {
       popular,
@@ -77,6 +76,7 @@ export default function Home(props) {
       setNowPlaying,
       basePosterUrl,
       setBasePosterUrl,
+      openTrailer,
     } = useContext(MovieContext),
     posterSize = 'w300'
 
@@ -231,7 +231,7 @@ export default function Home(props) {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
-          <TrailerModal />
+          <TrailerModal open={openTrailer} />
         </main>
       </Container>
     </React.Fragment>
