@@ -1,11 +1,18 @@
 //improvements:
 //add movies he acted in?
 
-import React, { useContext, useStyles, useEffect, useState } from 'react'
-import { Paper, Container, CardMedia } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Grid, Card, CardActionArea, CardActions, Button, Typography } from '@material-ui/core'
-import firebase from 'firebase'
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  Box,
+  Grid,
+  Card,
+  CardActionArea,
+  CardActions,
+  Button,
+  Typography,
+  Container,
+  CardMedia,
+} from '@material-ui/core'
 import { MovieContext } from '../components/MovieContext'
 import { useStylesDisplay } from '../styles/CardStyles'
 import { useParams } from 'react-router-dom'

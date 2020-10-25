@@ -1,7 +1,7 @@
 // @flow
 // persist page data with window storage
 
-import React, { useState, useEffect, useContext, useReducer } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Card,
   CardActionArea,
@@ -12,7 +12,7 @@ import {
   Box,
   Typography,
 } from '@material-ui/core'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useStylesDisplay } from '../styles/CardStyles'
 import Image from '../img/deadpool.jpg'
 import { get, getConfig } from '../utils/movieDB'
@@ -58,8 +58,6 @@ const styles = {
     fontWeight: 600,
   },
 }
-
-function reducer() {}
 
 export default function Display(): React$Element<React$FragmentType> {
   const { display, basePosterUrl, cast, setCast, setDisplay, setBasePosterUrl } = useContext(
