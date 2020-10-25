@@ -1,7 +1,7 @@
 // @flow
 // persist page data with window storage
 
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useReducer } from 'react'
 import {
   Card,
   CardActionArea,
@@ -59,6 +59,8 @@ const styles = {
   },
 }
 
+function reducer() {}
+
 export default function Display(): React$Element<React$FragmentType> {
   const { display, basePosterUrl, cast, setCast, setDisplay, setBasePosterUrl } = useContext(
     MovieContext
@@ -75,23 +77,28 @@ export default function Display(): React$Element<React$FragmentType> {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
     }
+    getCast()
 
-    if (cast.people.length < 1) {
-      getCast()
+    if (!display) {
+      getMovie()
     }
 
-    if (!display || !title || !date) {
-      //$FlowFixMe
-      get(type, id).then((data) => {
-        setDisplay(data)
-      })
-    }
-
-    if (display) {
+    if (display && (!date || !title)) {
       setDate(display.release_date || display.first_air_date)
       setTitle(display.original_title || display.name || display.title)
     }
-  }, [])
+    //cleanup
+    return () => {
+      setCast({ people: [], type: 'person' })
+    }
+  }, [display])
+
+  const getMovie = () => {
+    //$FlowFixMe
+    get(type, id).then((data) => {
+      setDisplay(data)
+    })
+  }
 
   const getCast = () => {
     get(type, id, 'credits').then((data) => {

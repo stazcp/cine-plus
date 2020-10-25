@@ -53,36 +53,30 @@ const styles = {
 export default function Person() {
   const classes = useStylesDisplay()
   let { id } = useParams()
-  let { person, basePosterUrl, setPerson, setBasePosterUrl } = useContext(MovieContext)
-  const [image, setImage] = useState('https://source.unsplash.com/random')
+  let { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  const [person, setPerson] = useState()
 
+  console.log(person)
   useEffect(() => {
+    getPerson()
+    getPosterUrl()
+  }, [])
+
+  const getPerson = () => {
     get('person', id).then((data) => {
       setPerson(data)
     })
+  }
 
+  const getPosterUrl = () => {
     if (!basePosterUrl) {
       getConfig().then((data) => {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
     }
-
-    if (person) {
-      setImage(`${basePosterUrl}w342${person.profile_path}`)
-    }
-  }, [])
-
-  const handleGoogleSignout = (e) => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        console.log('Sign Out successful')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
   }
+
+  console.log(person)
 
   return (
     <>
@@ -94,7 +88,11 @@ export default function Person() {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image={image}
+                  image={
+                    person
+                      ? `${basePosterUrl}w342${person.profile_path}`
+                      : 'https://source.unsplash.com/random'
+                  }
                   title={person ? person.name : 'fetching'}
                 />
               </CardActionArea>
