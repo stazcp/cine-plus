@@ -4,7 +4,9 @@ import Modal from '@material-ui/core/Modal'
 import { MovieContext } from './MovieContext'
 import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
-import { Slider, Direction } from 'react-player-controls'
+// import { Slider, Direction } from 'react-player-controls'
+//slider to be implemented
+//https://www.npmjs.com/package/react-player-controls#playericon-
 
 function rand() {
   return Math.round(Math.random() * 20) - 10
