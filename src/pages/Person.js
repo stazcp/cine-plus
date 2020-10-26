@@ -63,7 +63,6 @@ export default function Person() {
   let { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const [person, setPerson] = useState()
 
-  console.log(person)
   useEffect(() => {
     getPerson()
     getPosterUrl()
@@ -82,8 +81,6 @@ export default function Person() {
       })
     }
   }
-
-  console.log(person)
 
   return (
     <>

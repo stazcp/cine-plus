@@ -1,5 +1,8 @@
 // @flow
-// persist page data with window storage
+// Add movie Categories
+// Add Trailers
+// Add Likes
+// Add  Comments
 
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -107,7 +110,7 @@ export default function Display(): React$Element<React$FragmentType> {
   // note to create a Person page
   // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
-    if (cast.people.length > 0) {
+    if (cast.people.length) {
       return cast.people.map((person) => {
         let { character, name, profile_path, id } = person
         let route = `/person/${id}`
@@ -149,11 +152,6 @@ export default function Display(): React$Element<React$FragmentType> {
                   title={display && display.title}
                 />
               </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  X
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>

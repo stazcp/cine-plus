@@ -22,7 +22,6 @@ export const MovieProvider = (props) => {
   const [trailers, setTrailers] = useState({ movies: [], type: 'trailer' })
   const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
   const [display, setDisplay] = useState()
-  const [person, setPerson] = useState()
   const [cast, setCast] = useState({ people: [], type: 'person' })
   const [openTrailer, setOpenTrailer] = useState(false)
   const [movie, setMovie] = useState()
@@ -43,8 +42,6 @@ export const MovieProvider = (props) => {
         setBasePosterUrl,
         display,
         setDisplay,
-        person,
-        setPerson,
         cast,
         setCast,
         openTrailer,
