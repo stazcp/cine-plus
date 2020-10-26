@@ -4,7 +4,6 @@
 // 3. Menu's close when reaching destination
 // 4. Mobile version
 // 5. Build pop-over's for + and Lang
-// 6. icons go right on account switch
 
 import React, { useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
@@ -339,7 +338,7 @@ export default function PrimarySearchAppBar() {
   const renderAccount = (
     <IconButton aria-label="show" color="inherit">
       <Link to="/account" style={styles.link}>
-        <AccountCircleIcon />
+        {user && `${user.displayName}`.substring(0, 18)}
       </Link>
     </IconButton>
   )
@@ -398,10 +397,9 @@ export default function PrimarySearchAppBar() {
           <div className={classes.sectionDesktop}>
             {renderAdd}
             {renderLanguages}
-            {user && renderAccount}
           </div>
           <div className={classes.rightMenu}>
-            {user ? user && user.displayName : renderLogin}
+            {user ? renderAccount : renderLogin}
             {!user && renderJoin}
           </div>
           {/* <div className={classes.sectionMobile}>
