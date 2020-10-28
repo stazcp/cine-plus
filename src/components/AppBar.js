@@ -262,7 +262,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link to="" style={styles.link}>
+      <Link to="#" style={styles.link}>
         Movies
       </Link>
     </Typography>
@@ -279,7 +279,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link to="" style={styles.link}>
+      <Link to="#" style={styles.link}>
         TV Shows
       </Link>
     </Typography>
@@ -296,7 +296,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link to="" style={styles.link}>
+      <Link to="#" style={styles.link}>
         People
       </Link>
     </Typography>
@@ -313,7 +313,7 @@ export default function PrimarySearchAppBar() {
       className={classes.h5Link}
       variant="h5"
     >
-      <Link to="" style={styles.link}>
+      <Link to="#" style={styles.link}>
         More
       </Link>
     </Typography>

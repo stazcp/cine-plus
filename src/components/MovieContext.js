@@ -18,13 +18,29 @@ export const MovieProvider = (props) => {
     conf: ['trending', 'all'],
     type: 'mixed',
   })
-  const [nowPlaying, setNowPlaying] = useState({ movies: [], type: 'movie' })
-  const [trailers, setTrailers] = useState({ movies: [], type: 'trailer' })
+  const [upcoming, setUpcoming] = useState({
+    movies: [],
+    conf: ['upcoming'],
+    type: 'movie',
+  })
+  const [nowPlaying, setNowPlaying] = useState({ movies: [], conf: ['now_playing'], type: 'movie' })
+  const [trailers, setTrailers] = useState({ movies: [], conf: [], type: 'trailer' })
   const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
   const [display, setDisplay] = useState()
   const [cast, setCast] = useState({ people: [], type: 'person' })
   const [openTrailer, setOpenTrailer] = useState(false)
   const [movie, setMovie] = useState()
+  //tvShows
+  const [airingToday, setAiringToday] = useState({
+    movies: [],
+    conf: ['airing_today'],
+    type: 'tv',
+  })
+  const [onTV, setOnTV] = useState({
+    movies: [],
+    conf: ['on_the_air'],
+    type: 'tv',
+  })
   return (
     <MovieContext.Provider
       value={{
@@ -48,6 +64,12 @@ export const MovieProvider = (props) => {
         setOpenTrailer,
         movie,
         setMovie,
+        upcoming,
+        setUpcoming,
+        airingToday,
+        setAiringToday,
+        onTV,
+        setOnTV,
       }}
     >
       {props.children}

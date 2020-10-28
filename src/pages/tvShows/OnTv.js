@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from "react"
-import { Grid, Typography, Box, Container } from "@material-ui/core"
-import DisplayCard from "../../components/DisplayCard"
-import { makeStyles } from "@material-ui/core/styles"
-import { useStylesMd as cardStyle } from "../../styles/CardStyles"
-import Accordion from "../../components/Accordion"
-import { get, getConfig } from "../../utils/movieDB"
+import React, { useEffect, useContext } from 'react'
+import { Grid, Typography, Box, Container } from '@material-ui/core'
+import DisplayCard from '../../components/DisplayCard'
+import { makeStyles } from '@material-ui/core/styles'
+import { useStylesMd as cardStyle } from '../../styles/CardStyles'
+import Accordion from '../../components/Accordion'
+import { get, getConfig } from '../../utils/movieDB'
+import { MovieContext } from '../../components/MovieContext'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
-    display: "flex",
-    alignItems: "flexStart",
+    display: 'flex',
+    alignItems: 'flexStart',
   },
   title: {
-    fontWeight: "600",
-    fontSize: "25.6px",
-    lineHeight: "26px",
+    fontWeight: '600',
+    fontSize: '25.6px',
+    lineHeight: '26px',
   },
   mainContainer: {
-    paddingTop: "40px",
+    paddingTop: '40px',
   },
   titleContainer: {
-    marginBottom: "20px",
+    marginBottom: '20px',
   },
 }))
 
 export default (props) => {
   const classes = useStyles()
-  const [movies, setMovies] = useState()
-  const [basePosterUrl, setBasePosterUrl] = useState(null)
-  let posterSize = "w780"
+  const { basePosterUrl, setBasePosterUrl, onTV, setOnTV } = useContext(MovieContext)
+  const movies = onTV.movies
+  let posterSize = 'w780'
 
   useEffect(() => {
     getPosterUrl()
@@ -36,25 +37,17 @@ export default (props) => {
   }, [])
 
   const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem("poster_url")
-    if (posterUrl) {
-      setBasePosterUrl(JSON.parse(posterUrl))
-    } else {
-      getConfig().then((data) =>
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      )
+      })
     }
   }
 
   const getMovies = () => {
-    const jsonMovies = window.localStorage.getItem("on_the_air_tv")
-    if (jsonMovies) {
-      let data = JSON.parse(jsonMovies)
-      setMovies(data)
-    } else {
-      get("tv", "on_the_air").then((data) => {
-        setMovies(data)
-        window.localStorage.setItem("on_the_air_tv", JSON.stringify(data))
+    if (!onTV.movies.length) {
+      get(onTV.type, onTV.conf[0]).then((data) => {
+        setOnTV({ movies: data, conf: onTV.conf, type: onTV.type })
       })
     }
   }
@@ -63,14 +56,7 @@ export default (props) => {
   const renderMovies = () => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        const {
-          id,
-          original_title,
-          name,
-          release_date,
-          first_air_date,
-          poster_path,
-        } = movie
+        const { id, original_title, name, release_date, first_air_date, poster_path } = movie
         let route = `/display/tv/${id}`
         return (
           <Grid item xs={3} key={movie.id}>
@@ -89,8 +75,8 @@ export default (props) => {
     } else {
       return (
         <Grid item xs={3}>
-          {" "}
-          <h1>No movies found...</h1>{" "}
+          {' '}
+          <h1>No movies found...</h1>{' '}
         </Grid>
       )
     }

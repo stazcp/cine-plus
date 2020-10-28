@@ -62,6 +62,7 @@ export default function Person() {
   let { id } = useParams()
   let { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const [person, setPerson] = useState()
+  //should this component have it's own state or better only context?
 
   useEffect(() => {
     getPerson()

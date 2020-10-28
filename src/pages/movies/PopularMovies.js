@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
 import DisplayCard from '../../components/DisplayCard'
 import { makeStyles } from '@material-ui/core/styles'
 import { useStylesMd as cardStyle } from '../../styles/CardStyles'
 import Accordion from '../../components/Accordion'
-import { getConfig } from '../../utils/movieDB'
+import { get, getConfig } from '../../utils/movieDB'
+import { MovieContext } from '../../components/MovieContext'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
@@ -26,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default (props) => {
   const classes = useStyles()
-  const [movies, setMovies] = useState()
-  const [basePosterUrl, setBasePosterUrl] = useState(null)
+  const { basePosterUrl, setBasePosterUrl, popular, setPopular } = useContext(MovieContext)
+  const movies = popular.movies
   let posterSize = 'w780'
 
   useEffect(() => {
@@ -36,27 +37,36 @@ export default (props) => {
   }, [])
 
   const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem('poster_url')
-    if (posterUrl) {
-      setBasePosterUrl(JSON.parse(posterUrl))
-    } else {
-      getConfig().then((data) =>
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      )
+      })
     }
   }
 
+  //shares same state with popularShows
   const getMovies = () => {
-    const jsonMovies = window.localStorage.getItem('popular_movie')
-    const movies = JSON.parse(jsonMovies)
-    setMovies(movies)
+    console.log(popular.type)
+    if (!popular.movies.length || popular.type != 'movie') {
+      get('movie', popular.conf[0]).then((data) => {
+        setPopular({ movies: data, conf: popular.conf, type: 'movie' })
+      })
+    }
   }
 
   //grid item xs(4) the only way to not get cards distorted?
   const renderMovies = () => {
-    if (Array.isArray(movies) && movies.length > 1) {
+    if (Array.isArray(movies) && movies.length) {
       return movies.map((movie) => {
-        const { id, original_title, name, release_date, first_air_date, poster_path } = movie
+        const {
+          id,
+          original_title,
+          name,
+          release_date,
+          first_air_date,
+          poster_path,
+          vote_average,
+        } = movie
         let route = `/display/movie/${id}`
         return (
           <Grid item xs={3} key={movie.id}>
@@ -68,6 +78,8 @@ export default (props) => {
               date={release_date || first_air_date}
               poster={`${basePosterUrl}${posterSize}${poster_path}`}
               movie={movie}
+              type={popular.type}
+              rating={vote_average}
             />
           </Grid>
         )

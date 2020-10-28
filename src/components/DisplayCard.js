@@ -18,8 +18,19 @@ import {
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
+import RatingBar from './RatingBar'
 
-export default function MovieCard({ date, title, poster, useStyles, to, movie, person, type }) {
+export default function MovieCard({
+  date,
+  title,
+  poster,
+  useStyles,
+  to,
+  movie,
+  person,
+  type,
+  rating,
+}) {
   const classes = useStyles()
   const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
 
@@ -47,6 +58,12 @@ export default function MovieCard({ date, title, poster, useStyles, to, movie, p
     }
   }
 
+  const renderRating = () => {
+    if (type === 'movie' || type === 'tv') {
+      return <RatingBar rating={rating} />
+    }
+  }
+
   return (
     <div className="CardComponent">
       <Card className={classes.root}>
@@ -57,6 +74,7 @@ export default function MovieCard({ date, title, poster, useStyles, to, movie, p
             title={title}
           />
         </ButtonBase>
+        {renderRating()}
         <CardContent className={classes.cardContent}>
           <Typography className={classes.link}>
             <Link to={to} style={styles.link} onClick={() => handleClick()}>

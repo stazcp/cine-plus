@@ -99,8 +99,8 @@ export default function Home(props) {
   }
 
   const getNowPlaying = async () => {
-    get('movie', 'now_playing').then((data) => {
-      setTrailers({ movies: data, type: trailers.type })
+    get(nowPlaying.type, nowPlaying.conf[0]).then((data) => {
+      setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
       setNowPlaying({ movies: data })
     })
   }
@@ -119,7 +119,7 @@ export default function Home(props) {
 
   const getTrending = (option) => {
     get(...trending.conf, option).then((data) => {
-      setTrending({ movies: data, conf: trending.conf })
+      setTrending({ movies: data, conf: trending.conf, type: trending.type })
     })
   }
 
@@ -152,18 +152,32 @@ export default function Home(props) {
       return <p>No movies found</p>
     }
     return movies.map((movie) => {
-      let { id, original_title, name, release_date, first_air_date, poster_path } = movie
+      let {
+        id,
+        original_title,
+        name,
+        release_date,
+        first_air_date,
+        poster_path,
+        media_type,
+        original_name,
+        vote_average,
+      } = movie
       let route = `/display/${type}/${id}`
+      if (type === 'mixed') {
+        type = media_type
+      }
       return (
         <DisplayCard
           key={id}
           to={route}
           useStyles={useStylesSm}
-          title={original_title || name}
+          title={original_title || name || original_name}
           date={release_date || first_air_date}
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
           movie={movie}
           type={type}
+          rating={vote_average}
         />
       )
     })

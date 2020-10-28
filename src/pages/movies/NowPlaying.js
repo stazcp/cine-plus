@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from "react"
-import { Grid, Typography, Box, Container } from "@material-ui/core"
-import DisplayCard from "../../components/DisplayCard"
-import { makeStyles } from "@material-ui/core/styles"
-import { useStylesMd as cardStyle } from "../../styles/CardStyles"
-import Accordion from "../../components/Accordion"
-import { getConfig } from "../../utils/movieDB"
+import React, { useEffect, useState, useContext } from 'react'
+import { Grid, Typography, Box, Container } from '@material-ui/core'
+import DisplayCard from '../../components/DisplayCard'
+import { makeStyles } from '@material-ui/core/styles'
+import { useStylesMd as cardStyle } from '../../styles/CardStyles'
+import Accordion from '../../components/Accordion'
+import { get, getConfig } from '../../utils/movieDB'
+import { MovieContext } from '../../components/MovieContext'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
-    display: "flex",
-    alignItems: "flexStart",
+    display: 'flex',
+    alignItems: 'flexStart',
   },
   title: {
-    fontWeight: "600",
-    fontSize: "25.6px",
-    lineHeight: "26px",
+    fontWeight: '600',
+    fontSize: '25.6px',
+    lineHeight: '26px',
   },
   mainContainer: {
-    paddingTop: "40px",
+    paddingTop: '40px',
   },
   titleContainer: {
-    marginBottom: "20px",
+    marginBottom: '20px',
   },
 }))
 
 export default (props) => {
   const classes = useStyles()
-  const [movies, setMovies] = useState()
-  const [basePosterUrl, setBasePosterUrl] = useState(null)
-  let posterSize = "w780"
+  const { basePosterUrl, setBasePosterUrl, nowPlaying, setNowPlaying } = useContext(MovieContext)
+  const movies = nowPlaying.movies
+  let posterSize = 'w780'
 
   useEffect(() => {
     getPosterUrl()
@@ -36,20 +37,19 @@ export default (props) => {
   }, [])
 
   const getPosterUrl = () => {
-    let posterUrl = window.localStorage.getItem("poster_url")
-    if (posterUrl) {
-      setBasePosterUrl(JSON.parse(posterUrl))
-    } else {
-      getConfig().then((data) =>
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
         setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      )
+      })
     }
   }
 
   const getMovies = () => {
-    const jsonMovies = window.localStorage.getItem("now_playing_movie")
-    const movies = JSON.parse(jsonMovies)
-    setMovies(movies)
+    if (!nowPlaying.movies.length) {
+      get('movie', nowPlaying.conf[0]).then((data) => {
+        setNowPlaying({ movies: data, conf: nowPlaying.conf, type: 'movie' })
+      })
+    }
   }
 
   //grid item xs(4) the only way to not get cards distorted?
@@ -63,6 +63,7 @@ export default (props) => {
           release_date,
           first_air_date,
           poster_path,
+          vote_average,
         } = movie
         let route = `/display/movie/${id}`
         return (
@@ -75,6 +76,8 @@ export default (props) => {
               date={release_date || first_air_date}
               poster={`${basePosterUrl}${posterSize}${poster_path}`}
               movie={movie}
+              type={nowPlaying.type}
+              rating={vote_average}
             />
           </Grid>
         )
@@ -82,8 +85,8 @@ export default (props) => {
     } else {
       return (
         <Grid item xs={3}>
-          {" "}
-          <h1>No movies found...</h1>{" "}
+          {' '}
+          <h1>No movies found...</h1>{' '}
         </Grid>
       )
     }

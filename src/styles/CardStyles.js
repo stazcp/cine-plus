@@ -15,6 +15,8 @@ export const useStylesSm = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
+    paddingTop: 0,
+    paddingBot: 0,
   },
   caption: {
     fontSize: theme.typography.htmlFontSize, //16
