@@ -56,7 +56,15 @@ export default (props) => {
   const renderMovies = () => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        const { id, original_title, name, release_date, first_air_date, poster_path } = movie
+        const {
+          id,
+          original_title,
+          name,
+          release_date,
+          first_air_date,
+          poster_path,
+          vote_average,
+        } = movie
         let route = `/display/tv/${id}`
         return (
           <Grid item xs={3} key={movie.id}>
@@ -68,6 +76,8 @@ export default (props) => {
               date={release_date || first_air_date}
               poster={`${basePosterUrl}${posterSize}${poster_path}`}
               movie={movie}
+              type={topRated.type}
+              rating={vote_average}
             />
           </Grid>
         )

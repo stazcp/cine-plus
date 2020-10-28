@@ -20,7 +20,7 @@ const customStyles = {
 export default function RatingBar({ rating }) {
   return (
     <CircularProgressbar
-      value={70}
+      value={rating * 10}
       text={`${rating * 10}%`}
       styles={customStyles}
       background={true}
