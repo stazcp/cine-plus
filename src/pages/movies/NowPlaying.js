@@ -14,7 +14,7 @@ export default (props) => {
   // remove array index
   const getMovies = () => {
     if (!movies.length) {
-      get('movie', conf[0]).then((data) => {
+      get('movie', conf).then((data) => {
         setNowPlaying({ movies: data, conf: conf, type: 'movie' })
       })
     }

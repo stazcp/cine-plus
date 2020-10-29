@@ -23,14 +23,6 @@ export const MovieProvider = (props) => {
     conf: ['upcoming'],
     type: 'movie',
   })
-  const [nowPlaying, setNowPlaying] = useState({ movies: [], conf: ['now_playing'], type: 'movie' })
-  const [trailers, setTrailers] = useState({ movies: [], conf: [], type: 'trailer' })
-  const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
-  const [display, setDisplay] = useState()
-  const [cast, setCast] = useState({ people: [], type: 'person' })
-  const [openTrailer, setOpenTrailer] = useState(false)
-  const [movie, setMovie] = useState()
-  //tvShows
   const [airingToday, setAiringToday] = useState({
     movies: [],
     conf: ['airing_today'],
@@ -41,6 +33,14 @@ export const MovieProvider = (props) => {
     conf: ['on_the_air'],
     type: 'tv',
   })
+  const [nowPlaying, setNowPlaying] = useState({ movies: [], conf: ['now_playing'], type: 'movie' })
+  const [trailers, setTrailers] = useState({ movies: [], conf: [], type: 'trailer' })
+  const [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/')
+  const [display, setDisplay] = useState()
+  const [cast, setCast] = useState({ people: [], type: 'person' })
+  const [openTrailer, setOpenTrailer] = useState(false)
+  const [movie, setMovie] = useState()
+
   return (
     <MovieContext.Provider
       value={{

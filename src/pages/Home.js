@@ -99,20 +99,20 @@ export default function Home(props) {
   }
 
   const getNowPlaying = async () => {
-    get(nowPlaying.type, nowPlaying.conf[0]).then((data) => {
+    get(nowPlaying.type, ...nowPlaying.conf).then((data) => {
       setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
-      setNowPlaying({ movies: data })
+      setNowPlaying({ movies: data, conf: nowPlaying.conf, type: nowPlaying.type })
     })
   }
 
   const getTopRated = (option) => {
-    get(option, topRated.conf).then((data) => {
+    get(option, ...topRated.conf).then((data) => {
       setTopRated({ movies: data, conf: topRated.conf, type: option })
     })
   }
 
   const getPopular = (option) => {
-    get(option, popular.conf).then((data) => {
+    get(option, ...popular.conf).then((data) => {
       setPopular({ movies: data, conf: popular.conf, type: option })
     })
   }
@@ -123,11 +123,10 @@ export default function Home(props) {
     })
   }
 
-  // will render a pop-up
   const renderTrailers = (movies, type) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        const { id, original_title, first_air_date, poster_path, name, release_date } = movie
+        let { id, original_title, first_air_date, poster_path, name, release_date } = movie
         return (
           <DisplayCard
             key={id}
@@ -164,6 +163,11 @@ export default function Home(props) {
         vote_average,
       } = movie
       let route = `/display/${type}/${id}`
+      /*
+      mixed media means it could contain movies or tvShows
+      on mixed arrays elements will have media_type describing
+      if it is a tv or movie we are receiving
+      */
       if (type === 'mixed') {
         type = media_type
       }

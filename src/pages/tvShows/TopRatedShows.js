@@ -13,7 +13,7 @@ export default (props) => {
 
   const getMovies = () => {
     if (!movies.length || type != 'tv') {
-      get('tv', conf[0]).then((data) => {
+      get('tv', ...conf).then((data) => {
         setTopRated({ movies: data, conf: conf, type: 'tv' })
       })
     }

@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal'
 import { MovieContext } from './MovieContext'
 import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
+// potential of adding controls
 // import { Slider, Direction } from 'react-player-controls'
 //slider to be implemented
 //https://www.npmjs.com/package/react-player-controls#playericon-
@@ -41,9 +42,7 @@ export default function SimpleModal({ open }) {
   const { setOpenTrailer, movie, setMovie } = useContext(MovieContext)
   const [trailer, setTrailer] = useState()
   const [key, setKey] = useState()
-
-  // getModalStyle is not a pure function, we roll the style only on the first render ??
-  const [modalStyle] = React.useState(getModalStyle)
+  const [modalStyle] = useState(getModalStyle)
 
   // useEffect(() => {
   //   if (movie && (!key || !trailer)) {

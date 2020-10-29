@@ -32,13 +32,12 @@ export const getConfig = async (): Promise<{
   }
 }
 
-// potentially receives object, phase B
 // used for fetching movies, tvShows, and people
-export const get = async (type: string, category: string, extra: string): Promise<any> => {
+export const get = async (type: string, conf: string, extra: string): Promise<any> => {
   try {
     let url = extra
-      ? `${base_url}${type}/${category}/${extra}?api_key=${api_key}`
-      : `${base_url}${type}/${category}?api_key=${api_key}`
+      ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`
+      : `${base_url}${type}/${conf}?api_key=${api_key}`
 
     let response = await fetch(url)
     let result = await response.json()

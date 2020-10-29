@@ -4,7 +4,15 @@ import 'react-circular-progressbar/dist/styles.css'
 
 const customStyles = {
   root: {
-    width: '30%',
+    width: '25%',
+    position: 'relative',
+    zIndex: 10,
+    gridColumn: 1,
+    gridRow: 1,
+    zIndex: 10,
+    justifySelf: 'start',
+    top: '92%',
+    left: '5%',
   },
   text: {
     // Text color

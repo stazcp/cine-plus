@@ -13,7 +13,7 @@ export default (props) => {
 
   const getMovies = () => {
     if (!movies.length) {
-      get(type, conf[0]).then((data) => {
+      get(type, ...conf).then((data) => {
         setAiringToday({ movies: data, conf: conf, type: type })
       })
     }

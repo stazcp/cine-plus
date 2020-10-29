@@ -12,9 +12,9 @@ export default (props) => {
   }, [])
 
   const getMovies = () => {
-    if (!topRated.movies.length || topRated.type != 'movie') {
-      get('movie', topRated.conf[0]).then((data) => {
-        setTopRated({ movies: data, conf: topRated.conf, type: 'movie' })
+    if (!movies.length || type != 'movie') {
+      get('movie', ...conf).then((data) => {
+        setTopRated({ movies: data, conf: conf, type: 'movie' })
       })
     }
   }

@@ -77,7 +77,6 @@ export default function MediaHandler({ movies, type, pageTitle }) {
       )
     }
   }
-
   return (
     <React.Fragment>
       <Container maxWidth="lg">

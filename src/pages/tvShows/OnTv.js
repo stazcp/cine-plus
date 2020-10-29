@@ -12,9 +12,9 @@ export default (props) => {
   }, [])
 
   const getMovies = () => {
-    if (!onTV.movies.length) {
-      get(onTV.type, onTV.conf[0]).then((data) => {
-        setOnTV({ movies: data, conf: onTV.conf, type: onTV.type })
+    if (!movies.length) {
+      get(type, ...conf).then((data) => {
+        setOnTV({ movies: data, conf: conf, type: type })
       })
     }
   }

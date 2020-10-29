@@ -42,6 +42,17 @@ export default function MovieCard({
       fontSize: '16px',
       lineHeight: '1',
     },
+    mediaContainer: {
+      display: 'grid',
+    },
+    buttonBase: {
+      gridColumn: 1,
+      gridRow: 1,
+      zIndex: 1,
+    },
+    cardContent: {
+      paddingTop: 20,
+    },
   }
 
   //stores the clicked movie to present it in Display page.
@@ -67,15 +78,22 @@ export default function MovieCard({
   return (
     <div className="CardComponent">
       <Card className={classes.root}>
-        <ButtonBase onClick={() => handleClick()} component={Link} to={to}>
-          <CardMedia
-            className={classes.cardMedia}
-            image={poster || 'https://source.unsplash.com/random'}
-            title={title}
-          />
-        </ButtonBase>
-        {renderRating()}
-        <CardContent className={classes.cardContent}>
+        <div className="MediaContainer" style={styles.mediaContainer}>
+          {renderRating()}
+          <ButtonBase
+            onClick={() => handleClick()}
+            component={Link}
+            to={to}
+            style={styles.buttonBase}
+          >
+            <CardMedia
+              className={classes.cardMedia}
+              image={poster || 'https://source.unsplash.com/random'}
+              title={title}
+            />
+          </ButtonBase>
+        </div>
+        <CardContent className={classes.cardContent} style={styles.cardContent}>
           <Typography className={classes.link}>
             <Link to={to} style={styles.link} onClick={() => handleClick()}>
               {title}

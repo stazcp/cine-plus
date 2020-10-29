@@ -14,7 +14,7 @@ export default (props) => {
   //shares same state with popularMovies
   const getMovies = () => {
     if (!movies.length || type != 'tv') {
-      get('tv', conf[0]).then((data) => {
+      get('tv', ...conf).then((data) => {
         setPopular({ movies: data, conf: conf, type: 'tv' })
       })
     }
