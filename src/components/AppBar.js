@@ -217,39 +217,39 @@ export default function PrimarySearchAppBar() {
     )
   }
 
-  const moreMenuId = 'more-menu'
-  const renderMoreMenu = () => {
-    const items = [
-      { title: 'Discussions', to: '/discussions' },
-      { title: 'Leaderboard', to: '/leaderboard' },
-      { title: 'Support', to: '/support' },
-      { title: 'API', to: '/api' },
-    ]
-    return (
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorEl={anchorEl.more}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        id={moreMenuId}
-        keepMounted
-        open={Boolean(anchorEl.more)}
-        onClose={handleMenuClose}
-      >
-        {items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.routingLink}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    )
-  }
+  // const moreMenuId = 'more-menu'
+  // const renderMoreMenu = () => {
+  //   const items = [
+  //     { title: 'Discussions', to: '/discussions' },
+  //     { title: 'Leaderboard', to: '/leaderboard' },
+  //     { title: 'Support', to: '/support' },
+  //     { title: 'API', to: '/api' },
+  //   ]
+  //   return (
+  //     <Menu
+  //       elevation={0}
+  //       getContentAnchorEl={null}
+  //       anchorEl={anchorEl.more}
+  //       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+  //       transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+  //       id={moreMenuId}
+  //       keepMounted
+  //       open={Boolean(anchorEl.more)}
+  //       onClose={handleMenuClose}
+  //     >
+  //       {items.map((item, i) => {
+  //         return (
+  //           <MenuItem key={i}>
+  //             <Link to={item.to} style={styles.routingLink}>
+  //               {' '}
+  //               {item.title}{' '}
+  //             </Link>
+  //           </MenuItem>
+  //         )
+  //       })}
+  //     </Menu>
+  //   )
+  // }
 
   const renderMovies = (
     <Typography
@@ -302,22 +302,22 @@ export default function PrimarySearchAppBar() {
     </Typography>
   )
 
-  const renderMore = (
-    <Typography
-      edge="end"
-      aria-label="more menu"
-      aria-controls={moreMenuId}
-      aria-haspopup="true"
-      onClick={(e) => handleOpenMenu(e, 'more')}
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
-      <Link to="#" style={styles.link}>
-        More
-      </Link>
-    </Typography>
-  )
+  // const renderMore = (
+  //   <Typography
+  //     edge="end"
+  //     aria-label="more menu"
+  //     aria-controls={moreMenuId}
+  //     aria-haspopup="true"
+  //     onClick={(e) => handleOpenMenu(e, 'more')}
+  //     color="inherit"
+  //     className={classes.h5Link}
+  //     variant="h5"
+  //   >
+  //     <Link to="#" style={styles.link}>
+  //       More
+  //     </Link>
+  //   </Typography>
+  // )
 
   const renderLogin = (
     <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5">
@@ -391,7 +391,7 @@ export default function PrimarySearchAppBar() {
             {renderMovies}
             {renderTvShows}
             {renderPeople}
-            {renderMore}
+            {/* {renderMore} */}
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -416,7 +416,7 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
       {renderPeopleMenu()}
-      {renderMoreMenu()}
+      {/* {renderMoreMenu()} */}
       {renderMoviesMenu()}
       {renderTVShowsMenu()}
       {/* {renderMobileMenu()} */}
