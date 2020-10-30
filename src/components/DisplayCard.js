@@ -13,12 +13,44 @@ import {
   Typography,
   Card,
   Button,
+  IconButton,
 } from '@material-ui/core'
-// import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles'
+import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone'
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
 import RatingBar from './RatingBar'
+import Firebase from './Firebase'
+
+const styles = {
+  link: {
+    color: 'inherit',
+    textDecoration: 'none',
+    fontWeight: '700',
+    fontSize: '16px',
+    lineHeight: '1',
+  },
+  mediaContainer: {
+    display: 'grid',
+  },
+  buttonBase: {
+    gridColumn: 1,
+    gridRow: 1,
+    zIndex: 1,
+  },
+  cardContent: {
+    paddingTop: 20,
+  },
+  moreButton: {
+    position: 'relative',
+    gridColumn: 1,
+    gridRow: 1,
+    zIndex: 10,
+    top: '-44%',
+    right: '-40%',
+  },
+}
 
 export default function MovieCard({
   date,
@@ -34,27 +66,6 @@ export default function MovieCard({
   const classes = useStyles()
   const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
 
-  const styles = {
-    link: {
-      color: 'inherit',
-      textDecoration: 'none',
-      fontWeight: '700',
-      fontSize: '16px',
-      lineHeight: '1',
-    },
-    mediaContainer: {
-      display: 'grid',
-    },
-    buttonBase: {
-      gridColumn: 1,
-      gridRow: 1,
-      zIndex: 1,
-    },
-    cardContent: {
-      paddingTop: 20,
-    },
-  }
-
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
     if (type === 'person') {
@@ -69,9 +80,23 @@ export default function MovieCard({
     }
   }
 
+  const handleLike = () => {
+    console.log('like')
+  }
+
   const renderRating = () => {
     if (type === 'movie' || type === 'tv') {
       return <RatingBar rating={rating} />
+    }
+  }
+
+  const renderLikeBtn = () => {
+    if (type === 'movie' || type === 'tv') {
+      return (
+        <IconButton aria-label="moreButton" style={styles.moreButton} onClick={() => handleLike()}>
+          <FavoriteTwoToneIcon color="secondary" />
+        </IconButton>
+      )
     }
   }
 
@@ -79,6 +104,7 @@ export default function MovieCard({
     <div className="CardComponent">
       <Card className={classes.root}>
         <div className="MediaContainer" style={styles.mediaContainer}>
+          {renderLikeBtn()}
           {renderRating()}
           <ButtonBase
             onClick={() => handleClick()}
@@ -90,6 +116,7 @@ export default function MovieCard({
               className={classes.cardMedia}
               image={poster || 'https://source.unsplash.com/random'}
               title={title}
+              style={{ zIndex: 2 }}
             />
           </ButtonBase>
         </div>

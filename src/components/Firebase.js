@@ -4,5 +4,14 @@ import { FirebaseContext } from '../Firebase/FirebaseContext'
 export default function Firebase(params) {
   const { db } = useContext(FirebaseContext)
 
-  const listUsers = async () => {}
+  const getUsers = async () => {
+    const users = await db.collection('users').get()
+    users.forEach((doc) => {
+      console.log(doc.id)
+    })
+  }
+
+  // getUsers()
+
+  return null
 }

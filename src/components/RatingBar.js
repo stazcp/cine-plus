@@ -6,11 +6,9 @@ const customStyles = {
   root: {
     width: '25%',
     position: 'relative',
-    zIndex: 10,
     gridColumn: 1,
     gridRow: 1,
     zIndex: 10,
-    justifySelf: 'start',
     top: '92%',
     left: '5%',
   },

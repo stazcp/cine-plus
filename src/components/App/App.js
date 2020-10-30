@@ -20,7 +20,7 @@ import Api from '../../pages/more/Api'
 import Display from '../../pages/Display'
 import { MovieProvider } from '../MovieContext'
 import { FirebaseProvider } from '../../Firebase/FirebaseContext'
-import FirebaseTester from '../FirebaseTester'
+import Firebase from '../Firebase'
 import Login from '../../pages/account/Login'
 import Join from '../../pages/account/Join'
 import Account from '../../pages/account/Account'
@@ -99,7 +99,7 @@ function App() {
             </Route>
           </Switch>
           <Footer />
-          <FirebaseTester />
+          <Firebase />
         </FirebaseProvider>
       </Router>
     </MovieProvider>
