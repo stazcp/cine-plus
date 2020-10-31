@@ -36,21 +36,9 @@ export default (props) => {
     getPeople()
   }, [])
 
-  // const getPosterUrl = () => {
-  //   let posterUrl = window.localStorage.getItem('poster_url')
-  //   if (posterUrl) {
-  //     setBasePosterUrl(JSON.parse(posterUrl))
-  //   } else {
-  //     getConfig().then((data) =>
-  //       setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-  //     )
-  //   }
-  // }
-
   const getPeople = () => {
     get('person', 'popular').then((data) => {
       setPeople(data)
-      console.log(data)
     })
   }
 
@@ -68,6 +56,7 @@ export default (props) => {
               date={title}
               poster={`${basePosterUrl}w235_and_h235_face${profile_path}`}
               person={person}
+              type="person"
             />
           </Grid>
         )

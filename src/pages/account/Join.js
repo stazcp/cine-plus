@@ -46,7 +46,7 @@ const styles = {
 
 export default function Join() {
   const classes = useStyles()
-  const { provider, user } = useContext(FirebaseContext)
+  const { provider, user, newUser } = useContext(FirebaseContext)
 
   const handleGoogleSignup = (e) => {
     firebase
@@ -54,23 +54,20 @@ export default function Join() {
       .signInWithPopup(provider)
       .then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken
-        console.log('token', token)
+        let token = result.credential.accessToken
         // The signed-in user info.
-        var user = result.user
-        console.log('user', user)
-        // ...
+        let user = result.user
+        newUser(user.email)
       })
       .catch(function (error) {
         console.log(error)
         // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
+        let errorCode = error.code
+        let errorMessage = error.message
         // The email of the user's account used.
-        var email = error.email
+        let email = error.email
         // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential
-        // ...
+        let credential = error.credential
       })
   }
 

@@ -21,7 +21,7 @@ import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
 import RatingBar from './RatingBar'
-import Firebase from './Firebase'
+import { FirebaseContext } from '../Firebase/FirebaseContext'
 
 const styles = {
   link: {
@@ -65,7 +65,7 @@ export default function MovieCard({
 }) {
   const classes = useStyles()
   const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
-
+  const { favorite } = useContext(FirebaseContext)
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
     if (type === 'person') {
@@ -81,7 +81,11 @@ export default function MovieCard({
   }
 
   const handleLike = () => {
-    console.log('like')
+    if (type === 'movie' || type === 'tv') {
+      favorite(movie, type)
+    } else if (type === 'person') {
+      favorite(person, type)
+    }
   }
 
   const renderRating = () => {
@@ -91,7 +95,7 @@ export default function MovieCard({
   }
 
   const renderLikeBtn = () => {
-    if (type === 'movie' || type === 'tv') {
+    if (type === 'movie' || type === 'tv' || type === 'person') {
       return (
         <IconButton aria-label="moreButton" style={styles.moreButton} onClick={() => handleLike()}>
           <FavoriteTwoToneIcon color="secondary" />

@@ -102,8 +102,6 @@ export default function Display(): React$Element<React$FragmentType> {
   }
 
   const getCast = () => {
-    // fails because type is mixed
-    console.log(type)
     get(type, id, 'credits').then((data) => {
       setCast({ people: data, type: cast.type })
     })
@@ -129,6 +127,7 @@ export default function Display(): React$Element<React$FragmentType> {
                 : 'https://source.unsplash.com/random'
             }
             person={person}
+            type="person"
           />
         )
       })
