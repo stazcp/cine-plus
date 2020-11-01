@@ -61,6 +61,7 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   const [liked, setLiked] = useState(false)
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
 
+  // doesn't happen with page refresh only!!
   useEffect(() => {
     setLikes()
   }, [])
@@ -70,7 +71,6 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   }, [liked])
 
   const setLikeIcn = () => {
-    console.log('setting Icons')
     if (liked) {
       setLikeIcon(likeIcons.liked)
     } else {
@@ -79,8 +79,9 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   }
 
   //checks if movie has been liked already
+  // sets likes accordingly on the page
   const setLikes = () => {
-    checkLiked(element, type).then((result) => {
+    checkLiked(element.id, type).then((result) => {
       setLiked(result)
     })
   }
@@ -88,13 +89,13 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
     if (type === 'person') {
-      setPerson(element)
+      setPerson(element.id)
     } else {
-      setDisplay(element)
+      setDisplay(element.id)
     }
     //open trailer
     if (type === 'trailer') {
-      setMovie(element)
+      setMovie(element.id)
       setOpenTrailer(true)
     }
   }
@@ -102,10 +103,10 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   const handleLike = () => {
     if (user) {
       if (!liked) {
-        favorite(element, type)
+        favorite(element.id, type)
         setLiked(true)
       } else {
-        removeFavorite(element, type)
+        removeFavorite(element.id, type)
         setLiked(false)
       }
     } else {

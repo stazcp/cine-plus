@@ -54,7 +54,7 @@ export function FirebaseProvider({ children }) {
           const { favoriteMovies } = doc.data()
           await docRef.set(
             {
-              favoriteMovies: [...favoriteMovies, item.id],
+              favoriteMovies: [...favoriteMovies, item],
             },
             { merge: true }
           )
@@ -62,7 +62,7 @@ export function FirebaseProvider({ children }) {
           const { favoriteShows } = doc.data()
           await docRef.set(
             {
-              favoriteShows: [...favoriteShows, item.id],
+              favoriteShows: [...favoriteShows, item],
             },
             { merge: true }
           )
@@ -70,7 +70,7 @@ export function FirebaseProvider({ children }) {
           const { favoriteActors } = doc.data()
           await docRef.set(
             {
-              favoriteActors: [...favoriteActors, item.id],
+              favoriteActors: [...favoriteActors, item],
             },
             { merge: true }
           )
@@ -153,6 +153,7 @@ export function FirebaseProvider({ children }) {
         if (type === 'movie') {
           const { favoriteMovies } = doc.data()
           let found = favoriteMovies.filter((movie) => movie === item)
+          console.log(found)
           if (found.length) {
             return true
           } else {
