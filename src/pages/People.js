@@ -55,7 +55,7 @@ export default (props) => {
               title={name}
               date={title}
               poster={`${basePosterUrl}w235_and_h235_face${profile_path}`}
-              person={person}
+              element={person}
               type="person"
             />
           </Grid>

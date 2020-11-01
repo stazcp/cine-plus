@@ -135,7 +135,7 @@ export default function Home(props) {
             date={release_date || first_air_date}
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
             to={'#'}
-            movie={movie}
+            element={movie}
             type={type}
           />
         )
@@ -179,7 +179,7 @@ export default function Home(props) {
           title={original_title || name || original_name}
           date={release_date || first_air_date}
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
-          movie={movie}
+          element={movie}
           type={type}
           rating={vote_average}
         />

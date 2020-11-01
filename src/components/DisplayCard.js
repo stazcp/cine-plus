@@ -1,10 +1,6 @@
-//improvements needed:
-//1. User score %
-//2. options button right left for ratings
-//3. box size, margin, and shadows
 // random image link: https://source.unsplash.com/random
 
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {
   CardActions,
   ButtonBase,
@@ -17,6 +13,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
@@ -52,39 +49,68 @@ const styles = {
   },
 }
 
-export default function MovieCard({
-  date,
-  title,
-  poster,
-  useStyles,
-  to,
-  movie,
-  person,
-  type,
-  rating,
-}) {
+const likeIcons = {
+  liked: <FavoriteIcon color="secondary" />,
+  unliked: <FavoriteTwoToneIcon color="secondary" />,
+}
+
+export default function MovieCard({ date, title, poster, useStyles, to, element, type, rating }) {
   const classes = useStyles()
   const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
-  const { favorite } = useContext(FirebaseContext)
+  const [likeIcon, setLikeIcon] = useState(likeIcons.unliked)
+  const [liked, setLiked] = useState(false)
+  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
+
+  useEffect(() => {
+    setLikes()
+  }, [])
+
+  useEffect(() => {
+    setLikeIcn()
+  }, [liked])
+
+  const setLikeIcn = () => {
+    console.log('setting Icons')
+    if (liked) {
+      setLikeIcon(likeIcons.liked)
+    } else {
+      setLikeIcon(likeIcons.unliked)
+    }
+  }
+
+  //checks if movie has been liked already
+  const setLikes = () => {
+    checkLiked(element, type).then((result) => {
+      setLiked(result)
+    })
+  }
+
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
     if (type === 'person') {
-      setPerson(person)
+      setPerson(element)
     } else {
-      setDisplay(movie)
+      setDisplay(element)
     }
     //open trailer
     if (type === 'trailer') {
-      setMovie(movie)
+      setMovie(element)
       setOpenTrailer(true)
     }
   }
 
   const handleLike = () => {
-    if (type === 'movie' || type === 'tv') {
-      favorite(movie, type)
-    } else if (type === 'person') {
-      favorite(person, type)
+    if (user) {
+      if (!liked) {
+        favorite(element, type)
+        setLiked(true)
+      } else {
+        removeFavorite(element, type)
+        setLiked(false)
+      }
+    } else {
+      //popup login or signup
+      console.log('no user')
     }
   }
 
@@ -94,11 +120,12 @@ export default function MovieCard({
     }
   }
 
+  //likeBtns are rendered once a user is detected
   const renderLikeBtn = () => {
-    if (type === 'movie' || type === 'tv' || type === 'person') {
+    if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
       return (
         <IconButton aria-label="moreButton" style={styles.moreButton} onClick={() => handleLike()}>
-          <FavoriteTwoToneIcon color="secondary" />
+          {likeIcon}
         </IconButton>
       )
     }

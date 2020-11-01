@@ -48,7 +48,7 @@ export function FirebaseProvider({ children }) {
         const docRef = db.collection('users').doc(user.email)
         const doc = await docRef.get()
         if (!doc.exists) {
-          return null
+          return false
         }
         if (type === 'movie') {
           const { favoriteMovies } = doc.data()
@@ -77,10 +77,112 @@ export function FirebaseProvider({ children }) {
         }
       } catch (error) {
         console.log(error)
+        return false
       }
     } else {
       console.log('no user')
+      return false
     }
+    return true
+  }
+
+  const removeFavorite = async (item, type) => {
+    if (user) {
+      try {
+        const docRef = db.collection('users').doc(user.email)
+        const doc = await docRef.get()
+        if (!doc.exists) {
+          return false
+        }
+        if (type === 'movie') {
+          const { favoriteMovies } = doc.data()
+          let index = favoriteMovies.findIndex((movie) => movie === item)
+          if (index) {
+            favoriteMovies.splice(index, 1)
+          }
+          await docRef.set(
+            {
+              favoriteMovies: favoriteMovies,
+            },
+            { merge: true }
+          )
+        } else if (type === 'tv') {
+          const { favoriteShows } = doc.data()
+          let index = favoriteShows.findIndex((movie) => movie === item)
+          if (index) {
+            favoriteShows.splice(index, 1)
+          }
+          await docRef.set(
+            {
+              favoriteShows: favoriteShows,
+            },
+            { merge: true }
+          )
+        } else if (type === 'person') {
+          const { favoriteActors } = doc.data()
+          let index = favoriteActors.findIndex((movie) => movie === item)
+          if (index) {
+            favoriteActors.splice(index, 1)
+          }
+          await docRef.set(
+            {
+              favoriteActors: favoriteActors,
+            },
+            { merge: true }
+          )
+        }
+      } catch (error) {
+        console.log(error)
+        return false
+      }
+    } else {
+      console.log('no user')
+      return false
+    }
+    return true
+  }
+
+  const checkLiked = async (item, type) => {
+    if (user) {
+      try {
+        const docRef = db.collection('users').doc(user.email)
+        const doc = await docRef.get()
+        if (!doc.exists) {
+          return false
+        }
+        if (type === 'movie') {
+          const { favoriteMovies } = doc.data()
+          let found = favoriteMovies.filter((movie) => movie === item)
+          if (found.length) {
+            return true
+          } else {
+            return false
+          }
+        } else if (type === 'tv') {
+          const { favoriteShows } = doc.data()
+          let found = favoriteShows.filter((movie) => movie === item)
+          if (found.length) {
+            return true
+          } else {
+            return false
+          }
+        } else if (type === 'person') {
+          const { favoriteActors } = doc.data()
+          let found = favoriteActors.filter((movie) => movie === item)
+          if (found.length) {
+            return true
+          } else {
+            return false
+          }
+        }
+      } catch (error) {
+        console.log(error)
+        return false
+      }
+    } else {
+      return false
+    }
+    return false
   }
 
   //add new user to database and set schema
@@ -123,10 +225,12 @@ export function FirebaseProvider({ children }) {
         provider,
         user,
         favorite,
+        removeFavorite,
         newUser,
         getFavoriteMovies,
         getFavoriteShows,
         getFavoriteActors,
+        checkLiked,
       }}
     >
       {children}
