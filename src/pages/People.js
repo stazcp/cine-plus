@@ -83,7 +83,7 @@ export default (props) => {
             </Box>
             <Box className={classes.centralSection}>
               <Container maxWidth="lg">
-                <Grid container spacing={7} lg={20}>
+                <Grid container spacing={7} lg={'auto'} item>
                   {renderPeople()}
                 </Grid>
               </Container>

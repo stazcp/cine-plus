@@ -57,14 +57,26 @@ const likeIcons = {
 export default function MovieCard({ date, title, poster, useStyles, to, element, type, rating }) {
   const classes = useStyles()
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
-  const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
+  const {
+    setDisplay,
+    setPerson,
+    setOpenTrailer,
+    setMovie,
+    currentLikes,
+    setCurrentLikes,
+  } = useContext(MovieContext)
   const [likeIcon, setLikeIcon] = useState(likeIcons.unliked)
   const [liked, setLiked] = useState(checkLiked(element && element.id, type))
 
   useEffect(() => {
     setLikes()
     setLikeIcn()
-  }, [liked, user])
+  }, [liked, user, currentLikes])
+
+  //If the movie is on the same page it will be triggered to change it's like status as well
+  useEffect(() => {
+    setCurrentLikes([...currentLikes, element.id])
+  }, [liked])
 
   const setLikeIcn = () => {
     if (liked) {

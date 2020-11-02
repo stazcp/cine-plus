@@ -86,7 +86,7 @@ export default function Home(props) {
 
   const getFrontPage = () => {
     getPosterUrl()
-    getPopular(popular.type)
+    getPopular('movie')
     getTopRated(topRated.type)
     getTrending('day')
     getNowPlaying()

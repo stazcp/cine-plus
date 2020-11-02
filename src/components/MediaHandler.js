@@ -61,7 +61,7 @@ export default function MediaHandler({ movies, type, pageTitle }) {
               title={original_title || name}
               date={release_date || first_air_date}
               poster={`${basePosterUrl}${posterSize}${poster_path}`}
-              movie={movie}
+              element={movie}
               type={type}
               rating={vote_average}
             />

@@ -41,6 +41,7 @@ export const MovieProvider = (props) => {
   const [openTrailer, setOpenTrailer] = useState(false)
   const [movie, setMovie] = useState()
   const [person, setPerson] = useState()
+  const [currentLikes, setCurrentLikes] = useState([])
 
   return (
     <MovieContext.Provider
@@ -73,6 +74,8 @@ export const MovieProvider = (props) => {
         setOnTV,
         person,
         setPerson,
+        currentLikes,
+        setCurrentLikes,
       }}
     >
       {props.children}
