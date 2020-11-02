@@ -56,19 +56,15 @@ const likeIcons = {
 
 export default function MovieCard({ date, title, poster, useStyles, to, element, type, rating }) {
   const classes = useStyles()
+  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const { setDisplay, setPerson, setOpenTrailer, setMovie } = useContext(MovieContext)
   const [likeIcon, setLikeIcon] = useState(likeIcons.unliked)
-  const [liked, setLiked] = useState(false)
-  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
+  const [liked, setLiked] = useState(checkLiked(element && element.id, type))
 
-  // doesn't happen with page refresh only!!
   useEffect(() => {
     setLikes()
-  }, [])
-
-  useEffect(() => {
     setLikeIcn()
-  }, [liked])
+  }, [liked, user])
 
   const setLikeIcn = () => {
     if (liked) {

@@ -169,7 +169,7 @@ export default function Join() {
             </form>
           </>
         ) : (
-          <Redirect to="/account" />
+          <Redirect to="/" />
         )}
         <GoogleButton
           label="Sign Up with Google"

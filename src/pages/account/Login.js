@@ -170,7 +170,7 @@ export default function Login() {
             </form>
           </>
         ) : (
-          <Redirect to="/account" />
+          <Redirect to="/" />
         )}
         <GoogleButton
           label="Sign in with Google"
