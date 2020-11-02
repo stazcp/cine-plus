@@ -81,7 +81,7 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
   //checks if movie has been liked already
   // sets likes accordingly on the page
   const setLikes = () => {
-    checkLiked(element.id, type).then((result) => {
+    checkLiked(element && element.id, type).then((result) => {
       setLiked(result)
     })
   }
@@ -100,14 +100,17 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
     }
   }
 
+  // will setLiked true or false if depending on the operation
   const handleLike = () => {
     if (user) {
       if (!liked) {
-        favorite(element.id, type)
-        setLiked(true)
-      } else {
-        removeFavorite(element.id, type)
-        setLiked(false)
+        favorite(element.id, type).then((result) => {
+          setLiked(result)
+        })
+      } else if (liked) {
+        removeFavorite(element.id, type).then((result) => {
+          setLiked(result)
+        })
       }
     } else {
       //popup login or signup
