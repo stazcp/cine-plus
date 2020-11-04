@@ -26,22 +26,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function MediaHandler({ movies, type, pageTitle }) {
+export default function MediaHandler({ media, type, pageTitle }) {
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
-  let posterSize = 'w780'
+  let posterSize = 'w185'
 
   const getPosterUrl = () => {
     if (!basePosterUrl) {
       getConfig().then((data) => {
-        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        if (data?.images) {
+          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        }
       })
     }
   }
 
-  const renderMovies = () => {
-    if (Array.isArray(movies) && movies.length) {
-      return movies.map((movie) => {
+  const renderMedia = () => {
+    if (Array.isArray(media) && media.length) {
+      return media.map((ele) => {
         const {
           id,
           original_title,
@@ -49,19 +51,21 @@ export default function MediaHandler({ movies, type, pageTitle }) {
           release_date,
           first_air_date,
           poster_path,
+          profile_path,
           vote_average,
-        } = movie
-        let route = `/display/movie/${id}`
+        } = ele
+        let route = `/display/${type}/${id}`
+        let path = poster_path || profile_path
         return (
-          <Grid item xs={3} key={movie.id}>
+          <Grid item xs={3} key={ele.id}>
             <DisplayCard
               key={id}
               to={route}
               useStyles={cardStyle}
               title={original_title || name}
               date={release_date || first_air_date}
-              poster={`${basePosterUrl}${posterSize}${poster_path}`}
-              element={movie}
+              poster={`${basePosterUrl}${posterSize}${path}`}
+              element={ele}
               type={type}
               rating={vote_average}
             />
@@ -70,9 +74,9 @@ export default function MediaHandler({ movies, type, pageTitle }) {
       })
     } else {
       return (
-        <Grid item xs={3}>
+        <Grid item xs={3} style={{ height: '23rem' }}>
           {' '}
-          <h1>No movies found...</h1>{' '}
+          <h5>No Media found...</h5>{' '}
         </Grid>
       )
     }
@@ -91,7 +95,7 @@ export default function MediaHandler({ movies, type, pageTitle }) {
               <Accordion />
               <Container maxWidth="md">
                 <Grid container spacing={1}>
-                  {renderMovies()}
+                  {renderMedia()}
                 </Grid>
               </Container>
             </Box>

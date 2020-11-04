@@ -69,17 +69,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const styles = {
-  routingLink: {
-    textDecoration: 'none',
-    color: 'inherit',
-  },
   link: {
     color: 'inherit',
     textDecoration: 'none',
   },
-  // account: {
-  //   paddingTop: 10,
-  // },
 }
 
 export default function PrimarySearchAppBar() {
@@ -143,7 +136,7 @@ export default function PrimarySearchAppBar() {
         {items.map((item, i) => {
           return (
             <MenuItem key={i}>
-              <Link to={item.to} style={styles.routingLink}>
+              <Link to={item.to} style={styles.link}>
                 {' '}
                 {item.title}{' '}
               </Link>
@@ -177,7 +170,7 @@ export default function PrimarySearchAppBar() {
         {items.map((item, i) => {
           return (
             <MenuItem key={i}>
-              <Link to={item.to} style={styles.routingLink}>
+              <Link to={item.to} style={styles.link}>
                 {' '}
                 {item.title}{' '}
               </Link>
@@ -206,7 +199,7 @@ export default function PrimarySearchAppBar() {
         {items.map((item, i) => {
           return (
             <MenuItem key={i}>
-              <Link to={item.to} style={styles.routingLink}>
+              <Link to={item.to} style={styles.link}>
                 {' '}
                 {item.title}{' '}
               </Link>
@@ -240,7 +233,7 @@ export default function PrimarySearchAppBar() {
   //       {items.map((item, i) => {
   //         return (
   //           <MenuItem key={i}>
-  //             <Link to={item.to} style={styles.routingLink}>
+  //             <Link to={item.to} style={styles.link}>
   //               {' '}
   //               {item.title}{' '}
   //             </Link>

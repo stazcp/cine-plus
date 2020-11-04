@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -16,6 +16,7 @@ import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
+import './customStyles.css'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
 const styles = {
   googleBtn: {
     marginTop: 40,
+  },
+  link: {
+    textDecoration: 'none',
   },
 }
 
@@ -126,7 +130,7 @@ export default function Login() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Coming soon"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -137,7 +141,7 @@ export default function Login() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Please Login Using Google"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -157,12 +161,12 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  {/* <Link href="#" variant="body2">
                     Forgot password?
-                  </Link>
+                  </Link> */}
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to="/Join" style={styles.link} className={'navLink'}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Card,
   CardActionArea,
@@ -21,6 +22,7 @@ import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 
 const styles = {
   box: {
@@ -51,7 +53,7 @@ const styles = {
     paddingTop: 20,
     paddingBottom: 30,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   h2: {
     fontSize: 20.8,
@@ -59,6 +61,10 @@ const styles = {
   },
   googleBtn: {
     marginTop: 40,
+  },
+  link: {
+    paddingTop: 20,
+    textDecoration: 'none',
   },
 }
 
@@ -98,11 +104,7 @@ export default function Account(): React$Element<React$FragmentType> {
                       title="title"
                     />
                   </CardActionArea>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      X
-                    </Button>
-                  </CardActions>
+                  <CardActions></CardActions>
                 </Card>
               </Grid>
               <Grid item xs={9} style={styles.headerSection}>
@@ -115,17 +117,28 @@ export default function Account(): React$Element<React$FragmentType> {
                 </Typography>
                 <br />
                 <br />
+                <Box style={styles.bot} flexDirection="row" display="flex">
+                  <GoogleButton
+                    label="Sign Out"
+                    type="dark" // can be light or dark
+                    onClick={() => handleGoogleSignout()}
+                    style={styles.googleBtn}
+                  />
+                </Box>
                 <Box display="flex">{/* render directors */}</Box>
               </Grid>
             </Grid>
           </Box>
           <Box style={styles.bot} flexDirection="row" display="flex">
-            <GoogleButton
-              label="Sign Out"
-              type="dark" // can be light or dark
-              onClick={() => handleGoogleSignout()}
-              style={styles.googleBtn}
-            />
+            <Link to="/favorite/movie" style={styles.link} className={'navLink'}>
+              <FavoriteIcon color="secondary" /> Movies
+            </Link>
+            <Link to="/favorite/tv" style={styles.link} className={'navLink'}>
+              <FavoriteIcon color="secondary" /> TV Shows
+            </Link>
+            <Link to="/favorite/person" style={styles.link} className={'navLink'}>
+              <FavoriteIcon color="secondary" /> People
+            </Link>
           </Box>
         </>
       ) : (

@@ -33,7 +33,7 @@ export const getConfig = async (): Promise<{
 }
 
 // used for fetching movies, tvShows, and people
-export const get = async (type: string, conf: string, extra: string): Promise<any> => {
+export const get = async (type: string, conf: string, extra: ?string): Promise<any> => {
   try {
     let url = extra
       ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`

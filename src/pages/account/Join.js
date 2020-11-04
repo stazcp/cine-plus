@@ -1,21 +1,24 @@
 import React, { useContext } from 'react'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
+import { Link } from 'react-router-dom'
+import {
+  Grid,
+  Box,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Container,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
+import './customStyles.css'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
 const styles = {
   googleBtn: {
     marginTop: 40,
+  },
+  link: {
+    textDecoration: 'none',
   },
 }
 
@@ -105,7 +111,7 @@ export default function Join() {
                     required
                     fullWidth
                     id="firstName"
-                    label="First Name"
+                    label="Coming Soon"
                     autoFocus
                   />
                 </Grid>
@@ -115,7 +121,7 @@ export default function Join() {
                     required
                     fullWidth
                     id="lastName"
-                    label="Last Name"
+                    label="Coming Soon"
                     name="lastName"
                     autoComplete="lname"
                   />
@@ -126,7 +132,7 @@ export default function Join() {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label="Coming Soon"
                     name="email"
                     autoComplete="email"
                   />
@@ -137,16 +143,10 @@ export default function Join() {
                     required
                     fullWidth
                     name="password"
-                    label="Password"
+                    label="Please Sign Up Using Google"
                     type="password"
                     id="password"
                     autoComplete="current-password"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                    label="I want to receive inspiration, marketing promotions and updates via email."
                   />
                 </Grid>
               </Grid>
@@ -161,7 +161,7 @@ export default function Join() {
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to="/Login" style={styles.link} className={'navLink'}>
                     Already have an account? Sign in
                   </Link>
                 </Grid>

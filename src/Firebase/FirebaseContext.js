@@ -98,7 +98,7 @@ export function FirebaseProvider({ children }) {
         if (type === 'movie') {
           const { favoriteMovies } = doc.data()
           let index = favoriteMovies.findIndex((movie) => movie === eleId)
-          if (index != -1) {
+          if (index !== -1) {
             favoriteMovies.splice(index, 1)
             await docRef.set(
               {
@@ -113,7 +113,7 @@ export function FirebaseProvider({ children }) {
         } else if (type === 'tv') {
           const { favoriteShows } = doc.data()
           let index = favoriteShows.findIndex((movie) => movie === eleId)
-          if (index != -1) {
+          if (index !== -1) {
             favoriteShows.splice(index, 1)
             await docRef.set(
               {
@@ -128,7 +128,7 @@ export function FirebaseProvider({ children }) {
         } else if (type === 'person') {
           const { favoriteActors } = doc.data()
           let index = favoriteActors.findIndex((movie) => movie === eleId)
-          if (index != -1) {
+          if (index !== -1) {
             favoriteActors.splice(index, 1)
             await docRef.set(
               {
@@ -161,7 +161,6 @@ export function FirebaseProvider({ children }) {
         if (type === 'movie') {
           const { favoriteMovies } = doc.data()
           let found = favoriteMovies.filter((movie) => movie === eleId)
-          console.log(found)
           if (found.length) {
             return true
           } else {
@@ -206,25 +205,24 @@ export function FirebaseProvider({ children }) {
     } catch (error) {}
   }
 
-  const getFavoriteMovies = async () => {
-    const docRef = db.collection('users').doc(user.email)
-    const doc = await docRef.get()
-    const { favoriteMovies } = doc.data()
-    return favoriteMovies
-  }
-
-  const getFavoriteShows = async () => {
-    const docRef = db.collection('users').doc(user.email)
-    const doc = await docRef.get()
-    const { favoriteShows } = doc.data()
-    return favoriteShows
-  }
-
-  const getFavoriteActors = async () => {
-    const docRef = db.collection('users').doc(user.email)
-    const doc = await docRef.get()
-    const { favoriteActors } = doc.data()
-    return favoriteActors
+  const getFavorites = async (type) => {
+    if (user) {
+      const docRef = db.collection('users').doc(user.email)
+      const doc = await docRef.get()
+      switch (type) {
+        case 'movie':
+          const { favoriteMovies } = doc.data()
+          return favoriteMovies
+        case 'tv':
+          const { favoriteShows } = doc.data()
+          return favoriteShows
+        case 'person':
+          const { favoriteActors } = doc.data()
+          return favoriteActors
+        default:
+          return null
+      }
+    }
   }
 
   return (
@@ -236,9 +234,7 @@ export function FirebaseProvider({ children }) {
         favorite,
         removeFavorite,
         newUser,
-        getFavoriteMovies,
-        getFavoriteShows,
-        getFavoriteActors,
+        getFavorites,
         checkLiked,
       }}
     >

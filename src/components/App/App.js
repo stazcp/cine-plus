@@ -24,6 +24,7 @@ import Login from '../../pages/account/Login'
 import Join from '../../pages/account/Join'
 import Account from '../../pages/account/Account'
 import Person from '../../pages/Person'
+import LikedContent from '../../pages/LikedContent'
 
 // lowercase routes
 function App() {
@@ -91,6 +92,9 @@ function App() {
             </Route>
             <Route path="/person/:id">
               <Person />
+            </Route>
+            <Route path="/favorite/:type">
+              <LikedContent />
             </Route>
             {/* main */}
             <Route path="/">

@@ -1,9 +1,3 @@
-// improvements needed:
-// 1. No scrolling up-down inside columns
-// 2. Clicker should be finger not text editor
-// 3. Figure out what am I going to show
-// 4.fix eslint bug with useEffect
-
 import React, { useState, useEffect, useContext } from 'react'
 import { Typography, Box, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,6 +9,7 @@ import TrailerModal from '../components/TrailerModal'
 import { useStylesSm, useStylesTrailer } from '../styles/CardStyles'
 import { getConfig, get, getTrailer } from '../utils/movieDB'
 import { MovieContext } from '../components/MovieContext'
+import { smCardStyles } from '../styles/RatingBarStyles'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -162,25 +157,23 @@ export default function Home(props) {
         original_name,
         vote_average,
       } = movie
-      let route = `/display/${type}/${id}`
       /*
       mixed media means it could contain movies or tvShows
       on mixed arrays elements will have media_type describing
       if it is a tv or movie we are receiving
       */
-      if (type === 'mixed') {
-        type = media_type
-      }
+      let route = `/display/${media_type || type}/${id}`
       return (
         <DisplayCard
           key={id}
           to={route}
           useStyles={useStylesSm}
+          ratingStyle={smCardStyles}
           title={original_title || name || original_name}
           date={release_date || first_air_date}
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
           element={movie}
-          type={type}
+          type={media_type || type}
           rating={vote_average}
         />
       )

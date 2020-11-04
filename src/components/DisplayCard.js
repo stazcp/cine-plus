@@ -12,13 +12,12 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone'
-import FavoriteIcon from '@material-ui/icons/Favorite'
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
 import RatingBar from './RatingBar'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
+import Like from './Like'
 
 const styles = {
   link: {
@@ -39,7 +38,7 @@ const styles = {
   cardContent: {
     paddingTop: 20,
   },
-  moreButton: {
+  likeBtn: {
     position: 'relative',
     gridColumn: 1,
     gridRow: 1,
@@ -49,24 +48,24 @@ const styles = {
   },
 }
 
-const likeIcons = {
-  liked: <FavoriteIcon color="secondary" />,
-  unliked: <FavoriteTwoToneIcon color="secondary" />,
-}
-
-export default function MovieCard({ date, title, poster, useStyles, to, element, type, rating }) {
-  const classes = useStyles()
-  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
-  const {
-    setDisplay,
-    setPerson,
-    setOpenTrailer,
-    setMovie,
-    currentLikes,
-    setCurrentLikes,
-  } = useContext(MovieContext)
-  const [likeIcon, setLikeIcon] = useState(likeIcons.unliked)
-  const [liked, setLiked] = useState(checkLiked(element && element.id, type))
+export default function MovieCard({
+  date,
+  title,
+  poster,
+  useStyles,
+  to,
+  element,
+  type,
+  rating,
+  ratingStyle,
+}) {
+  const classes = useStyles(),
+    { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext),
+    { setDisplay, setPerson, setOpenTrailer, setMovie, currentLikes, setCurrentLikes } = useContext(
+      MovieContext
+    ),
+    [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />),
+    [liked, setLiked] = useState(checkLiked(element && element.id, type))
 
   useEffect(() => {
     setLikes()
@@ -75,73 +74,68 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
 
   //If the movie is on the same page it will be triggered to change it's like status as well
   useEffect(() => {
-    setCurrentLikes([...currentLikes, element.id])
+    setCurrentLikes([...currentLikes, element && element.id])
   }, [liked])
 
   const setLikeIcn = () => {
-    if (liked) {
-      setLikeIcon(likeIcons.liked)
-    } else {
-      setLikeIcon(likeIcons.unliked)
-    }
-  }
-
-  //checks if movie has been liked already
-  // sets likes accordingly on the page
-  const setLikes = () => {
-    checkLiked(element && element.id, type).then((result) => {
-      setLiked(result)
-    })
-  }
-
-  //stores the clicked movie to present it in Display page.
-  const handleClick = () => {
-    if (type === 'person') {
-      setPerson(element.id)
-    } else {
-      setDisplay(element.id)
-    }
-    //open trailer
-    if (type === 'trailer') {
-      setMovie(element.id)
-      setOpenTrailer(true)
-    }
-  }
-
-  // will setLiked true or false if depending on the operation
-  const handleLike = () => {
-    if (user) {
-      if (!liked) {
-        favorite(element.id, type).then((result) => {
-          setLiked(result)
-        })
-      } else if (liked) {
-        removeFavorite(element.id, type).then((result) => {
-          setLiked(result)
-        })
+      if (liked) {
+        setLikeIcon(<Like liked={true} size={1} />)
+      } else {
+        setLikeIcon(<Like liked={false} size={1} />)
       }
-    } else {
-      //popup login or signup
-      console.log('no user')
+    },
+    //checks if movie has been liked already
+    // sets likes accordingly on the page
+    setLikes = () => {
+      checkLiked(element && element.id, type).then((result) => {
+        setLiked(result)
+      })
+    },
+    //stores the clicked movie to present it in Display page.
+    handleClick = () => {
+      if (type === 'person') {
+        setPerson(element)
+      } else {
+        setDisplay(element)
+      }
+      //open trailer
+      if (type === 'trailer') {
+        setMovie(element.id)
+        setOpenTrailer(true)
+      }
+    },
+    // will setLiked true or false if depending on the operation
+    handleLike = () => {
+      if (user) {
+        if (!liked) {
+          favorite(element.id, type).then((result) => {
+            setLiked(result)
+          })
+        } else if (liked) {
+          removeFavorite(element.id, type).then((result) => {
+            setLiked(result)
+          })
+        }
+      } else {
+        //popup login or signup
+        console.log('no user')
+      }
+    },
+    renderRating = () => {
+      if (type === 'movie' || type === 'tv') {
+        return <RatingBar rating={rating} customStyles={ratingStyle} />
+      }
+    },
+    //likeBtns are rendered once a user is detected
+    renderLikeBtn = () => {
+      if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
+        return (
+          <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
+            {likeIcon}
+          </IconButton>
+        )
+      }
     }
-  }
-
-  const renderRating = () => {
-    if (type === 'movie' || type === 'tv') {
-      return <RatingBar rating={rating} />
-    }
-  }
-
-  //likeBtns are rendered once a user is detected
-  const renderLikeBtn = () => {
-    if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
-      return (
-        <IconButton aria-label="moreButton" style={styles.moreButton} onClick={() => handleLike()}>
-          {likeIcon}
-        </IconButton>
-      )
-    }
-  }
 
   return (
     <div className="CardComponent">
@@ -158,7 +152,7 @@ export default function MovieCard({ date, title, poster, useStyles, to, element,
             <CardMedia
               className={classes.cardMedia}
               image={poster || 'https://source.unsplash.com/random'}
-              title={title}
+              title={to}
               style={{ zIndex: 2 }}
             />
           </ButtonBase>
