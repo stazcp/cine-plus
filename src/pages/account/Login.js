@@ -19,97 +19,94 @@ import { Redirect } from 'react-router-dom'
 import './customStyles.css'
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingBottom: 50,
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}))
-
-const styles = {
-  googleBtn: {
-    marginTop: 40,
-  },
-  link: {
-    textDecoration: 'none',
-  },
-}
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingBottom: 50,
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  })),
+  styles = {
+    googleBtn: {
+      marginTop: 40,
+    },
+    link: {
+      textDecoration: 'none',
+    },
+  }
 
 export default function Login() {
-  const classes = useStyles()
-  const { provider, user } = useContext(FirebaseContext)
-
-  const handleGoogleSignup = (e) => {
-    // firebase.auth().signInWithRedirect(provider)
-    // firebase
-    //   .auth()
-    //   .getRedirectResult()
-    //   .then(function (result) {
-    //     if (result.credential) {
-    //       // This gives you a Google Access Token. You can use it to access the Google API.
-    //       var token = result.credential.accessToken
-    //       // ...
-    //     }
-    //     // The signed-in user info.
-    //     var user = result.user
-    //   })
-    //   .catch(function (error) {
-    //     // Handle Errors here.
-    //     var errorCode = error.code
-    //     var errorMessage = error.message
-    //     // The email of the user's account used.
-    //     var email = error.email
-    //     // The firebase.auth.AuthCredential type that was used.
-    //     var credential = error.credential
-    //     // ...
-    //   })
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(function (result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken
-        // console.log('token', token)
-        // The signed-in user info.
-        // var user = result.user
-      })
-      .catch(function (error) {
-        console.log(error)
-        // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        // The email of the user's account used.
-        var email = error.email
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential
-        // ...
-      })
-  }
-
-  const handleGoogleSignout = (e) => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        console.log('Sign Out successful')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
+  const classes = useStyles(),
+    { provider, user } = useContext(FirebaseContext),
+    handleGoogleSignup = (e) => {
+      // firebase.auth().signInWithRedirect(provider)
+      // firebase
+      //   .auth()
+      //   .getRedirectResult()
+      //   .then(function (result) {
+      //     if (result.credential) {
+      //       // This gives you a Google Access Token. You can use it to access the Google API.
+      //       var token = result.credential.accessToken
+      //       // ...
+      //     }
+      //     // The signed-in user info.
+      //     var user = result.user
+      //   })
+      //   .catch(function (error) {
+      //     // Handle Errors here.
+      //     var errorCode = error.code
+      //     var errorMessage = error.message
+      //     // The email of the user's account used.
+      //     var email = error.email
+      //     // The firebase.auth.AuthCredential type that was used.
+      //     var credential = error.credential
+      //     // ...
+      //   })
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(function (result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = result.credential.accessToken
+          // console.log('token', token)
+          // The signed-in user info.
+          // var user = result.user
+        })
+        .catch(function (error) {
+          console.log(error)
+          // Handle Errors here.
+          var errorCode = error.code
+          var errorMessage = error.message
+          // The email of the user's account used.
+          var email = error.email
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential
+          // ...
+        })
+    },
+    handleGoogleSignout = (e) => {
+      firebase
+        .auth()
+        .signOut()
+        .then(function () {
+          console.log('Sign Out successful')
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
 
   return (
     <Container component="main" maxWidth="xs">

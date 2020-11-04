@@ -10,6 +10,7 @@ import {
   Card,
   Button,
   IconButton,
+  Modal,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ReactPlayer from 'react-player'
@@ -70,7 +71,7 @@ export default function MovieCard({
   useEffect(() => {
     setLikes()
     setLikeIcn()
-  }, [liked, user, currentLikes])
+  }, [user, currentLikes])
 
   //If the movie is on the same page it will be triggered to change it's like status as well
   useEffect(() => {
@@ -117,7 +118,7 @@ export default function MovieCard({
           })
         }
       } else {
-        //popup login or signup
+        //trigger modal to prompt user to sign up
         console.log('no user')
       }
     },
@@ -128,7 +129,7 @@ export default function MovieCard({
     },
     //likeBtns are rendered once a user is detected
     renderLikeBtn = () => {
-      if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
+      if (type === 'movie' || type === 'tv' || type === 'person') {
         return (
           <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
             {likeIcon}

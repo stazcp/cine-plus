@@ -12,49 +12,48 @@ import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-    height: '1356',
-    backgroundImage: `url(${Image})`,
-    marginLeft: '-40px',
-    paddingLeft: '40px',
-    paddingRight: '40px',
-    marginRight: '-40px',
-    marginBottom: '30px',
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  heroTitle: {
-    color: 'white',
-    fontSize: '3em',
-    fontWeight: '700',
-  },
-  scroller: {
-    display: 'flex',
-    overflowX: 'scroll',
-    overflowY: 'hidden',
-    alignItems: 'flexStart',
-  },
-  heroSubtitle: {
-    color: 'white',
-    fontSize: '2em',
-    fontWeight: '600',
-  },
-  trailer: {
-    width: '300px',
-    height: '168.53px',
-    display: 'flex',
-  },
-}))
-
-// perform a search, to be enineered soon
-const search = () => {}
-const doNothing = () => {}
+    icon: {
+      marginRight: theme.spacing(2),
+    },
+    heroContent: {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(8, 0, 6),
+      height: '1356',
+      backgroundImage: `url(${Image})`,
+      marginLeft: '-40px',
+      paddingLeft: '40px',
+      paddingRight: '40px',
+      marginRight: '-40px',
+      marginBottom: '30px',
+    },
+    heroButtons: {
+      marginTop: theme.spacing(4),
+    },
+    heroTitle: {
+      color: 'white',
+      fontSize: '3em',
+      fontWeight: '700',
+    },
+    scroller: {
+      display: 'flex',
+      overflowX: 'scroll',
+      overflowY: 'hidden',
+      alignItems: 'flexStart',
+    },
+    heroSubtitle: {
+      color: 'white',
+      fontSize: '2em',
+      fontWeight: '600',
+    },
+    trailer: {
+      width: '300px',
+      height: '168.53px',
+      display: 'flex',
+    },
+  })),
+  // perform a search, to be enineered soon
+  search = () => {},
+  doNothing = () => {}
 
 export default function Home(props) {
   const classes = useStyles(),
@@ -80,105 +79,98 @@ export default function Home(props) {
   }, [])
 
   const getFrontPage = () => {
-    getPosterUrl()
-    getPopular('movie')
-    getTopRated(topRated.type)
-    getTrending('day')
-    getNowPlaying()
-  }
-
-  const getPosterUrl = () => {
-    getConfig().then((data) => {
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-    })
-  }
-
-  const getNowPlaying = async () => {
-    get(nowPlaying.type, ...nowPlaying.conf).then((data) => {
-      setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
-      setNowPlaying({ movies: data, conf: nowPlaying.conf, type: nowPlaying.type })
-    })
-  }
-
-  const getTopRated = (option) => {
-    get(option, ...topRated.conf).then((data) => {
-      setTopRated({ movies: data, conf: topRated.conf, type: option })
-    })
-  }
-
-  const getPopular = (option) => {
-    get(option, ...popular.conf).then((data) => {
-      setPopular({ movies: data, conf: popular.conf, type: option })
-    })
-  }
-
-  const getTrending = (option) => {
-    get(...trending.conf, option).then((data) => {
-      setTrending({ movies: data, conf: trending.conf, type: trending.type })
-    })
-  }
-
-  const renderTrailers = (movies, type) => {
-    if (Array.isArray(movies) && movies.length > 1) {
-      return movies.map((movie) => {
-        let { id, original_title, first_air_date, poster_path, name, release_date } = movie
-        return (
-          <DisplayCard
-            key={id}
-            useStyles={useStylesTrailer}
-            title={`${original_title} Trailer` || `${name} Trailer`}
-            date={release_date || first_air_date}
-            poster={`${basePosterUrl}${posterSize}${poster_path}`}
-            to={'#'}
-            element={movie}
-            type={type}
-          />
-        )
+      getPosterUrl()
+      getPopular('movie')
+      getTopRated(topRated.type)
+      getTrending('day')
+      getNowPlaying()
+    },
+    getPosterUrl = () => {
+      getConfig().then((data) => {
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
-    } else {
-      return <p>No trailers found</p>
-    }
-  }
-
-  // pass down data to render on display page
-  const renderCards = (movies, type) => {
-    if (!Array.isArray(movies) && movies.length < 1) {
-      return <p>No movies found</p>
-    }
-    return movies.map((movie) => {
-      let {
-        id,
-        original_title,
-        name,
-        release_date,
-        first_air_date,
-        poster_path,
-        media_type,
-        original_name,
-        vote_average,
-      } = movie
-      /*
+    },
+    getNowPlaying = async () => {
+      get(nowPlaying.type, ...nowPlaying.conf).then((data) => {
+        setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
+        setNowPlaying({ movies: data, conf: nowPlaying.conf, type: nowPlaying.type })
+      })
+    },
+    getTopRated = (option) => {
+      get(option, ...topRated.conf).then((data) => {
+        setTopRated({ movies: data, conf: topRated.conf, type: option })
+      })
+    },
+    getPopular = (option) => {
+      get(option, ...popular.conf).then((data) => {
+        setPopular({ movies: data, conf: popular.conf, type: option })
+      })
+    },
+    getTrending = (option) => {
+      get(...trending.conf, option).then((data) => {
+        setTrending({ movies: data, conf: trending.conf, type: trending.type })
+      })
+    },
+    renderTrailers = (movies, type) => {
+      if (Array.isArray(movies) && movies.length > 1) {
+        return movies.map((movie) => {
+          let { id, original_title, first_air_date, poster_path, name, release_date } = movie
+          return (
+            <DisplayCard
+              key={id}
+              useStyles={useStylesTrailer}
+              title={`${original_title} Trailer` || `${name} Trailer`}
+              date={release_date || first_air_date}
+              poster={`${basePosterUrl}${posterSize}${poster_path}`}
+              to={'#'}
+              element={movie}
+              type={type}
+            />
+          )
+        })
+      } else {
+        return <p>No trailers found</p>
+      }
+    },
+    // pass down data to render on display page
+    renderCards = (movies, type) => {
+      if (!Array.isArray(movies) && movies.length < 1) {
+        return <p>No movies found</p>
+      }
+      return movies.map((movie) => {
+        let {
+            id,
+            original_title,
+            name,
+            release_date,
+            first_air_date,
+            poster_path,
+            media_type,
+            original_name,
+            vote_average,
+          } = movie,
+          /*
       mixed media means it could contain movies or tvShows
       on mixed arrays elements will have media_type describing
       if it is a tv or movie we are receiving
       */
-      let route = `/display/${media_type || type}/${id}`
-      return (
-        <DisplayCard
-          key={id}
-          to={route}
-          useStyles={useStylesSm}
-          ratingStyle={smCardStyles}
-          title={original_title || name || original_name}
-          date={release_date || first_air_date}
-          poster={`${basePosterUrl}${posterSize}${poster_path}`}
-          element={movie}
-          type={media_type || type}
-          rating={vote_average}
-        />
-      )
-    })
-  }
+          route = `/display/${media_type || type}/${id}`
+        return (
+          <DisplayCard
+            key={id}
+            to={route}
+            useStyles={useStylesSm}
+            ratingStyle={smCardStyles}
+            title={original_title || name || original_name}
+            date={release_date || first_air_date}
+            poster={`${basePosterUrl}${posterSize}${poster_path}`}
+            element={movie}
+            type={media_type || type}
+            rating={vote_average}
+          />
+        )
+      })
+    }
 
   return (
     <React.Fragment>

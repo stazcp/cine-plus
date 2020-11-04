@@ -4,8 +4,8 @@ import { MovieContext } from '../../components/MovieContext'
 import MediaHandler from '../../components/MediaHandler'
 
 export default (props) => {
-  const { basePosterUrl, setBasePosterUrl, topRated, setTopRated } = useContext(MovieContext)
-  const { movies, type, conf } = topRated
+  const { basePosterUrl, setBasePosterUrl, topRated, setTopRated } = useContext(MovieContext),
+    { movies, type, conf } = topRated
 
   useEffect(() => {
     getMovies()
@@ -19,5 +19,5 @@ export default (props) => {
     }
   }
 
-  return <MediaHandler movies={movies} type={type} pageTitle="Top Rated Movies" />
+  return <MediaHandler media={movies} type={type} pageTitle="Top Rated Movies" />
 }

@@ -1,6 +1,6 @@
 export const smCardStyles = {
   root: {
-    width: '25%',
+    width: 38,
     position: 'relative',
     gridColumn: 1,
     gridRow: 1,

@@ -69,10 +69,10 @@ const styles = {
 }
 
 export default function Account(): React$Element<React$FragmentType> {
-  const { user } = useContext(FirebaseContext)
-  const { display, basePosterUrl } = useContext(MovieContext)
-  // if page is refreshed display dissapears
-  const classes = useStylesDisplay()
+  const { user } = useContext(FirebaseContext),
+    { display, basePosterUrl } = useContext(MovieContext),
+    // if page is refreshed display dissapears
+    classes = useStylesDisplay()
 
   useEffect(() => {}, [])
 

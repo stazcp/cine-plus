@@ -58,11 +58,10 @@ const styles = {
 }
 
 export default function Person() {
-  const classes = useStylesDisplay()
-  let { id } = useParams()
-  let { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
-  const [person, setPerson] = useState()
-  //should this component have it's own state or better only context?
+  const classes = useStylesDisplay(),
+    { id } = useParams(),
+    { basePosterUrl, setBasePosterUrl } = useContext(MovieContext),
+    [person, setPerson] = useState()
 
   useEffect(() => {
     getPerson()
@@ -70,18 +69,17 @@ export default function Person() {
   }, [])
 
   const getPerson = () => {
-    get('person', id).then((data) => {
-      setPerson(data)
-    })
-  }
-
-  const getPosterUrl = () => {
-    if (!basePosterUrl) {
-      getConfig().then((data) => {
-        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      get('person', id).then((data) => {
+        setPerson(data)
       })
+    },
+    getPosterUrl = () => {
+      if (!basePosterUrl) {
+        getConfig().then((data) => {
+          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        })
+      }
     }
-  }
 
   return (
     <>

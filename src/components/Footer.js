@@ -9,23 +9,22 @@ import Link from '@material-ui/core/Link'
 
 // how does this work? theme?
 const useStyles = makeStyles((theme) => ({
-  footer: {
-    backgroundColor: '#032541',
-    padding: theme.spacing(2),
-  },
-}))
-
-// colors look different even though I used same code?
-const styles = {
-  root: {
-    backgroundColor: '#fff',
-  },
-  h2Link: {
-    fontWeight: '700',
-    fontSize: '1em',
-    color: 'white',
-  },
-}
+    footer: {
+      backgroundColor: '#032541',
+      padding: theme.spacing(2),
+    },
+  })),
+  // colors look different even though I used same code?
+  styles = {
+    root: {
+      backgroundColor: '#fff',
+    },
+    h2Link: {
+      fontWeight: '700',
+      fontSize: '1em',
+      color: 'white',
+    },
+  }
 
 export default function Footer(props) {
   const classes = useStyles()

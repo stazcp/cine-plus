@@ -4,8 +4,8 @@ import { MovieContext } from '../../components/MovieContext'
 import MediaHandler from '../../components/MediaHandler'
 
 export default (props) => {
-  const { basePosterUrl, setBasePosterUrl, nowPlaying, setNowPlaying } = useContext(MovieContext)
-  const { movies, type, conf } = nowPlaying
+  const { basePosterUrl, setBasePosterUrl, nowPlaying, setNowPlaying } = useContext(MovieContext),
+    { movies, type, conf } = nowPlaying
 
   useEffect(() => {
     getMovies()
@@ -20,5 +20,5 @@ export default (props) => {
     }
   }
 
-  return <MediaHandler movies={movies} type={type} pageTitle="Now Playing Movies" />
+  return <MediaHandler media={movies} type={type} pageTitle="Now Playing Movies" />
 }

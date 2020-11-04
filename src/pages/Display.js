@@ -123,122 +123,112 @@ export default function Display(): React$Element<React$FragmentType> {
   }, [display])
 
   const setLikeIcn = () => {
-    if (liked) {
-      setLikeIcon(<Like liked={true} size={2} />)
-    } else {
-      setLikeIcon(<Like liked={false} size={2} />)
-    }
-  }
-
-  //checks if movie has been liked already
-  // sets likes accordingly on the page
-  const setLikes = () => {
-    checkLiked(display && display.id, type).then((result) => {
-      setLiked(result)
-    })
-  }
-
-  // will setLiked true or false if depending on the operation
-  const handleLike = () => {
-    if (user) {
-      if (!liked) {
-        favorite(display.id, type).then((result) => {
-          setLiked(result)
-        })
-      } else if (liked) {
-        removeFavorite(display.id, type).then((result) => {
-          setLiked(result)
+      if (liked) {
+        setLikeIcon(<Like liked={true} size={2} />)
+      } else {
+        setLikeIcon(<Like liked={false} size={2} />)
+      }
+    },
+    //checks if movie has been liked already
+    // sets likes accordingly on the page
+    setLikes = () => {
+      checkLiked(display && display.id, type).then((result) => {
+        setLiked(result)
+      })
+    },
+    // will setLiked true or false if depending on the operation
+    handleLike = () => {
+      if (user) {
+        if (!liked) {
+          favorite(display.id, type).then((result) => {
+            setLiked(result)
+          })
+        } else if (liked) {
+          removeFavorite(display.id, type).then((result) => {
+            setLiked(result)
+          })
+        }
+      } else {
+        //popup login or signup
+        console.log('no user')
+      }
+    },
+    set = () => {
+      if (display && (!date || !title)) {
+        setDate(display.release_date || display.first_air_date)
+        setTitle(display.original_title || display.name || display.title)
+      }
+    },
+    getPosterUrl = () => {
+      if (!basePosterUrl) {
+        getConfig().then((data) => {
+          if (data?.images) {
+            setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+          }
         })
       }
-    } else {
-      //popup login or signup
-      console.log('no user')
-    }
-  }
-
-  const set = () => {
-    if (display && (!date || !title)) {
-      setDate(display.release_date || display.first_air_date)
-      setTitle(display.original_title || display.name || display.title)
-    }
-  }
-
-  const getPosterUrl = () => {
-    if (!basePosterUrl) {
-      getConfig().then((data) => {
-        if (data?.images) {
-          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-        }
+    },
+    getMovie = () => {
+      if (!display) {
+        get(type, id).then((data) => {
+          setDisplay(data)
+        })
+      }
+    },
+    getCast = () => {
+      get(type, id, 'credits').then((data) => {
+        setCast({ people: data, type: cast.type })
       })
-    }
-  }
-
-  const getMovie = () => {
-    if (!display) {
-      get(type, id).then((data) => {
-        setDisplay(data)
-      })
-    }
-  }
-
-  const getCast = () => {
-    get(type, id, 'credits').then((data) => {
-      setCast({ people: data, type: cast.type })
-    })
-  }
-
-  // note to create a Person page
-  // Also if person doesn't have a image provided we can provide some random image instead.
-  const renderCast = () => {
-    if (cast.people.length) {
-      return cast.people.map((person) => {
-        let { character, name, profile_path, id } = person
-        let route = `/person/${id}`
+    },
+    // note to create a Person page
+    // Also if person doesn't have a image provided we can provide some random image instead.
+    renderCast = () => {
+      if (cast.people.length) {
+        return cast.people.map((person) => {
+          let { character, name, profile_path, id } = person
+          let route = `/person/${id}`
+          return (
+            <DisplayCard
+              key={id}
+              to={route}
+              useStyles={useStylesSm}
+              title={name}
+              date={character}
+              poster={
+                profile_path
+                  ? `${basePosterUrl}w138_and_h175_face${profile_path}`
+                  : 'https://source.unsplash.com/random'
+              }
+              element={person}
+              type="person"
+            />
+          )
+        })
+      }
+    },
+    //likeBtns are rendered once a user is detected
+    renderLikeBtn = () => {
+      if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
         return (
-          <DisplayCard
-            key={id}
-            to={route}
-            useStyles={useStylesSm}
-            title={name}
-            date={character}
-            poster={
-              profile_path
-                ? `${basePosterUrl}w138_and_h175_face${profile_path}`
-                : 'https://source.unsplash.com/random'
-            }
-            element={person}
-            type="person"
-          />
+          <IconButton
+            aria-label="moreButton"
+            onClick={() => handleLike()}
+            className={classes.likeBtn}
+          >
+            {likeIcon}
+          </IconButton>
         )
-      })
+      }
+    },
+    renderRating = () => {
+      if ((type === 'movie' || type === 'tv') && display?.vote_average) {
+        return (
+          <IconButton style={styles.ratingBtn} className={classes.rating}>
+            <RatingBar rating={display.vote_average} customStyles={displayStyles} />
+          </IconButton>
+        )
+      }
     }
-  }
-
-  //likeBtns are rendered once a user is detected
-  const renderLikeBtn = () => {
-    if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
-      return (
-        <IconButton
-          aria-label="moreButton"
-          onClick={() => handleLike()}
-          className={classes.likeBtn}
-        >
-          {likeIcon}
-        </IconButton>
-      )
-    }
-  }
-
-  const renderRating = () => {
-    if ((type === 'movie' || type === 'tv') && display?.vote_average) {
-      return (
-        <IconButton style={styles.ratingBtn} className={classes.rating}>
-          <RatingBar rating={display.vote_average} customStyles={displayStyles} />
-        </IconButton>
-      )
-    }
-  }
-  console.log(display)
 
   return (
     <>

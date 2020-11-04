@@ -14,8 +14,8 @@ function rand() {
 }
 
 function getModalStyle() {
-  const top = 50 + rand()
-  const left = 50 + rand()
+  const top = 50 + rand(),
+    left = 50 + rand()
 
   return {
     top: `${top}%`,
@@ -37,12 +37,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function SimpleModal({ open }) {
-  const classes = useStyles()
-  //receives movie from Home > DisplayCard > MovieContext
-  const { setOpenTrailer, movie, setMovie } = useContext(MovieContext)
-  const [trailer, setTrailer] = useState()
-  const [key, setKey] = useState()
-  const [modalStyle] = useState(getModalStyle)
+  const classes = useStyles(),
+    //receives movie from Home > DisplayCard > MovieContext
+    { setOpenTrailer, movie, setMovie } = useContext(MovieContext),
+    [trailer, setTrailer] = useState(),
+    [key, setKey] = useState(),
+    [modalStyle] = useState(getModalStyle)
 
   // useEffect(() => {
   //   if (movie && (!key || !trailer)) {
@@ -61,32 +61,29 @@ export default function SimpleModal({ open }) {
   }
 
   const handleOpen = () => {
-    setOpenTrailer(true)
-  }
-
-  const handleClose = () => {
-    setOpenTrailer(false)
-    setMovie(undefined)
-    setTrailer(undefined)
-    setKey(undefined)
-  }
-
-  const renderVideo = (
-    <>
-      {key && (
-        <div className="playerWrapper">
-          <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
-        </div>
-      )}
-    </>
-  )
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      {renderVideo}
-      <SimpleModal />
-    </div>
-  )
+      setOpenTrailer(true)
+    },
+    handleClose = () => {
+      setOpenTrailer(false)
+      setMovie(undefined)
+      setTrailer(undefined)
+      setKey(undefined)
+    },
+    renderVideo = (
+      <>
+        {key && (
+          <div className="playerWrapper">
+            <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
+          </div>
+        )}
+      </>
+    ),
+    body = (
+      <div style={modalStyle} className={classes.paper}>
+        {renderVideo}
+        <SimpleModal />
+      </div>
+    )
 
   return (
     <div>

@@ -36,11 +36,10 @@ export const getConfig = async (): Promise<{
 export const get = async (type: string, conf: string, extra: ?string): Promise<any> => {
   try {
     let url = extra
-      ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`
-      : `${base_url}${type}/${conf}?api_key=${api_key}`
-
-    let response = await fetch(url)
-    let result = await response.json()
+        ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`
+        : `${base_url}${type}/${conf}?api_key=${api_key}`,
+      response = await fetch(url),
+      result = await response.json()
     if (result.results) {
       return result.results
     } else if (result.cast) {
@@ -61,10 +60,9 @@ export const get = async (type: string, conf: string, extra: ?string): Promise<a
 export const getTrailer = async (id: string): Promise<any> => {
   try {
     if (id) {
-      let url = `${base_url}movie/${id}?api_key=${api_key}&append_to_response=videos`
-      let response = await fetch(url)
-      let data = await response.json()
-      console.log(data)
+      let url = `${base_url}movie/${id}?api_key=${api_key}&append_to_response=videos`,
+        response = await fetch(url),
+        data = await response.json()
       return data
     }
   } catch (error) {
