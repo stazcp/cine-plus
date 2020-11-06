@@ -23,8 +23,10 @@ export default function Like({ liked, size }) {
     renderLikeBtn = () => {
       if (liked) {
         return <FavoriteIcon color="secondary" className={classes.likeBtn} />
-      } else {
+      } else if (liked === false) {
         return <FavoriteTwoToneIcon color="secondary" className={classes.likeBtn} />
+      } else {
+        return null
       }
     }
 

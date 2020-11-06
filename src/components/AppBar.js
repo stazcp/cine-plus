@@ -1,10 +1,3 @@
-// improvements needed:
-// 1. Menu's open on hover
-// 2. Menu's close on mouseOut
-// 3. Menu's close when reaching destination
-// 4. Mobile version
-// 5. Build pop-over's for + and Lang
-
 import React, { useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Toolbar, Typography, Menu, MenuItem, Badge, IconButton } from '@material-ui/core'
@@ -85,14 +78,7 @@ export default function PrimarySearchAppBar() {
     [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS),
     [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null),
     isMobileMenuOpen = Boolean(mobileMoreAnchorEl),
-    // returns user or false -> user.displayName = name
     { user } = useContext(FirebaseContext),
-    // if (user) {
-    //   console.log(user.displayName)
-    // } else {
-    //   console.log('no user')
-    // }
-
     handleOpenMenu = (e, anchor) => {
       setAnchorEl({ ...MENU_ANCHORS, [anchor]: e.currentTarget })
       e.preventDefault()

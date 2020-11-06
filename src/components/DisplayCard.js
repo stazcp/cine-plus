@@ -65,30 +65,15 @@ export default function MovieCard({
     { setDisplay, setPerson, setOpenTrailer, setMovie, currentLikes, setCurrentLikes } = useContext(
       MovieContext
     ),
-    [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />),
-    [liked, setLiked] = useState(checkLiked(element && element.id, type))
+    [liked, setLiked] = useState(null)
 
   useEffect(() => {
     setLikes()
-    setLikeIcn()
   }, [user, currentLikes])
 
-  //If the movie is on the same page it will be triggered to change it's like status as well
-  useEffect(() => {
-    setCurrentLikes([...currentLikes, element && element.id])
-  }, [liked])
-
-  const setLikeIcn = () => {
-      if (liked) {
-        setLikeIcon(<Like liked={true} size={1} />)
-      } else {
-        setLikeIcon(<Like liked={false} size={1} />)
-      }
-    },
-    //checks if movie has been liked already
-    // sets likes accordingly on the page
-    setLikes = () => {
+  const setLikes = () => {
       checkLiked(element && element.id, type).then((result) => {
+        console.log(result)
         setLiked(result)
       })
     },
@@ -129,10 +114,10 @@ export default function MovieCard({
     },
     //likeBtns are rendered once a user is detected
     renderLikeBtn = () => {
-      if (type === 'movie' || type === 'tv' || type === 'person') {
+      if (type !== 'trailer') {
         return (
           <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
-            {likeIcon}
+            <Like liked={liked} size={1} />
           </IconButton>
         )
       }

@@ -185,9 +185,9 @@ export function FirebaseProvider({ children }) {
           return false
         }
       } else {
-        return false
+        return null
       }
-      return false
+      return null
     },
     //add new user to database and set schema
     newUser = async (email) => {
