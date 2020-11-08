@@ -72,47 +72,47 @@ export default function MovieCard({
   }, [user, currentLikes])
 
   const setLikes = () => {
-      checkLiked(element && element.id, type).then((result) => {
-        console.log(result)
-        setLiked(result)
-      })
-    },
-    //stores the clicked movie to present it in Display page.
-    handleClick = () => {
-      if (type === 'person') {
-        setPerson(element)
-      } else {
-        setDisplay(element)
+    if (type === 'trailer') return null
+    checkLiked(element && element.id, type).then((result) => {
+      setLiked(result)
+    })
+  }
+  //stores the clicked movie to present it in Display page.
+  const handleClick = () => {
+    if (type === 'person') {
+      setPerson(element)
+    } else {
+      setDisplay(element)
+    }
+    //open trailer
+    if (type === 'trailer') {
+      setMovie(element.id)
+      setOpenTrailer(true)
+    }
+  }
+  // will setLiked true or false if depending on the operation
+  const handleLike = () => {
+    if (user) {
+      if (!liked) {
+        favorite(element.id, type).then((result) => {
+          setLiked(result)
+        })
+      } else if (liked) {
+        removeFavorite(element.id, type).then((result) => {
+          setLiked(result)
+        })
       }
-      //open trailer
-      if (type === 'trailer') {
-        setMovie(element.id)
-        setOpenTrailer(true)
-      }
-    },
-    // will setLiked true or false if depending on the operation
-    handleLike = () => {
-      if (user) {
-        if (!liked) {
-          favorite(element.id, type).then((result) => {
-            setLiked(result)
-          })
-        } else if (liked) {
-          removeFavorite(element.id, type).then((result) => {
-            setLiked(result)
-          })
-        }
-      } else {
-        //trigger modal to prompt user to sign up
-        console.log('no user')
-      }
-    },
-    renderRating = () => {
-      if (type === 'movie' || type === 'tv') {
-        return <RatingBar rating={rating} customStyles={ratingStyle} />
-      }
-    },
-    //likeBtns are rendered once a user is detected
+    } else {
+      //trigger modal to prompt user to sign up
+      console.log('no user')
+    }
+  }
+  const renderRating = () => {
+    if (type === 'movie' || type === 'tv') {
+      return <RatingBar rating={rating} customStyles={ratingStyle} />
+    }
+  }
+  const //likeBtns are rendered once a user is detected
     renderLikeBtn = () => {
       if (type !== 'trailer') {
         return (
