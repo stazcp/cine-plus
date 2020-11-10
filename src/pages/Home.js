@@ -10,167 +10,180 @@ import { useStylesSm, useStylesTrailer } from '../styles/CardStyles'
 import { getConfig, get, getTrailer } from '../utils/movieDB'
 import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
+import { Redirect, Route, Link, useRouteMatch } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
-    icon: {
-      marginRight: theme.spacing(2),
-    },
-    heroContent: {
-      backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing(8, 0, 6),
-      height: '1356',
-      backgroundImage: `url(${Image})`,
-      marginLeft: '-40px',
-      paddingLeft: '40px',
-      paddingRight: '40px',
-      marginRight: '-40px',
-      marginBottom: '30px',
-    },
-    heroButtons: {
-      marginTop: theme.spacing(4),
-    },
-    heroTitle: {
-      color: 'white',
-      fontSize: '3em',
-      fontWeight: '700',
-    },
-    scroller: {
-      display: 'flex',
-      overflowX: 'scroll',
-      overflowY: 'hidden',
-      alignItems: 'flexStart',
-    },
-    heroSubtitle: {
-      color: 'white',
-      fontSize: '2em',
-      fontWeight: '600',
-    },
-    trailer: {
-      width: '300px',
-      height: '168.53px',
-      display: 'flex',
-    },
-  })),
-  // perform a search, to be enineered soon
-  search = () => {},
-  doNothing = () => {}
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+    height: '1356',
+    backgroundImage: `url(${Image})`,
+    marginLeft: '-40px',
+    paddingLeft: '40px',
+    paddingRight: '40px',
+    marginRight: '-40px',
+    marginBottom: '30px',
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  heroTitle: {
+    color: 'white',
+    fontSize: '3em',
+    fontWeight: '700',
+  },
+  scroller: {
+    display: 'flex',
+    overflowX: 'scroll',
+    overflowY: 'hidden',
+    alignItems: 'flexStart',
+  },
+  heroSubtitle: {
+    color: 'white',
+    fontSize: '2em',
+    fontWeight: '600',
+  },
+  trailer: {
+    width: '300px',
+    height: '168.53px',
+    display: 'flex',
+  },
+}))
 
 export default function Home(props) {
-  const classes = useStyles(),
-    {
-      popular,
-      setPopular,
-      topRated,
-      setTopRated,
-      trending,
-      setTrending,
-      trailers,
-      setTrailers,
-      nowPlaying,
-      setNowPlaying,
-      basePosterUrl,
-      setBasePosterUrl,
-      openTrailer,
-    } = useContext(MovieContext),
-    posterSize = 'w300'
+  const classes = useStyles()
+  const {
+    popular,
+    setPopular,
+    topRated,
+    setTopRated,
+    trending,
+    setTrending,
+    trailers,
+    setTrailers,
+    nowPlaying,
+    setNowPlaying,
+    basePosterUrl,
+    setBasePosterUrl,
+    openTrailer,
+  } = useContext(MovieContext)
+  const [searching, setSearching] = useState()
+  const posterSize = 'w300'
 
   useEffect(() => {
     getFrontPage()
   }, [])
 
   const getFrontPage = () => {
-      getPosterUrl()
-      getPopular('movie')
-      getTopRated(topRated.type)
-      getTrending('day')
-      getNowPlaying()
-    },
-    getPosterUrl = () => {
-      getConfig().then((data) => {
-        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-      })
-    },
-    getNowPlaying = async () => {
-      get(nowPlaying.type, ...nowPlaying.conf).then((data) => {
-        setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
-        setNowPlaying({ movies: data, conf: nowPlaying.conf, type: nowPlaying.type })
-      })
-    },
-    getTopRated = (option) => {
-      get(option, ...topRated.conf).then((data) => {
-        setTopRated({ movies: data, conf: topRated.conf, type: option })
-      })
-    },
-    getPopular = (option) => {
-      get(option, ...popular.conf).then((data) => {
-        setPopular({ movies: data, conf: popular.conf, type: option })
-      })
-    },
-    getTrending = (option) => {
-      get(...trending.conf, option).then((data) => {
-        setTrending({ movies: data, conf: trending.conf, type: trending.type })
-      })
-    },
-    renderTrailers = (movies, type) => {
-      if (Array.isArray(movies) && movies.length > 1) {
-        return movies.map((movie) => {
-          let { id, original_title, first_air_date, poster_path, name, release_date } = movie
-          return (
-            <DisplayCard
-              key={id}
-              useStyles={useStylesTrailer}
-              title={`${original_title} Trailer` || `${name} Trailer`}
-              date={release_date || first_air_date}
-              poster={`${basePosterUrl}${posterSize}${poster_path}`}
-              to={'#'}
-              element={movie}
-              type={type}
-            />
-          )
-        })
-      } else {
-        return <p>No trailers found</p>
-      }
-    },
-    // pass down data to render on display page
-    renderCards = (movies, type) => {
-      if (!Array.isArray(movies) && movies.length < 1) {
-        return <p>No movies found</p>
-      }
+    getPosterUrl()
+    getPopular('movie')
+    getTopRated(topRated.type)
+    getTrending('day')
+    getNowPlaying()
+  }
+
+  const getPosterUrl = () => {
+    getConfig().then((data) => {
+      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+    })
+  }
+
+  const getNowPlaying = async () => {
+    get(nowPlaying.type, ...nowPlaying.conf).then((data) => {
+      setTrailers({ movies: data, conf: nowPlaying.conf, type: trailers.type })
+      setNowPlaying({ movies: data, conf: nowPlaying.conf, type: nowPlaying.type })
+    })
+  }
+
+  const getTopRated = (option) => {
+    get(option, ...topRated.conf).then((data) => {
+      setTopRated({ movies: data, conf: topRated.conf, type: option })
+    })
+  }
+
+  const getPopular = (option) => {
+    get(option, ...popular.conf).then((data) => {
+      setPopular({ movies: data, conf: popular.conf, type: option })
+    })
+  }
+
+  const getTrending = (option) => {
+    get(...trending.conf, option).then((data) => {
+      setTrending({ movies: data, conf: trending.conf, type: trending.type })
+    })
+  }
+
+  const search = (value) => {
+    setSearching(value)
+  }
+
+  const redirectToSearch = () => {
+    if (searching) return <Redirect to={`/search/${searching}`} />
+  }
+
+  const renderTrailers = (movies, type) => {
+    if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        let {
-            id,
-            original_title,
-            name,
-            release_date,
-            first_air_date,
-            poster_path,
-            media_type,
-            original_name,
-            vote_average,
-          } = movie,
-          /*
+        let { id, original_title, first_air_date, poster_path, name, release_date } = movie
+        return (
+          <DisplayCard
+            key={id}
+            useStyles={useStylesTrailer}
+            title={`${original_title} Trailer` || `${name} Trailer`}
+            date={release_date || first_air_date}
+            poster={`${basePosterUrl}${posterSize}${poster_path}`}
+            to={'#'}
+            element={movie}
+            type={type}
+          />
+        )
+      })
+    } else {
+      return <p>No trailers found</p>
+    }
+  }
+  // pass down data to render on display page
+  const renderCards = (movies, type) => {
+    if (!Array.isArray(movies) && movies.length) {
+      return <p>No movies found</p>
+    }
+    return movies.map((movie) => {
+      let {
+        id,
+        original_title,
+        name,
+        release_date,
+        first_air_date,
+        poster_path,
+        media_type,
+        original_name,
+        vote_average,
+      } = movie
+      /*
       mixed media means it could contain movies or tvShows
       on mixed arrays elements will have media_type describing
       if it is a tv or movie we are receiving
       */
-          route = `/display/${media_type || type}/${id}`
-        return (
-          <DisplayCard
-            key={id}
-            to={route}
-            useStyles={useStylesSm}
-            ratingStyle={smCardStyles}
-            title={original_title || name || original_name}
-            date={release_date || first_air_date}
-            poster={`${basePosterUrl}${posterSize}${poster_path}`}
-            element={movie}
-            type={media_type || type}
-            rating={vote_average}
-          />
-        )
-      })
-    }
+      let route = `/display/${media_type || type}/${id}`
+      return (
+        <DisplayCard
+          key={id}
+          to={route}
+          useStyles={useStylesSm}
+          ratingStyle={smCardStyles}
+          title={original_title || name || original_name}
+          date={release_date || first_air_date}
+          poster={`${basePosterUrl}${posterSize}${poster_path}`}
+          element={movie}
+          type={media_type || type}
+          rating={vote_average}
+        />
+      )
+    })
+  }
 
   return (
     <React.Fragment>
@@ -199,8 +212,7 @@ export default function Home(props) {
               </Typography>
               <SearchBar
                 placeholder="Search for a movie, tv show, person....."
-                onChange={doNothing}
-                onRequestSearch={search}
+                onRequestSearch={(value) => search(value)}
               />
             </Box>
           </div>
@@ -235,6 +247,7 @@ export default function Home(props) {
           />
           <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
           <TrailerModal open={openTrailer} />
+          {redirectToSearch()}
         </main>
       </Container>
     </React.Fragment>

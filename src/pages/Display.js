@@ -28,84 +28,85 @@ import { displayStyles } from '../styles/RatingBarStyles'
 import Like from '../components/Like'
 
 const useStyles = makeStyles((theme) => ({
-    sub1: theme.subtitle1,
-    likeBtn: {
-      fontSize: '2em',
-    },
-    rating: {
-      // '&:hover': {
-      //   width: '102%',
-      //   marginLeft: '-100%',
-      // },
-    },
-  })),
-  styles = {
-    box: {
-      paddingTop: 40,
-      backgroundImage: `url(${Image})`,
-      color: 'white',
-      width: '100%',
-    },
-    headerSection: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      flexDirection: 'column',
-      paddingLeft: 80,
-      paddingRight: 40,
-    },
-    h1: {
-      fontSize: 35.2,
-      fontWeight: 700,
-    },
-    cardColor: {
-      backgroundColor: '#032541',
-    },
-    topBar: {
-      height: 46,
-    },
-    bot: {
-      paddingTop: 20,
-      paddingBottom: 30,
-      display: 'flex',
-      overflowX: 'auto',
-      overflowY: 'hidden',
-      alignItems: 'flexStart',
-    },
-    h2: {
-      fontSize: 20.8,
-      fontWeight: 600,
-      left: '-30%',
-    },
-    h5: {
-      fontSize: '1em',
-      fontWeight: 700,
-    },
-    ratingBtn: {
-      marginLeft: '-35%',
-      marginRight: '-34%',
-    },
-  }
+  sub1: theme.subtitle1,
+  likeBtn: {
+    fontSize: '2em',
+  },
+  rating: {
+    // '&:hover': {
+    //   width: '102%',
+    //   marginLeft: '-100%',
+    // },
+  },
+}))
+
+const styles = {
+  box: {
+    paddingTop: 40,
+    backgroundImage: `url(${Image})`,
+    color: 'white',
+    width: '100%',
+  },
+  headerSection: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    paddingLeft: 80,
+    paddingRight: 40,
+  },
+  h1: {
+    fontSize: 35.2,
+    fontWeight: 700,
+  },
+  cardColor: {
+    backgroundColor: '#032541',
+  },
+  topBar: {
+    height: 46,
+  },
+  bot: {
+    paddingTop: 20,
+    paddingBottom: 30,
+    display: 'flex',
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    alignItems: 'flexStart',
+  },
+  h2: {
+    fontSize: 20.8,
+    fontWeight: 600,
+    left: '-30%',
+  },
+  h5: {
+    fontSize: '1em',
+    fontWeight: 700,
+  },
+  ratingBtn: {
+    marginLeft: '-35%',
+    marginRight: '-34%',
+  },
+}
 
 export default function Display(): React$Element<React$FragmentType> {
-  const classes = useStyles(),
-    {
-      display,
-      basePosterUrl,
-      cast,
-      setCast,
-      setDisplay,
-      setBasePosterUrl,
-      currentLikes,
-      setCurrentLikes,
-    } = useContext(MovieContext),
-    { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext),
-    { type, id } = useParams(),
-    customClasses = useStylesDisplay(),
-    [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />),
-    [liked, setLiked] = useState(checkLiked(display && display.id, type)),
-    [date, setDate] = useState(),
-    [title, setTitle] = useState()
+  const classes = useStyles()
+  const {
+    display,
+    basePosterUrl,
+    cast,
+    setCast,
+    setDisplay,
+    setBasePosterUrl,
+    currentLikes,
+    setCurrentLikes,
+  } = useContext(MovieContext)
+  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
+  const { type, id } = useParams()
+  const customClasses = useStylesDisplay()
+  const [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />)
+  const [liked, setLiked] = useState(checkLiked(display && display.id, type))
+  const [date, setDate] = useState()
+  const [title, setTitle] = useState()
 
   useEffect(() => {
     setLikes()
@@ -123,112 +124,121 @@ export default function Display(): React$Element<React$FragmentType> {
   }, [display])
 
   const setLikeIcn = () => {
-      if (liked) {
-        setLikeIcon(<Like liked={true} size={2} />)
-      } else {
-        setLikeIcon(<Like liked={false} size={2} />)
-      }
-    },
-    //checks if movie has been liked already
-    // sets likes accordingly on the page
-    setLikes = () => {
-      checkLiked(display && display.id, type).then((result) => {
-        setLiked(result)
-      })
-    },
-    // will setLiked true or false if depending on the operation
-    handleLike = () => {
-      if (user) {
-        if (!liked) {
-          favorite(display.id, type).then((result) => {
-            setLiked(result)
-          })
-        } else if (liked) {
-          removeFavorite(display.id, type).then((result) => {
-            setLiked(result)
-          })
-        }
-      } else {
-        //popup login or signup
-        console.log('no user')
-      }
-    },
-    set = () => {
-      if (display && (!date || !title)) {
-        setDate(display.release_date || display.first_air_date)
-        setTitle(display.original_title || display.name || display.title)
-      }
-    },
-    getPosterUrl = () => {
-      if (!basePosterUrl) {
-        getConfig().then((data) => {
-          if (data?.images) {
-            setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-          }
-        })
-      }
-    },
-    getMovie = () => {
-      if (!display) {
-        get(type, id).then((data) => {
-          setDisplay(data)
-        })
-      }
-    },
-    getCast = () => {
-      get(type, id, 'credits').then((data) => {
-        setCast({ people: data, type: cast.type })
-      })
-    },
-    // note to create a Person page
-    // Also if person doesn't have a image provided we can provide some random image instead.
-    renderCast = () => {
-      if (cast.people.length) {
-        return cast.people.map((person) => {
-          let { character, name, profile_path, id } = person
-          let route = `/person/${id}`
-          return (
-            <DisplayCard
-              key={id}
-              to={route}
-              useStyles={useStylesSm}
-              title={name}
-              date={character}
-              poster={
-                profile_path
-                  ? `${basePosterUrl}w138_and_h175_face${profile_path}`
-                  : 'https://source.unsplash.com/random'
-              }
-              element={person}
-              type="person"
-            />
-          )
-        })
-      }
-    },
-    //likeBtns are rendered once a user is detected
-    renderLikeBtn = () => {
-      if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
-        return (
-          <IconButton
-            aria-label="moreButton"
-            onClick={() => handleLike()}
-            className={classes.likeBtn}
-          >
-            {likeIcon}
-          </IconButton>
-        )
-      }
-    },
-    renderRating = () => {
-      if ((type === 'movie' || type === 'tv') && display?.vote_average) {
-        return (
-          <IconButton style={styles.ratingBtn} className={classes.rating}>
-            <RatingBar rating={display.vote_average} customStyles={displayStyles} />
-          </IconButton>
-        )
-      }
+    if (liked) {
+      setLikeIcon(<Like liked={true} size={2} />)
+    } else {
+      setLikeIcon(<Like liked={false} size={2} />)
     }
+  }
+
+  //checks if movie has been liked already
+  // sets likes accordingly on the page
+  const setLikes = () => {
+    checkLiked(display && display.id, type).then((result) => {
+      setLiked(result)
+    })
+  }
+
+  // will setLiked true or false if depending on the operation
+  const handleLike = () => {
+    if (user) {
+      if (!liked) {
+        favorite(display.id, type).then((result) => {
+          setLiked(result)
+        })
+      } else if (liked) {
+        removeFavorite(display.id, type).then((result) => {
+          setLiked(result)
+        })
+      }
+    } else {
+      //popup login or signup
+      console.log('no user')
+    }
+  }
+
+  const set = () => {
+    if (display && (!date || !title)) {
+      setDate(display.release_date || display.first_air_date)
+      setTitle(display.original_title || display.name || display.title)
+    }
+  }
+
+  const getPosterUrl = () => {
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
+        if (data?.images) {
+          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        }
+      })
+    }
+  }
+
+  const getMovie = () => {
+    if (!display) {
+      get(type, id).then((data) => {
+        setDisplay(data)
+      })
+    }
+  }
+
+  const getCast = () => {
+    get(type, id, 'credits').then((data) => {
+      setCast({ people: data, type: cast.type })
+    })
+  }
+
+  // note to create a Person page
+  // Also if person doesn't have a image provided we can provide some random image instead.
+  const renderCast = () => {
+    if (cast.people.length) {
+      return cast.people.map((person) => {
+        let { character, name, profile_path, id } = person
+        let route = `/person/${id}`
+        return (
+          <DisplayCard
+            key={id}
+            to={route}
+            useStyles={useStylesSm}
+            title={name}
+            date={character}
+            poster={
+              profile_path
+                ? `${basePosterUrl}w138_and_h175_face${profile_path}`
+                : 'https://source.unsplash.com/random'
+            }
+            element={person}
+            type="person"
+          />
+        )
+      })
+    }
+  }
+
+  //likeBtns are rendered once a user is detected
+  const renderLikeBtn = (): React$Node | null => {
+    if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
+      return (
+        <IconButton
+          aria-label="moreButton"
+          onClick={() => handleLike()}
+          className={classes.likeBtn}
+        >
+          {likeIcon}
+        </IconButton>
+      )
+    } else return null
+  }
+
+  const renderRating = (): React$Node | null => {
+    if ((type === 'movie' || type === 'tv') && display?.vote_average) {
+      return (
+        <IconButton style={styles.ratingBtn} className={classes.rating}>
+          <RatingBar rating={display.vote_average} customStyles={displayStyles} />
+        </IconButton>
+      )
+    } else return null
+  }
 
   return (
     <>

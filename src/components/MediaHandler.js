@@ -1,5 +1,5 @@
 //@Flow
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import DisplayCard from './DisplayCard'
@@ -28,59 +28,65 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function MediaHandler({ media, type, pageTitle }) {
-  const classes = useStyles(),
-    { basePosterUrl, setBasePosterUrl } = useContext(MovieContext),
-    posterSize = 'w185',
-    getPosterUrl = () => {
-      if (!basePosterUrl) {
-        getConfig().then((data) => {
-          if (data?.images) {
-            setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
-          }
-        })
-      }
-    },
-    renderMedia = () => {
-      if (Array.isArray(media) && media.length) {
-        return media.map((ele) => {
-          const {
-            id,
-            original_title,
-            name,
-            release_date,
-            first_air_date,
-            poster_path,
-            profile_path,
-            vote_average,
-          } = ele
-          let route = `/display/${type}/${id}`,
-            path = poster_path || profile_path
-          return (
-            <Grid item xs={3} key={ele.id}>
-              <DisplayCard
-                key={id}
-                to={route}
-                useStyles={cardStyle}
-                ratingStyle={smCardStyles}
-                title={original_title || name}
-                date={release_date || first_air_date}
-                poster={`${basePosterUrl}${posterSize}${path}`}
-                element={ele}
-                type={type}
-                rating={vote_average}
-              />
-            </Grid>
-          )
-        })
-      } else {
+  const classes = useStyles()
+  const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  const posterSize = 'w185'
+
+  useEffect(() => {
+    getPosterUrl()
+  }, [])
+
+  const getPosterUrl = () => {
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
+        if (data?.images) {
+          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        }
+      })
+    }
+  }
+
+  const renderMedia = () => {
+    if (Array.isArray(media) && media.length) {
+      return media.map((ele) => {
+        const {
+          id,
+          original_title,
+          name,
+          release_date,
+          first_air_date,
+          poster_path,
+          profile_path,
+          vote_average,
+        } = ele
+        let route = type === 'person' ? `/person/${id}` : `/display/${type}/${id}`
+        let path = poster_path || profile_path
         return (
-          <Grid item xs={3} style={{ height: '23rem' }}>
-            {' '}
-            <h5>No Media found...</h5>{' '}
+          <Grid item xs={3} key={ele.id}>
+            <DisplayCard
+              key={id}
+              to={route}
+              useStyles={cardStyle}
+              ratingStyle={smCardStyles}
+              title={original_title || name}
+              date={release_date || first_air_date}
+              poster={`${basePosterUrl}${posterSize}${path}`}
+              element={ele}
+              type={type}
+              rating={vote_average}
+            />
           </Grid>
         )
-      }
+      })
+    } else {
+      return (
+        <Grid item xs={3} style={{ height: '23rem' }}>
+          {' '}
+          <h5>No Media found...</h5>{' '}
+        </Grid>
+      )
     }
+  }
   return (
     <React.Fragment>
       <Container maxWidth="lg">

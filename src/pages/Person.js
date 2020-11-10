@@ -1,4 +1,4 @@
-//improvements:
+//@Flow
 //add movies he acted in?
 
 import React, { useContext, useEffect, useState } from 'react'
@@ -12,11 +12,14 @@ import {
   Typography,
   Container,
   CardMedia,
+  IconButton,
 } from '@material-ui/core'
 import { MovieContext } from '../components/MovieContext'
 import { useStylesDisplay } from '../styles/CardStyles'
 import { useParams } from 'react-router-dom'
 import { get, getConfig } from '../utils/movieDB'
+import Like from '../components/Like'
+import { FirebaseContext } from '../Firebase/FirebaseContext'
 
 const styles = {
   box: {
@@ -55,31 +58,77 @@ const styles = {
     fontSize: 20.8,
     fontWeight: 600,
   },
+  likeBtn: {},
 }
 
-export default function Person() {
-  const classes = useStylesDisplay(),
-    { id } = useParams(),
-    { basePosterUrl, setBasePosterUrl } = useContext(MovieContext),
-    [person, setPerson] = useState()
+export default function Person(): React$Element<React$FragmentType> {
+  const classes = useStylesDisplay()
+  const { id } = useParams()
+  const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
+  const [person, setPerson] = useState()
+  const [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />)
+
+  const [liked, setLiked] = useState(null)
 
   useEffect(() => {
     getPerson()
     getPosterUrl()
+    setLike()
   }, [])
 
+  useEffect(() => {
+    setLike()
+  }, [user])
+
+  const setLike = () => {
+    checkLiked(parseInt(id), 'person').then((result) => {
+      console.log(result)
+      setLiked(result)
+    })
+  }
+
   const getPerson = () => {
-      get('person', id).then((data) => {
-        setPerson(data)
+    get('person', id).then((data) => {
+      setPerson(data)
+    })
+  }
+
+  const getPosterUrl = () => {
+    if (!basePosterUrl) {
+      getConfig().then((data) => {
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
       })
-    },
-    getPosterUrl = () => {
-      if (!basePosterUrl) {
-        getConfig().then((data) => {
-          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+    }
+  }
+
+  const handleLike = () => {
+    if (user) {
+      if (!liked) {
+        favorite(parseInt(id), 'person').then((result) => {
+          setLiked(result)
+        })
+      } else if (liked) {
+        removeFavorite(parseInt(id), 'person').then((result) => {
+          setLiked(result)
         })
       }
+    } else {
+      //trigger modal to prompt user to sign up
+      console.log('no user')
     }
+  }
+
+  const renderLikeBtn = (): React.Node | null => {
+    if (liked === null) return null
+    return (
+      <Box>
+        <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
+          <Like liked={liked} size={2} />
+        </IconButton>
+      </Box>
+    )
+  }
 
   return (
     <>
@@ -99,36 +148,41 @@ export default function Person() {
                   title={person ? person.name : 'fetching'}
                 />
               </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  X
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
             {person && (
-              <Typography component="h1" variant="h4" style={styles.h1}>
-                {person.name}
-              </Typography>
+              <Box>
+                <Typography component="h1" variant="h4" style={styles.h1}>
+                  {person.name}
+                </Typography>
+              </Box>
             )}
             {person && person.birthday && (
-              <Typography component="h1" variant="h4" style={styles.h1}>
-                ({person.birthday.slice(0, 4)})
-              </Typography>
+              <Box>
+                <Typography component="h1" variant="h4" style={styles.h1}>
+                  ({person.birthday.slice(0, 4)})
+                </Typography>
+              </Box>
             )}
             <br />
             {person && person.biography && (
-              <Typography component="h2" variant="h5" style={styles.h2}>
-                Biography
-              </Typography>
+              <Box>
+                <Typography component="h2" variant="h5" style={styles.h2}>
+                  Biography
+                </Typography>
+              </Box>
             )}
+            {renderLikeBtn()}
             {person && (
-              <Typography component="p" variant="body1">
-                {person.biography}
-              </Typography>
+              <Box>
+                <Typography component="p" variant="body1">
+                  {person.biography}
+                </Typography>
+              </Box>
             )}
             <br />
+
             <Box display="flex">{/* render directors */}</Box>
           </Grid>
         </Grid>

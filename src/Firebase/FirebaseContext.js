@@ -1,3 +1,4 @@
+//@Flow
 import React, { createContext, useState } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore'
@@ -36,12 +37,11 @@ const db = firebase.firestore()
 export const FirebaseContext = createContext(db)
 const provider = new firebase.auth.GoogleAuthProvider()
 
-// composition
 export function FirebaseProvider({ children }) {
   firebase.auth().onAuthStateChanged((user) => setUser(user))
   const [user, setUser] = useState()
 
-  const transformType = (type) => {
+  const transformType = (type: string): string | null => {
     switch (type) {
       case 'movie':
         return 'favoriteMovies'
@@ -55,7 +55,7 @@ export function FirebaseProvider({ children }) {
   }
 
   // item can be person, movie, or show
-  const favorite = async (eleId, type) => {
+  const favorite = async (eleId: number, type: string): boolean => {
     if (!user) {
       console.log('no user')
       return false
@@ -81,7 +81,7 @@ export function FirebaseProvider({ children }) {
   }
 
   //if successful will return false to remove the liked state
-  const removeFavorite = async (eleId, type) => {
+  const removeFavorite = async (eleId: number, type: string): boolean => {
     if (!user) {
       console.log('no user')
       return true
@@ -110,9 +110,9 @@ export function FirebaseProvider({ children }) {
     return true
   }
 
-  const checkLiked = async (eleId, type) => {
+  const checkLiked = async (eleId: number, type: string): boolean | null => {
     if (!user) {
-      console.log('no user')
+      console.log('no user found')
       return null
     }
     try {
@@ -135,7 +135,7 @@ export function FirebaseProvider({ children }) {
   }
 
   //add new user to database and set schema
-  const newUser = async (email) => {
+  const newUser = async (email: string) => {
     try {
       const docRef = db.collection('users').doc(email)
       await docRef.set({
@@ -148,7 +148,7 @@ export function FirebaseProvider({ children }) {
     }
   }
 
-  const getFavorites = async (type) => {
+  const getFavorites = async (type: string): array => {
     if (!user) return null
     const docRef = db.collection('users').doc(user.email)
     const doc = await docRef.get()

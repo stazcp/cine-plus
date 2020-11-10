@@ -1,3 +1,4 @@
+//@Flow
 // random image link: https://source.unsplash.com/random
 
 import React, { useContext, useState, useEffect } from 'react'
@@ -59,24 +60,31 @@ export default function MovieCard({
   type,
   rating,
   ratingStyle,
-}) {
-  const classes = useStyles(),
-    { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext),
-    { setDisplay, setPerson, setOpenTrailer, setMovie, currentLikes, setCurrentLikes } = useContext(
-      MovieContext
-    ),
-    [liked, setLiked] = useState(null)
+}): React$Element<React$FragmentType> {
+  const classes = useStyles()
+  const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
+  const {
+    setDisplay,
+    setPerson,
+    setOpenTrailer,
+    setMovie,
+    currentLikes,
+    setCurrentLikes,
+  } = useContext(MovieContext)
+  const [liked, setLiked] = useState(null)
 
   useEffect(() => {
     setLikes()
   }, [user, currentLikes])
 
   const setLikes = () => {
+    //trailers don't get likes
     if (type === 'trailer') return null
     checkLiked(element && element.id, type).then((result) => {
       setLiked(result)
     })
   }
+
   //stores the clicked movie to present it in Display page.
   const handleClick = () => {
     if (type === 'person') {
@@ -90,6 +98,7 @@ export default function MovieCard({
       setOpenTrailer(true)
     }
   }
+
   // will setLiked true or false if depending on the operation
   const handleLike = () => {
     if (user) {
@@ -107,53 +116,58 @@ export default function MovieCard({
       console.log('no user')
     }
   }
-  const renderRating = () => {
+
+  const renderRating = (): React$Node | null => {
     if (type === 'movie' || type === 'tv') {
       return <RatingBar rating={rating} customStyles={ratingStyle} />
-    }
+    } else return null
   }
-  const //likeBtns are rendered once a user is detected
-    renderLikeBtn = () => {
-      if (type !== 'trailer') {
-        return (
-          <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
-            <Like liked={liked} size={1} />
-          </IconButton>
-        )
-      }
+
+  //likeBtns are rendered once a user is detected
+  const renderLikeBtn = (): React$Node | null => {
+    if (type !== 'trailer' && user) {
+      return (
+        <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
+          <Like liked={liked} size={1} />
+        </IconButton>
+      )
     }
+    return null
+  }
 
   return (
-    <div className="CardComponent">
-      <Card className={classes.root}>
-        <div className="MediaContainer" style={styles.mediaContainer}>
-          {renderLikeBtn()}
-          {renderRating()}
-          <ButtonBase
-            onClick={() => handleClick()}
-            component={Link}
-            to={to}
-            style={styles.buttonBase}
-          >
-            <CardMedia
-              className={classes.cardMedia}
-              image={poster || 'https://source.unsplash.com/random'}
-              title={to}
-              style={{ zIndex: 2 }}
-            />
-          </ButtonBase>
-        </div>
-        <CardContent className={classes.cardContent} style={styles.cardContent}>
-          <Typography className={classes.link}>
-            <Link to={to} style={styles.link} onClick={() => handleClick()}>
-              {title}
-            </Link>
-          </Typography>
-          <Typography variant="caption" component="p" className={classes.caption}>
-            {date}
-          </Typography>
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <div className="CardComponent">
+        <Card className={classes.root}>
+          <div className="MediaContainer" style={styles.mediaContainer}>
+            {renderLikeBtn()}
+            {renderRating()}
+            <ButtonBase
+              onClick={() => handleClick()}
+              component={Link}
+              to={to}
+              style={styles.buttonBase}
+            >
+              <CardMedia
+                className={classes.cardMedia}
+                image={poster || 'https://source.unsplash.com/random'}
+                title={to}
+                style={{ zIndex: 2 }}
+              />
+            </ButtonBase>
+          </div>
+          <CardContent className={classes.cardContent} style={styles.cardContent}>
+            <Typography>
+              <Link to={to} style={styles.link} onClick={() => handleClick()}>
+                {title}
+              </Link>
+            </Typography>
+            <Typography variant="caption" component="p" className={classes.caption}>
+              {date}
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   )
 }

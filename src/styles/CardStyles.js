@@ -8,6 +8,8 @@ export const useStylesSm = makeStyles((theme) => ({
     marginLeft: '20px',
     borderRadius: '5px',
     marginTop: '20px',
+    width: 150,
+    height: 387,
   },
   cardMedia: {
     width: '150px',

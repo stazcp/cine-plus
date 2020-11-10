@@ -32,14 +32,18 @@ export const getConfig = async (): Promise<{
   }
 }
 
+//refactor into receiving a object for code clarity
 // used for fetching movies, tvShows, and people
 export const get = async (type: string, conf: string, extra: ?string): Promise<any> => {
   try {
     let url = extra
-        ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`
-        : `${base_url}${type}/${conf}?api_key=${api_key}`,
-      response = await fetch(url),
-      result = await response.json()
+      ? `${base_url}${type}/${conf}/${extra}?api_key=${api_key}`
+      : conf
+      ? `${base_url}${type}/${conf}?api_key=${api_key}`
+      : `${base_url}search/multi?api_key=${api_key}&query=${type}`
+
+    let response = await fetch(url)
+    let result = await response.json()
     if (result.results) {
       return result.results
     } else if (result.cast) {
