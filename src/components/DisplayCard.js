@@ -74,10 +74,10 @@ export default function MovieCard({
   const [liked, setLiked] = useState(null)
 
   useEffect(() => {
-    setLikes()
+    setLike()
   }, [user, currentLikes])
 
-  const setLikes = () => {
+  const setLike = () => {
     //trailers don't get likes
     if (type === 'trailer') return null
     checkLiked(element && element.id, type).then((result) => {

@@ -7,6 +7,7 @@ import { useStylesSm } from '../styles/CardStyles'
 import { smCardStyles } from '../styles/RatingBarStyles'
 import { Typography, Box, Container, Grid } from '@material-ui/core'
 import { useStyles } from '../components/ColumnHeader'
+import SearchBar from 'material-ui-search-bar'
 
 const styles = {
   scroller: {
@@ -22,12 +23,13 @@ export default function Search() {
   const [people, setPeople] = useState([])
   const [other, setOther] = useState([])
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
+  const [searchQuery, setSearchQuery] = useState(query)
   const posterSize = 'w300'
 
   useEffect(() => {
     getPosterUrl()
     fetchSearch()
-  }, [])
+  }, [searchQuery])
 
   const getPosterUrl = () => {
     if (!basePosterUrl) {
@@ -40,7 +42,9 @@ export default function Search() {
   }
 
   const fetchSearch = () => {
-    get(query).then((result) => {
+    console.log('fetching')
+    if (!searchQuery) return null
+    get(searchQuery).then((result) => {
       result.map((ele) => {
         if (ele?.media_type) {
           switch (ele.media_type) {
@@ -63,6 +67,14 @@ export default function Search() {
     })
   }
 
+  const search = (query) => {
+    setMovies([])
+    setShows([])
+    setPeople([])
+    setOther([])
+    setSearchQuery(query)
+  }
+
   //datum is singular for data
   const renderResults = (data, title) => {
     if (!data.length) {
@@ -73,7 +85,7 @@ export default function Search() {
       <Box>
         <Typography className={classes.column_header}>{title}</Typography>
         <Box display="flex" style={styles.scroller}>
-          {data.map((datum) => {
+          {data.map((datum, i) => {
             let {
               id,
               original_title,
@@ -88,15 +100,23 @@ export default function Search() {
             } = datum
 
             let route = media_type === 'person' ? `/person/${id}` : `/display/${media_type}/${id}`
+            let poster
+            if (poster_path) {
+              poster = `${basePosterUrl}${posterSize}${poster_path}`
+            } else if (profile_path) {
+              poster = `${basePosterUrl}${posterSize}${profile_path}`
+            } else {
+              poster = 'https://source.unsplash.com/random'
+            }
             return (
               <DisplayCard
-                key={id}
+                key={i}
                 to={route}
                 useStyles={useStylesSm}
                 ratingStyle={smCardStyles}
                 title={original_title || name || original_name}
                 date={release_date || first_air_date}
-                poster={`${basePosterUrl}${posterSize}${poster_path || profile_path}`}
+                poster={poster}
                 element={datum}
                 type={media_type}
                 rating={vote_average}
@@ -110,6 +130,11 @@ export default function Search() {
 
   return (
     <Container maxWidth="lg">
+      <SearchBar
+        value={query}
+        onChange={(value) => search(value)}
+        onRequestSearch={(value) => search(value)}
+      />
       {renderResults(movies, 'Movies')}
       {renderResults(shows, 'Tv Shows')}
       {renderResults(people, 'People')}

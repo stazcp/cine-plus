@@ -112,7 +112,6 @@ export function FirebaseProvider({ children }) {
 
   const checkLiked = async (eleId: number, type: string): boolean | null => {
     if (!user) {
-      console.log('no user found')
       return null
     }
     try {

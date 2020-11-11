@@ -103,15 +103,13 @@ export default function Display(): React$Element<React$FragmentType> {
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const { type, id } = useParams()
   const customClasses = useStylesDisplay()
-  const [likeIcon, setLikeIcon] = useState(<Like liked={false} size={2} />)
-  const [liked, setLiked] = useState(checkLiked(display && display.id, type))
+  const [liked, setLiked] = useState(null)
   const [date, setDate] = useState()
   const [title, setTitle] = useState()
 
   useEffect(() => {
-    setLikes()
-    setLikeIcn()
-  }, [liked, user, currentLikes])
+    setLike()
+  }, [user, currentLikes])
 
   useEffect(() => {
     getPosterUrl()
@@ -123,17 +121,17 @@ export default function Display(): React$Element<React$FragmentType> {
     }
   }, [display])
 
-  const setLikeIcn = () => {
-    if (liked) {
-      setLikeIcon(<Like liked={true} size={2} />)
-    } else {
-      setLikeIcon(<Like liked={false} size={2} />)
-    }
-  }
+  // const setLikeIcn = () => {
+  //   if (liked) {
+  //     setLikeIcon(<Like liked={true} size={2} />)
+  //   } else {
+  //     setLikeIcon(<Like liked={false} size={2} />)
+  //   }
+  // }
 
   //checks if movie has been liked already
   // sets likes accordingly on the page
-  const setLikes = () => {
+  const setLike = () => {
     checkLiked(display && display.id, type).then((result) => {
       setLiked(result)
     })
@@ -224,7 +222,7 @@ export default function Display(): React$Element<React$FragmentType> {
           onClick={() => handleLike()}
           className={classes.likeBtn}
         >
-          {likeIcon}
+          <Like liked={liked} size={2} />
         </IconButton>
       )
     } else return null
