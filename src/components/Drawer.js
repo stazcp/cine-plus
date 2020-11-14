@@ -99,13 +99,12 @@ export default function PersistentDrawerRight({ open, handleDrawerClose, data })
       </div>
       <Divider />
       <List>
-        {display.map((ele, index) => {
-          console.log(ele)
+        {display.map((ele, i) => {
           if (ele === 'divide') {
-            return <Divider />
+            return <Divider key={i} />
           } else {
             return (
-              <ListItem button key={ele.title} onClick={() => handleClick(ele)}>
+              <ListItem button key={i} onClick={() => handleClick(ele)}>
                 <ListItemIcon> {ele.icon}</ListItemIcon>
                 <ListItemText primary={ele.title} />
               </ListItem>

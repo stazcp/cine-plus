@@ -1,9 +1,9 @@
 //@Flow
 import React, { useContext, useEffect } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import DisplayCard from './DisplayCard'
-import { useStylesMd as cardStyle } from '../styles/CardStyles'
+import { useStylesMd } from '../styles/CardStyles'
 import Accordion from './Accordion'
 import { MovieContext } from './MovieContext'
 import { getConfig } from '../utils/movieDB'
@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function MediaHandler({ media, type, pageTitle }) {
+  const theme = useTheme()
+  console.log(window.innerWidth)
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const posterSize = 'w185'
@@ -66,7 +68,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
             <DisplayCard
               key={id}
               to={route}
-              useStyles={cardStyle}
+              useStyles={useStylesMd}
               ratingStyle={smCardStyles}
               title={original_title || name}
               date={release_date || first_air_date}

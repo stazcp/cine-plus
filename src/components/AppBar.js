@@ -256,11 +256,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
       )
     }
-    return routingData.account.items.map((ele) => {
+    return routingData.account.items.map((ele, i) => {
       const { title, to } = ele
       return (
-        <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5">
-          <Link to={to} style={styles.link}>
+        <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5" key={i}>
+          <Link to={to} style={styles.link} key={i}>
             {title}
           </Link>
         </Typography>
@@ -285,7 +285,7 @@ export default function PrimarySearchAppBar() {
   return (
     <div className={classes.grow}>
       <AppBar
-        position="fixed"
+        position="sticky"
         className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
       >
         <Toolbar>

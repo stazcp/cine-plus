@@ -5,18 +5,17 @@ export const useStylesSm = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: '20px',
-    borderRadius: '5px',
-    marginTop: '20px',
+    marginLeft: 20,
+    borderRadius: 5,
+    marginTop: 20,
     width: 150,
     height: 387,
   },
   cardMedia: {
-    width: '150px',
-    height: '225px',
+    width: 150,
+    height: 225,
   },
   cardContent: {
-    flexGrow: 1,
     paddingTop: 0,
     paddingBot: 0,
   },
@@ -32,17 +31,17 @@ export const useStylesMd = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: '20px',
-    borderRadius: '5px',
-    marginTop: '20px',
+    marginLeft: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    width: 206,
+    height: 406,
   },
   cardMedia: {
-    width: '206px',
-    height: '312px',
+    width: 206,
+    height: 312,
   },
-  cardContent: {
-    flexGrow: 1,
-  },
+  cardContent: {},
   caption: {
     fontSize: theme.typography.htmlFontSize, //16
     color: 'rgba(0,0,0,0.6)',
@@ -54,16 +53,17 @@ export const useStylesTrailer = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: '20px',
-    borderRadius: '5px',
-    marginTop: '20px',
+    marginLeft: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    width: 206,
+    height: 450,
   },
   cardMedia: {
-    width: '206px',
-    height: '312px',
+    width: 206,
+    height: 312,
   },
   cardContent: {
-    flexGrow: 1,
     wordWrap: 'break-word',
   },
   caption: {
@@ -78,14 +78,13 @@ export const useStylesPerson = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '0px',
-    marginTop: '20px',
+    marginTop: 20,
   },
   cardMedia: {
-    width: '235px',
-    height: '235px',
+    width: 235,
+    height: 235,
   },
   cardContent: {
-    flexGrow: 1,
     wordWrap: 'break-word',
   },
   caption: {
@@ -96,8 +95,7 @@ export const useStylesPerson = makeStyles((theme) => ({
 
 export const useStylesDisplay = makeStyles((theme) => ({
   root: {
-    maxWidth: 300,
-    minWidth: 300,
+    width: 300,
     marginLeft: 40,
   },
   media: {
