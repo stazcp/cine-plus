@@ -11,6 +11,7 @@ import {
   Typography,
   IconButton,
   ButtonBase,
+  Container,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
@@ -121,23 +122,12 @@ export default function Display(): React$Element<React$FragmentType> {
     }
   }, [display])
 
-  // const setLikeIcn = () => {
-  //   if (liked) {
-  //     setLikeIcon(<Like liked={true} size={2} />)
-  //   } else {
-  //     setLikeIcon(<Like liked={false} size={2} />)
-  //   }
-  // }
-
-  //checks if movie has been liked already
-  // sets likes accordingly on the page
   const setLike = () => {
     checkLiked(display && display.id, type).then((result) => {
       setLiked(result)
     })
   }
 
-  // will setLiked true or false if depending on the operation
   const handleLike = () => {
     if (user) {
       if (!liked) {
@@ -186,8 +176,6 @@ export default function Display(): React$Element<React$FragmentType> {
     })
   }
 
-  // note to create a Person page
-  // Also if person doesn't have a image provided we can provide some random image instead.
   const renderCast = () => {
     if (cast.people.length) {
       return cast.people.map((person) => {
@@ -259,40 +247,42 @@ export default function Display(): React$Element<React$FragmentType> {
             </Card>
           </Grid>
           <Grid item xs={9} style={styles.headerSection}>
-            <Typography component="h1" variant="h4" style={styles.h1}>
-              {title && title}
-              {/* $FlowFixMe */}
-              {` `}({date && date.slice(0, 4)})
-            </Typography>
-            <Typography>{date} •</Typography>
-            <Box
-              display="flex"
-              justifyContent="flex-start"
-              alignItems="center"
-              alignContent="flex-start"
-            >
+            <Container maxWidth="sm">
+              <Typography component="h1" variant="h4" style={styles.h1}>
+                {title && title}
+                {/* $FlowFixMe */}
+                {` `}({date && date.slice(0, 4)})
+              </Typography>
+              <Typography>{date} •</Typography>
               <Box
                 display="flex"
                 justifyContent="flex-start"
                 alignItems="center"
                 alignContent="flex-start"
-                style={{ marginRight: '-50%' }}
               >
-                {renderRating()}
-                <Typography component="h5" variant="h5" style={styles.h5}>
-                  User <br />
-                  Score
-                </Typography>
+                <Box
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  alignContent="flex-start"
+                  style={{ marginRight: '-50%' }}
+                >
+                  {renderRating()}
+                  <Typography component="h5" variant="h5" style={styles.h5}>
+                    User <br />
+                    Score
+                  </Typography>
+                </Box>
+                {renderLikeBtn()}
               </Box>
-              {renderLikeBtn()}
-            </Box>
-            <Typography component="h2" variant="h5" style={styles.h2}>
-              Overview
-            </Typography>
-            <br />
-            <Typography> {display && display.overview} </Typography>
-            <br />
-            <Box display="flex">{/* render directors */}</Box>
+              <Typography component="h2" variant="h5" style={styles.h2}>
+                Overview
+              </Typography>
+              <br />
+              <Typography> {display && display.overview} </Typography>
+              <br />
+              <Box display="flex">{/* render directors */}</Box>
+            </Container>
           </Grid>
         </Grid>
       </Box>
