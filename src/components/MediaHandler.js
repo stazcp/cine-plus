@@ -3,11 +3,12 @@ import React, { useContext, useEffect } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import DisplayCard from './DisplayCard'
-import { useStylesMd } from '../styles/CardStyles'
+import { useStylesMd, useStylesSm } from '../styles/CardStyles'
 import Accordion from './Accordion'
 import { MovieContext } from './MovieContext'
 import { getConfig } from '../utils/movieDB'
 import { smCardStyles } from '../styles/RatingBarStyles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
   centralSection: {
@@ -29,10 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MediaHandler({ media, type, pageTitle }) {
   const theme = useTheme()
-  console.log(window.innerWidth)
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const posterSize = 'w185'
+  const lgBreakPoint = useMediaQuery('(min-width:1147px')
+  const mdBreakPoint = useMediaQuery('(min-width:905px')
 
   useEffect(() => {
     getPosterUrl()
@@ -46,6 +48,13 @@ export default function MediaHandler({ media, type, pageTitle }) {
         }
       })
     }
+  }
+
+  const pickCardStyle = () => {
+    if (lgBreakPoint) {
+      return useStylesMd
+    }
+    return useStylesSm
   }
 
   const renderMedia = () => {
@@ -68,7 +77,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
             <DisplayCard
               key={id}
               to={route}
-              useStyles={useStylesMd}
+              useStyles={pickCardStyle()}
               ratingStyle={smCardStyles}
               title={original_title || name}
               date={release_date || first_air_date}
@@ -100,7 +109,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
               </Typography>
             </Box>
             <Box className={classes.centralSection}>
-              <Accordion />
+              {mdBreakPoint && <Accordion />}
               <Container maxWidth="md">
                 <Grid container spacing={1}>
                   {renderMedia()}
