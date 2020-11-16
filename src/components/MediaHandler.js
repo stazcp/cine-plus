@@ -51,20 +51,6 @@ export default function MediaHandler({ media, type, pageTitle }) {
     }
   }
 
-  const pickCardStyle = () => {
-    if (lgBreakPoint) {
-      return useStylesMd
-    }
-    return useStylesSm
-  }
-
-  const pickGridItemSize = () => {
-    if (smBreakPoint) {
-      return 6
-    }
-    return 3
-  }
-
   const renderMedia = () => {
     if (Array.isArray(media) && media.length) {
       return media.map((ele) => {
@@ -81,11 +67,11 @@ export default function MediaHandler({ media, type, pageTitle }) {
         let route = type === 'person' ? `/person/${id}` : `/display/${type}/${id}`
         let path = poster_path || profile_path
         return (
-          <Grid item xs={pickGridItemSize()} key={ele.id}>
+          <Grid item xs={smBreakPoint ? 6 : 3} key={ele.id}>
             <DisplayCard
               key={id}
               to={route}
-              useStyles={pickCardStyle()}
+              useStyles={lgBreakPoint ? useStylesMd : useStylesSm}
               ratingStyle={smCardStyles}
               title={original_title || name}
               date={release_date || first_air_date}
