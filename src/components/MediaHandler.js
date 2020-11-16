@@ -33,13 +33,20 @@ export default function MediaHandler({ media, type, pageTitle }) {
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const posterSize = 'w185'
-  const lgBreakPoint = useMediaQuery('(min-width:1147px)')
-  const mdBreakPoint = useMediaQuery('(min-width:905px)')
-  const smBreakPoint = useMediaQuery('(max-width:600px)')
+  const lg = useMediaQuery('(min-width:1147px)')
+  const md = useMediaQuery('(min-width:905px)')
+  const sm = useMediaQuery('(max-width:600px)')
+  const xs = useMediaQuery('(max-width:355px)')
 
   useEffect(() => {
     getPosterUrl()
   }, [])
+
+  const setGridItemSize = () => {
+    if (xs) return 12
+    if (sm) return 6
+    return 3
+  }
 
   const getPosterUrl = () => {
     if (!basePosterUrl) {
@@ -67,11 +74,11 @@ export default function MediaHandler({ media, type, pageTitle }) {
         let route = type === 'person' ? `/person/${id}` : `/display/${type}/${id}`
         let path = poster_path || profile_path
         return (
-          <Grid item xs={smBreakPoint ? 6 : 3} key={ele.id}>
+          <Grid item xs={setGridItemSize()} key={ele.id}>
             <DisplayCard
               key={id}
               to={route}
-              useStyles={lgBreakPoint ? useStylesMd : useStylesSm}
+              useStyles={lg ? useStylesMd : useStylesSm}
               ratingStyle={smCardStyles}
               title={original_title || name}
               date={release_date || first_air_date}
@@ -103,7 +110,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
               </Typography>
             </Box>
             <Box className={classes.centralSection}>
-              {mdBreakPoint && <Accordion />}
+              {md && <Accordion />}
               <Container maxWidth="md">
                 <Grid container spacing={1}>
                   {renderMedia()}
