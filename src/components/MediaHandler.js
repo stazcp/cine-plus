@@ -33,8 +33,9 @@ export default function MediaHandler({ media, type, pageTitle }) {
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const posterSize = 'w185'
-  const lgBreakPoint = useMediaQuery('(min-width:1147px')
-  const mdBreakPoint = useMediaQuery('(min-width:905px')
+  const lgBreakPoint = useMediaQuery('(min-width:1147px)')
+  const mdBreakPoint = useMediaQuery('(min-width:905px)')
+  const smBreakPoint = useMediaQuery('(max-width:600px)')
 
   useEffect(() => {
     getPosterUrl()
@@ -57,6 +58,13 @@ export default function MediaHandler({ media, type, pageTitle }) {
     return useStylesSm
   }
 
+  const pickGridItemSize = () => {
+    if (smBreakPoint) {
+      return 6
+    }
+    return 3
+  }
+
   const renderMedia = () => {
     if (Array.isArray(media) && media.length) {
       return media.map((ele) => {
@@ -73,7 +81,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
         let route = type === 'person' ? `/person/${id}` : `/display/${type}/${id}`
         let path = poster_path || profile_path
         return (
-          <Grid item xs={3} key={ele.id}>
+          <Grid item xs={pickGridItemSize()} key={ele.id}>
             <DisplayCard
               key={id}
               to={route}
