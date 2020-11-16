@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflowX: 'scroll',
     overflowY: 'hidden',
-    alignItems: 'flexStart',
   },
   heroSubtitle: {
     color: 'white',

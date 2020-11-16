@@ -1,6 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { AppBar, Toolbar, Typography, Menu, MenuItem, Badge, IconButton } from '@material-ui/core'
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Menu,
+  MenuItem,
+  Badge,
+  IconButton,
+  Paper,
+} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import LanguageIcon from '@material-ui/icons/Language'
 import { Link } from 'react-router-dom'
@@ -30,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     alignItems: 'flex-start',
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   sectionMobile: {
     [theme.breakpoints.up('md')]: {
@@ -73,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: drawerWidth,
   },
+  toolbar: theme.mixins.toolbar,
 }))
 
 const styles = {
@@ -285,7 +299,7 @@ export default function PrimarySearchAppBar() {
   return (
     <div className={classes.grow}>
       <AppBar
-        position="sticky"
+        position="fixed"
         className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
       >
         <Toolbar>
@@ -322,6 +336,10 @@ export default function PrimarySearchAppBar() {
       {renderMoviesMenu()}
       {renderTVShowsMenu()}
       <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
+      {/* //makes sure content is not hidden under AppBar */}
+      <Paper>
+        <div className={classes.toolbar}></div>
+      </Paper>
     </div>
   )
 }
