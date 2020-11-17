@@ -44,46 +44,42 @@ export default function SimpleModal({ open }) {
     [key, setKey] = useState(),
     [modalStyle] = useState(getModalStyle)
 
-  // useEffect(() => {
-  //   if (movie && (!key || !trailer)) {
-  //     getTrailer(movie.id).then((data) => {
-  //       setKey(data.videos.results[0].key)
-  //       setTrailer(data)
-  //     })
-  //   }
-  // }, [])
-
-  if (movie && (!key || !trailer)) {
-    getTrailer(movie.id).then((data) => {
-      setKey(data.videos.results[0].key)
-      setTrailer(data)
-    })
-  }
+  useEffect(() => {
+    if (movie) {
+      getTrailer(movie).then((data) => {
+        setKey(data.videos.results[0].key)
+        setTrailer(data)
+      })
+    }
+  }, [movie])
 
   const handleOpen = () => {
-      setOpenTrailer(true)
-    },
-    handleClose = () => {
-      setOpenTrailer(false)
-      setMovie(undefined)
-      setTrailer(undefined)
-      setKey(undefined)
-    },
-    renderVideo = (
-      <>
-        {key && (
-          <div className="playerWrapper">
-            <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
-          </div>
-        )}
-      </>
-    ),
-    body = (
-      <div style={modalStyle} className={classes.paper}>
-        {renderVideo}
-        <SimpleModal />
-      </div>
-    )
+    setOpenTrailer(true)
+  }
+
+  const handleClose = () => {
+    setOpenTrailer(false)
+    setMovie(undefined)
+    setTrailer(undefined)
+    setKey(undefined)
+  }
+
+  const renderVideo = (
+    <>
+      {key && (
+        <div className="playerWrapper">
+          <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
+        </div>
+      )}
+    </>
+  )
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      {renderVideo}
+      <SimpleModal />
+    </div>
+  )
 
   return (
     <div>
