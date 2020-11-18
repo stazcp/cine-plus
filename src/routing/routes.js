@@ -4,6 +4,7 @@ import LiveTvIcon from '@material-ui/icons/LiveTv'
 import PersonIcon from '@material-ui/icons/Person'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
+//AppBar and Drawer Routing
 export const routingData = {
   movies: {
     title: 'Movies',

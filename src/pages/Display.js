@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const styles = {
-  box: {
+  main: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
     color: 'white',
@@ -53,7 +53,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     flexDirection: 'column',
-    paddingLeft: 80,
+    // paddingLeft: 80,
     paddingRight: 40,
   },
   h1: {
@@ -77,7 +77,6 @@ const styles = {
   h2: {
     fontSize: 20.8,
     fontWeight: 600,
-    left: '-30%',
   },
   h5: {
     fontSize: '1em',
@@ -229,9 +228,9 @@ export default function Display(): React$Element<React$FragmentType> {
   return (
     <>
       <Box style={styles.topBar}></Box>
-      <Box style={styles.box}>
-        <Grid container spacing={6}>
-          <Grid item xs={3}>
+      <Box style={styles.main}>
+        <Grid container spacing={0}>
+          <Grid item sm={3} xs={12}>
             <Card className={customClasses.root} style={styles.cardColor}>
               <CardActionArea>
                 <CardMedia
@@ -246,7 +245,7 @@ export default function Display(): React$Element<React$FragmentType> {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={9} style={styles.headerSection}>
+          <Grid item sm={9} xs={12} style={styles.headerSection}>
             <Container maxWidth="sm">
               <Typography component="h1" variant="h4" style={styles.h1}>
                 {title && title}

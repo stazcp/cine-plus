@@ -9,26 +9,13 @@ import { getTrailer } from '../utils/movieDB'
 //slider to be implemented
 //https://www.npmjs.com/package/react-player-controls#playericon-
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10
-}
-
-function getModalStyle() {
-  const top = 50 + rand(),
-    left = 50 + rand()
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  }
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
+    position: 'fixed',
     width: 'auto',
     height: 'auto',
+    top: '25%',
+    right: '25%',
   },
   playerWrapper: {
     height: 'auto',
@@ -42,7 +29,7 @@ export default function SimpleModal({ open }) {
     { setOpenTrailer, movie, setMovie } = useContext(MovieContext),
     [trailer, setTrailer] = useState(),
     [key, setKey] = useState(),
-    [modalStyle] = useState(getModalStyle)
+    [modalStyle] = useState()
 
   useEffect(() => {
     if (movie) {
@@ -75,7 +62,7 @@ export default function SimpleModal({ open }) {
   )
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div className={classes.paper}>
       {renderVideo}
       <SimpleModal />
     </div>
