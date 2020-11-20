@@ -97,6 +97,9 @@ export const useStylesDisplay = makeStyles((theme) => ({
   root: {
     width: 300,
     marginLeft: 40,
+    height: 450,
+    minWidth: 280,
+    flexShrink: 1,
   },
   media: {
     height: 450,

@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(2),
   },
   main: {
-    flexDirection: 'row',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
       textAlign: 'center',

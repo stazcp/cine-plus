@@ -14,27 +14,37 @@ import {
   CardMedia,
   IconButton,
 } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { MovieContext } from '../components/MovieContext'
 import { useStylesDisplay } from '../styles/CardStyles'
 import { useParams } from 'react-router-dom'
 import { get, getConfig } from '../utils/movieDB'
 import Like from '../components/Like'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
+import clsx from 'clsx'
 
-const styles = {
-  box: {
+const useStyles = makeStyles((theme) => ({
+  main: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
     color: 'inherit',
     width: '100%',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      textAlign: 'center',
+    },
   },
   headerSection: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start',
     flexDirection: 'column',
-    paddingLeft: 80,
     paddingRight: 40,
+    flexShrink: '3',
+    flexGrow: '3',
+    alignSelf: 'stretch',
+    paddingLeft: 20,
   },
   h1: {
     fontSize: 35.2,
@@ -59,10 +69,11 @@ const styles = {
     fontWeight: 600,
   },
   likeBtn: {},
-}
+}))
 
 export default function Person(): React$Element<React$FragmentType> {
-  const classes = useStylesDisplay()
+  const customClasses = useStylesDisplay()
+  const classes = useStyles()
   const { id } = useParams()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
@@ -122,7 +133,7 @@ export default function Person(): React$Element<React$FragmentType> {
     if (liked === null) return null
     return (
       <Box>
-        <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
+        <IconButton aria-label="likeBtn" className={classes.likeBtn} onClick={() => handleLike()}>
           <Like liked={liked} size={2} />
         </IconButton>
       </Box>
@@ -131,62 +142,58 @@ export default function Person(): React$Element<React$FragmentType> {
 
   return (
     <>
-      <Box style={styles.topBar}></Box>
-      <Box style={styles.box}>
-        <Grid container spacing={6}>
-          <Grid item xs={3}>
-            <Card className={classes.root} style={styles.cardColor}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={
-                    person
-                      ? `${basePosterUrl}w342${person.profile_path}`
-                      : 'https://source.unsplash.com/random'
-                  }
-                  title={person ? person.name : 'fetching'}
-                />
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item xs={9} style={styles.headerSection}>
-            {person && (
-              <Box>
-                <Typography component="h1" variant="h4" style={styles.h1}>
-                  {person.name}
-                </Typography>
-              </Box>
-            )}
-            {person && person.birthday && (
-              <Box>
-                <Typography component="h1" variant="h4" style={styles.h1}>
-                  ({person.birthday.slice(0, 4)})
-                </Typography>
-              </Box>
-            )}
-            <br />
-            {person && person.biography && (
-              <Box>
-                <Typography component="h2" variant="h5" style={styles.h2}>
-                  Biography
-                </Typography>
-              </Box>
-            )}
-            {renderLikeBtn()}
-            {person && (
-              <Box>
-                <Typography component="p" variant="body1">
-                  {person.biography}
-                </Typography>
-              </Box>
-            )}
-            <br />
+      <Box className={classes.topBar}></Box>
+      <Box className={classes.main}>
+        <Card className={clsx(customClasses.root, customClasses.cardColor)}>
+          <CardActionArea>
+            <CardMedia
+              className={customClasses.media}
+              image={
+                person
+                  ? `${basePosterUrl}w342${person.profile_path}`
+                  : 'https://source.unsplash.com/random'
+              }
+              title={person ? person.name : 'fetching'}
+            />
+          </CardActionArea>
+        </Card>
+        <Box className={classes.headerSection}>
+          {person && (
+            <Box>
+              <Typography component="h1" variant="h4" className={classes.h1}>
+                {person.name}
+              </Typography>
+            </Box>
+          )}
+          {person && person.birthday && (
+            <Box>
+              <Typography component="h1" variant="h4" className={classes.h1}>
+                ({person.birthday.slice(0, 4)})
+              </Typography>
+            </Box>
+          )}
+          <br />
+          {person && person.biography && (
+            <Box>
+              <Typography component="h2" variant="h5" className={classes.h2}>
+                Biography
+              </Typography>
+            </Box>
+          )}
+          {renderLikeBtn()}
+          {person && (
+            <Box>
+              <Typography component="p" variant="body1">
+                {person.biography}
+              </Typography>
+            </Box>
+          )}
+          <br />
 
-            <Box display="flex">{/* render directors */}</Box>
-          </Grid>
-        </Grid>
+          <Box display="flex">{/* render directors */}</Box>
+        </Box>
       </Box>
-      <Box style={styles.bot} flexDirection="row" display="flex"></Box>
+      <Box className={classes.bot} flexDirection="row" display="flex"></Box>
     </>
   )
 }
