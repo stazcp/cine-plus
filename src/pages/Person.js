@@ -83,7 +83,6 @@ export default function Person(): React$Element<React$FragmentType> {
 
   const setLike = () => {
     checkLiked(parseInt(id), 'person').then((result) => {
-      console.log(result)
       setLiked(result)
     })
   }

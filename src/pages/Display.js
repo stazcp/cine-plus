@@ -27,11 +27,27 @@ import { FirebaseContext } from '../Firebase/FirebaseContext'
 import RatingBar from '../components/RatingBar'
 import { displayStyles } from '../styles/RatingBarStyles'
 import Like from '../components/Like'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
   sub1: theme.subtitle1,
   likeBtn: {
     fontSize: '2em',
+  },
+  ratingBox: {
+    paddingRight: theme.spacing(2),
+  },
+  main: {
+    flexDirection: 'row',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      textAlign: 'center',
+    },
+  },
+  iconBox: {
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+    },
   },
   rating: {
     // '&:hover': {
@@ -47,14 +63,21 @@ const styles = {
     backgroundImage: `url(${Image})`,
     color: 'white',
     width: '100%',
+    paddingBottom: 40,
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    wrap: 'wrap',
   },
   headerSection: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start',
     flexDirection: 'column',
-    // paddingLeft: 80,
+    // paddingLeft: 40,
     paddingRight: 40,
+    flexShrink: '3',
+    flexGrow: '3',
+    alignSelf: 'stretch',
+    paddingLeft: 20,
   },
   h1: {
     fontSize: 35.2,
@@ -106,6 +129,10 @@ export default function Display(): React$Element<React$FragmentType> {
   const [liked, setLiked] = useState(null)
   const [date, setDate] = useState()
   const [title, setTitle] = useState()
+  const lg = useMediaQuery('(min-width:1147px)')
+  const md = useMediaQuery('(min-width:905px)')
+  const sm = useMediaQuery('(max-width:600px)')
+  const xs = useMediaQuery('(max-width:355px)')
 
   useEffect(() => {
     setLike()
@@ -228,62 +255,63 @@ export default function Display(): React$Element<React$FragmentType> {
   return (
     <>
       <Box style={styles.topBar}></Box>
-      <Box style={styles.main}>
-        <Grid container spacing={0}>
-          <Grid item sm={3} xs={12}>
-            <Card className={customClasses.root} style={styles.cardColor}>
-              <CardActionArea>
-                <CardMedia
-                  className={customClasses.media}
-                  image={
-                    display
-                      ? `${basePosterUrl}w342${display.poster_path}`
-                      : 'https://source.unsplash.com/random'
-                  }
-                  title={display && display.title}
-                />
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item sm={9} xs={12} style={styles.headerSection}>
-            <Container maxWidth="sm">
-              <Typography component="h1" variant="h4" style={styles.h1}>
-                {title && title}
-                {/* $FlowFixMe */}
-                {` `}({date && date.slice(0, 4)})
+      <Box className={classes.main} style={styles.main}>
+        <Box display="flex">
+          <Card className={customClasses.root} style={styles.cardColor}>
+            <CardActionArea>
+              <CardMedia
+                className={customClasses.media}
+                image={
+                  display
+                    ? `${basePosterUrl}w342${display.poster_path}`
+                    : 'https://source.unsplash.com/random'
+                }
+                title={display && display.title}
+              />
+            </CardActionArea>
+          </Card>
+        </Box>
+
+        <Box style={styles.headerSection} flexShrink={2}>
+          <Typography component="h1" variant="h4" style={styles.h1}>
+            {title && title}
+            {/* $FlowFixMe */}
+            {` `}({date && date.slice(0, 4)})
+          </Typography>
+          <Typography>{date} •</Typography>
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            alignContent="flex-start"
+            flexShrink={2}
+            className={classes.iconBox}
+          >
+            <Box
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              alignContent="flex-start"
+              className={classes.ratingBox}
+              style={{ marginRight: -260 }}
+              flexShrink={0}
+            >
+              {renderRating()}
+              <Typography component="h5" variant="h5" style={styles.h5}>
+                User <br />
+                Score
               </Typography>
-              <Typography>{date} •</Typography>
-              <Box
-                display="flex"
-                justifyContent="flex-start"
-                alignItems="center"
-                alignContent="flex-start"
-              >
-                <Box
-                  display="flex"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  alignContent="flex-start"
-                  style={{ marginRight: '-50%' }}
-                >
-                  {renderRating()}
-                  <Typography component="h5" variant="h5" style={styles.h5}>
-                    User <br />
-                    Score
-                  </Typography>
-                </Box>
-                {renderLikeBtn()}
-              </Box>
-              <Typography component="h2" variant="h5" style={styles.h2}>
-                Overview
-              </Typography>
-              <br />
-              <Typography> {display && display.overview} </Typography>
-              <br />
-              <Box display="flex">{/* render directors */}</Box>
-            </Container>
-          </Grid>
-        </Grid>
+            </Box>
+            <Box display="flex">{renderLikeBtn()}</Box>
+          </Box>
+          <Typography component="h2" variant="h5" style={styles.h2}>
+            Overview
+          </Typography>
+          <br />
+          <Typography> {display && display.overview} </Typography>
+          <br />
+          <Box display="flex">{/* render directors */}</Box>
+        </Box>
       </Box>
       <Box style={styles.bot} flexDirection="row" display="flex">
         {renderCast()}
