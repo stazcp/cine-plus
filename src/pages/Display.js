@@ -28,6 +28,7 @@ import RatingBar from '../components/RatingBar'
 import { displayStyles } from '../styles/RatingBarStyles'
 import Like from '../components/Like'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
   sub1: theme.subtitle1,
@@ -43,22 +44,6 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       textAlign: 'center',
     },
-  },
-  iconBox: {
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center',
-    },
-  },
-  rating: {
-    // '&:hover': {
-    //   width: '102%',
-    //   marginLeft: '-100%',
-    // },
-  },
-}))
-
-const styles = {
-  main: {
     paddingTop: 40,
     backgroundImage: `url(${Image})`,
     color: 'white',
@@ -66,13 +51,16 @@ const styles = {
     paddingBottom: 40,
     display: 'flex',
     justifyContent: 'space-evenly',
-    wrap: 'wrap',
+  },
+  iconBox: {
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+    },
   },
   headerSection: {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    // paddingLeft: 40,
     paddingRight: 40,
     flexShrink: '3',
     flexGrow: '3',
@@ -82,9 +70,6 @@ const styles = {
   h1: {
     fontSize: 35.2,
     fontWeight: 700,
-  },
-  cardColor: {
-    backgroundColor: '#032541',
   },
   topBar: {
     height: 46,
@@ -109,7 +94,9 @@ const styles = {
     marginLeft: '-35%',
     marginRight: '-34%',
   },
-}
+}))
+
+const styles = {}
 
 export default function Display(): React$Element<React$FragmentType> {
   const classes = useStyles()
@@ -245,7 +232,7 @@ export default function Display(): React$Element<React$FragmentType> {
   const renderRating = (): React$Node | null => {
     if ((type === 'movie' || type === 'tv') && display?.vote_average) {
       return (
-        <IconButton style={styles.ratingBtn} className={classes.rating}>
+        <IconButton className={clsx(classes.ratingBtn, classes.rating)}>
           <RatingBar rating={display.vote_average} customStyles={displayStyles} />
         </IconButton>
       )
@@ -254,10 +241,10 @@ export default function Display(): React$Element<React$FragmentType> {
 
   return (
     <>
-      <Box style={styles.topBar}></Box>
-      <Box className={classes.main} style={styles.main}>
+      <Box className={classes.topBar}></Box>
+      <Box className={classes.main}>
         <Box display="flex">
-          <Card className={customClasses.root} style={styles.cardColor}>
+          <Card className={customClasses.root}>
             <CardActionArea>
               <CardMedia
                 className={customClasses.media}
@@ -272,8 +259,8 @@ export default function Display(): React$Element<React$FragmentType> {
           </Card>
         </Box>
 
-        <Box style={styles.headerSection} flexShrink={2}>
-          <Typography component="h1" variant="h4" style={styles.h1}>
+        <Box className={classes.headerSection} flexShrink={2}>
+          <Typography component="h1" variant="h4" className={classes.h1}>
             {title && title}
             {/* $FlowFixMe */}
             {` `}({date && date.slice(0, 4)})
@@ -297,14 +284,14 @@ export default function Display(): React$Element<React$FragmentType> {
               flexShrink={0}
             >
               {renderRating()}
-              <Typography component="h5" variant="h5" style={styles.h5}>
+              <Typography component="h5" variant="h5" className={classes.h5}>
                 User <br />
                 Score
               </Typography>
             </Box>
             <Box display="flex">{renderLikeBtn()}</Box>
           </Box>
-          <Typography component="h2" variant="h5" style={styles.h2}>
+          <Typography component="h2" variant="h5" className={classes.h2}>
             Overview
           </Typography>
           <br />
@@ -313,7 +300,7 @@ export default function Display(): React$Element<React$FragmentType> {
           <Box display="flex">{/* render directors */}</Box>
         </Box>
       </Box>
-      <Box style={styles.bot} flexDirection="row" display="flex">
+      <Box className={classes.bot} flexDirection="row" display="flex">
         {renderCast()}
       </Box>
     </>
