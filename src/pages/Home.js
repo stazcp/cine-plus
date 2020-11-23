@@ -126,12 +126,12 @@ export default function Home(props) {
   const renderTrailers = (movies, type) => {
     if (Array.isArray(movies) && movies.length > 1) {
       return movies.map((movie) => {
-        let { id, original_title, first_air_date, poster_path, name, release_date } = movie
+        let { id, title, first_air_date, poster_path, name, release_date } = movie
         return (
           <DisplayCard
             key={id}
             useStyles={useStylesTrailer}
-            title={`${original_title} Trailer` || `${name} Trailer`}
+            title={`${title} Trailer` || `${name} Trailer`}
             date={release_date || first_air_date}
             poster={`${basePosterUrl}${posterSize}${poster_path}`}
             to={'#'}
@@ -152,6 +152,7 @@ export default function Home(props) {
     return movies.map((movie) => {
       let {
         id,
+        title,
         original_title,
         name,
         release_date,
@@ -173,7 +174,7 @@ export default function Home(props) {
           to={route}
           useStyles={useStylesSm}
           ratingStyle={smCardStyles}
-          title={original_title || name || original_name}
+          title={title || name || original_name || original_title}
           date={release_date || first_air_date}
           poster={`${basePosterUrl}${posterSize}${poster_path}`}
           element={movie}

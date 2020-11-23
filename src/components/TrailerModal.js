@@ -4,32 +4,31 @@ import Modal from '@material-ui/core/Modal'
 import { MovieContext } from './MovieContext'
 import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 // potential of adding controls
 // import { Slider, Direction } from 'react-player-controls'
 //slider to be implemented
 //https://www.npmjs.com/package/react-player-controls#playericon-
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'fixed',
+  video: {
     width: 'auto',
     height: 'auto',
     top: '25%',
-    right: '25%',
-  },
-  playerWrapper: {
-    height: 'auto',
-    width: 'auto',
+    right: 0,
+    position: 'fixed',
   },
 }))
 
 export default function SimpleModal({ open }) {
-  const classes = useStyles(),
-    //receives movie from Home > DisplayCard > MovieContext
-    { setOpenTrailer, movie, setMovie } = useContext(MovieContext),
-    [trailer, setTrailer] = useState(),
-    [key, setKey] = useState(),
-    [modalStyle] = useState()
+  const classes = useStyles()
+  //receives movie from Home > DisplayCard > MovieContext
+  const { setOpenTrailer, movie, setMovie } = useContext(MovieContext)
+  const [trailer, setTrailer] = useState()
+  const [key, setKey] = useState()
+  const [modalStyle] = useState()
+  const sm = useMediaQuery('(max-width:600px)')
+  const xs = useMediaQuery('(max-width:355px)')
 
   useEffect(() => {
     if (movie) {
@@ -54,18 +53,11 @@ export default function SimpleModal({ open }) {
   const renderVideo = (
     <>
       {key && (
-        <div className="playerWrapper">
-          <ReactPlayer className="react-player" url={`https://www.youtube.com/watch?v=${key}`} />
+        <div className={classes.video}>
+          <ReactPlayer width={window.innerWidth} url={`https://www.youtube.com/watch?v=${key}`} />
         </div>
       )}
     </>
-  )
-
-  const body = (
-    <div className={classes.paper}>
-      {renderVideo}
-      <SimpleModal />
-    </div>
   )
 
   return (
@@ -76,7 +68,7 @@ export default function SimpleModal({ open }) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {body}
+        {renderVideo}
       </Modal>
     </div>
   )
