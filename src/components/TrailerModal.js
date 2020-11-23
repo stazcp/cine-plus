@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     top: '25%',
     right: 0,
     position: 'fixed',
+    [theme.breakpoints.down('sm')]: {
+      top: 0,
+    },
   },
 }))
 
