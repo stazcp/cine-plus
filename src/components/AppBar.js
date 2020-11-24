@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionMobile: {
+    paddingRight: 16,
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
