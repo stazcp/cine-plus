@@ -4,19 +4,19 @@
 // 3. Where to watch
 // 4. API
 
-import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Accordion from "@material-ui/core/Accordion"
-import AccordionSummary from "@material-ui/core/AccordionSummary"
-import AccordionDetails from "@material-ui/core/AccordionDetails"
-import Typography from "@material-ui/core/Typography"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "256px",
-    height: "50px",
-    marginTop: "8px",
+    width: '256px',
+    height: '50px',
+    marginTop: '8px',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -38,10 +38,7 @@ export default function SimpleAccordion() {
           <Typography className={classes.heading}>Sort</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Typography>Coming soon...</Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -53,10 +50,7 @@ export default function SimpleAccordion() {
           <Typography className={classes.heading}>Filters</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Typography>Coming soon...</Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion>

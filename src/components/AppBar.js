@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { createMuiTheme, makeStyles, withStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
@@ -20,8 +20,24 @@ import MenuIcon from '@material-ui/icons/Menu'
 import clsx from 'clsx'
 import Drawer from './Drawer'
 import { routingData } from '../routing/routes'
+import Tooltip from '@material-ui/core/Tooltip'
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 
 const drawerWidth = 240
+
+const defaultTheme = createMuiTheme()
+const theme = createMuiTheme({
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        backgroundColor: 'white',
+        color: 'black',
+        fontSize: '1em',
+        fontWeight: '400',
+      },
+    },
+  },
+})
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -88,6 +104,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  tooltip: {
+    backgroundColor: 'white',
+    color: 'black',
+  },
 }))
 
 const styles = {
@@ -264,11 +284,13 @@ export default function PrimarySearchAppBar() {
   const renderAccountActions = () => {
     if (user) {
       return (
-        <IconButton aria-label="show" color="inherit">
-          <Link to="/account" style={styles.link}>
-            {user && `${user.displayName}`.substring(0, 18)}
-          </Link>
-        </IconButton>
+        <Tooltip title="Account">
+          <IconButton aria-label="show" color="inherit">
+            <Link to="/account" style={styles.link}>
+              {user && `${user.displayName}`.substring(0, 18)}
+            </Link>
+          </IconButton>
+        </Tooltip>
       )
     }
     return routingData.account.items.map((ele, i) => {
@@ -284,63 +306,73 @@ export default function PrimarySearchAppBar() {
   }
 
   const renderLanguages = (
-    <IconButton aria-label="show" color="inherit">
-      {/* languages? */}
-      <LanguageIcon />
-    </IconButton>
+    <Tooltip title="Language: EN">
+      <IconButton aria-label="language is english" color="inherit">
+        <LanguageIcon />
+      </IconButton>
+    </Tooltip>
   )
 
   const renderAdd = (
-    <IconButton aria-label="show" color="inherit" style={styles.account}>
-      {/* popup goes here */}
-      <AddIcon />
-    </IconButton>
+    <Tooltip
+      title={
+        user
+          ? 'You can now Like Movies, Shows and People!'
+          : 'Login or Join to Like your Favorite Films'
+      }
+    >
+      <IconButton aria-label="message" color="inherit" style={styles.account}>
+        <AddIcon />
+      </IconButton>
+    </Tooltip>
   )
 
   return (
     <div className={classes.grow}>
-      <AppBar
-        position="fixed"
-        className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
-      >
-        <Toolbar>
-          <Typography className={classes.h2Link} variant="h2" noWrap>
-            <Link to="/" style={styles.link}>
-              Cine+
-            </Link>
-          </Typography>
-          <div className={classes.mainMenu}>
-            {renderMovies}
-            {renderTvShows}
-            {renderPeople}
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            {renderAdd}
-            {renderLanguages}
-          </div>
-          <div className={classes.rightMenu}>{renderAccountActions()}</div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerOpen}
-              className={clsx(openDrawer && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderPeopleMenu()}
-      {renderMoviesMenu()}
-      {renderTVShowsMenu()}
-      <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
-      {/* //makes sure content is not hidden under AppBar */}
-      <Paper>
-        <div className={classes.toolbar}></div>
-      </Paper>
+      <MuiThemeProvider theme={theme}>
+        <AppBar
+          position="fixed"
+          className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
+        >
+          <Toolbar>
+            <Typography className={classes.h2Link} variant="h2" noWrap>
+              <Link to="/" style={styles.link}>
+                Cine+
+              </Link>
+            </Typography>
+            <div className={classes.mainMenu}>
+              {renderMovies}
+              {renderTvShows}
+              {renderPeople}
+            </div>
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              {renderAdd}
+              {renderLanguages}
+            </div>
+            <div className={classes.rightMenu}>{renderAccountActions()}</div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerOpen}
+                className={clsx(openDrawer && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        {renderPeopleMenu()}
+        {renderMoviesMenu()}
+        {renderTVShowsMenu()}
+        <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
+        {/* //makes sure content is not hidden under AppBar */}
+        <Paper>
+          <div className={classes.toolbar}></div>
+        </Paper>
+      </MuiThemeProvider>
     </div>
   )
 }

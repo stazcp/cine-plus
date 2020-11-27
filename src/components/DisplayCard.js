@@ -20,6 +20,7 @@ import { MovieContext } from './MovieContext'
 import RatingBar from './RatingBar'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
 import Like from './Like'
+import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 
 const styles = {
   link: {
@@ -45,8 +46,20 @@ const styles = {
     gridColumn: 1,
     gridRow: 1,
     zIndex: 10,
-    top: '-44%',
-    right: '-40%',
+    top: 0,
+    left: '82%',
+  },
+  trailerIcon: {
+    color: 'white',
+    fontSize: '74px',
+  },
+  trailerIconWrapper: {
+    zIndex: 1000,
+    position: 'relative',
+    gridColumn: 1,
+    gridRow: 1,
+    top: '0',
+    left: '0',
   },
 }
 
@@ -62,6 +75,7 @@ export default function MovieCard({
   ratingStyle,
 }): React$Element<React$FragmentType> {
   const classes = useStyles()
+  const _classes = useStyles()
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const {
     setDisplay,
@@ -123,14 +137,20 @@ export default function MovieCard({
     } else return null
   }
 
+  const renderTrailerIcon = () => {
+    if (type === 'trailer') {
+      return (
+        <IconButton style={styles.trailerIconWrapper} onClick={() => handleClick()}>
+          <PlayArrowIcon style={styles.trailerIcon} />
+        </IconButton>
+      )
+    }
+  }
+
   //likeBtns are rendered once a user is detected
   const renderLikeBtn = (): React$Node | null => {
     if (type !== 'trailer' && user) {
-      return (
-        <IconButton aria-label="likeBtn" style={styles.likeBtn} onClick={() => handleLike()}>
-          <Like liked={liked} size={1} />
-        </IconButton>
-      )
+      return <Like liked={liked} size={1} style={styles.likeBtn} onClick={() => handleLike()} />
     }
     return null
   }
@@ -142,6 +162,7 @@ export default function MovieCard({
           <div className="MediaContainer" style={styles.mediaContainer}>
             {renderLikeBtn()}
             {renderRating()}
+            {renderTrailerIcon()}
             <ButtonBase
               onClick={() => handleClick()}
               component={Link}

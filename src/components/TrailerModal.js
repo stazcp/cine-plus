@@ -5,10 +5,6 @@ import { MovieContext } from './MovieContext'
 import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-// potential of adding controls
-// import { Slider, Direction } from 'react-player-controls'
-//slider to be implemented
-//https://www.npmjs.com/package/react-player-controls#playericon-
 
 const useStyles = makeStyles((theme) => ({
   video: {
@@ -57,7 +53,13 @@ export default function SimpleModal({ open }) {
     <>
       {key && (
         <div className={classes.video}>
-          <ReactPlayer width={window.innerWidth} url={`https://www.youtube.com/watch?v=${key}`} />
+          <ReactPlayer
+            width={window.innerWidth}
+            url={`https://www.youtube.com/watch?v=${key}`}
+            playing={true}
+            controls={true}
+            // light={true}
+          />
         </div>
       )}
     </>

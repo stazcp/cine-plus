@@ -29,12 +29,11 @@ import { displayStyles } from '../styles/RatingBarStyles'
 import Like from '../components/Like'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import clsx from 'clsx'
+import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import TrailerModal from '../components/TrailerModal'
 
 const useStyles = makeStyles((theme) => ({
   sub1: theme.subtitle1,
-  likeBtn: {
-    fontSize: '2em',
-  },
   ratingBox: {
     paddingRight: theme.spacing(2),
   },
@@ -93,9 +92,17 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '-35%',
     marginRight: '-34%',
   },
+  playBtn: {
+    display: 'flex',
+  },
+  playIcn: {
+    color: 'white',
+    fontSize: '50px',
+  },
+  playTrailer: {
+    color: 'white',
+  },
 }))
-
-const styles = {}
 
 export default function Display(): React$Element<React$FragmentType> {
   const classes = useStyles()
@@ -108,6 +115,9 @@ export default function Display(): React$Element<React$FragmentType> {
     setBasePosterUrl,
     currentLikes,
     setCurrentLikes,
+    openTrailer,
+    setOpenTrailer,
+    setMovie,
   } = useContext(MovieContext)
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const { type, id } = useParams()
@@ -188,6 +198,11 @@ export default function Display(): React$Element<React$FragmentType> {
     })
   }
 
+  const handleOpenTrailer = () => {
+    setMovie(id)
+    setOpenTrailer(true)
+  }
+
   const renderCast = () => {
     if (cast.people.length) {
       return cast.people.map((person) => {
@@ -211,21 +226,6 @@ export default function Display(): React$Element<React$FragmentType> {
         )
       })
     }
-  }
-
-  //likeBtns are rendered once a user is detected
-  const renderLikeBtn = (): React$Node | null => {
-    if ((type === 'movie' || type === 'tv' || type === 'person') && user) {
-      return (
-        <IconButton
-          aria-label="moreButton"
-          onClick={() => handleLike()}
-          className={classes.likeBtn}
-        >
-          <Like liked={liked} size={2} />
-        </IconButton>
-      )
-    } else return null
   }
 
   const renderRating = (): React$Node | null => {
@@ -288,7 +288,15 @@ export default function Display(): React$Element<React$FragmentType> {
                 Score
               </Typography>
             </Box>
-            <Box display="flex">{renderLikeBtn()}</Box>
+            <Box display="flex">
+              {user && <Like liked={liked} size={3} onClick={() => handleLike()} />}
+            </Box>
+            <Box>
+              <IconButton className={classes.playBtn} onClick={() => handleOpenTrailer()}>
+                <PlayArrowIcon className={classes.playIcn} />{' '}
+                <Typography className={classes.playTrailer}>Play Trailer</Typography>
+              </IconButton>
+            </Box>
           </Box>
           <Typography component="h2" variant="h5" className={classes.h2}>
             Overview
@@ -302,6 +310,7 @@ export default function Display(): React$Element<React$FragmentType> {
       <Box className={classes.bot} flexDirection="row" display="flex">
         {renderCast()}
       </Box>
+      <TrailerModal open={openTrailer} />
     </>
   )
 }
