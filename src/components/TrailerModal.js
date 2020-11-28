@@ -36,6 +36,9 @@ export default function SimpleModal({ open }) {
         setTrailer(data)
       })
     }
+    return () => {
+      setOpenTrailer(false)
+    }
   }, [movie])
 
   const handleOpen = () => {
