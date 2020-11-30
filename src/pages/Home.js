@@ -10,7 +10,8 @@ import { useStylesSm, useStylesTrailer } from '../styles/CardStyles'
 import { getConfig, get, getTrailer } from '../utils/movieDB'
 import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
-import { Redirect, Route, Link, useRouteMatch } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import { FirebaseContext } from '../Firebase/FirebaseContext'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -69,6 +70,7 @@ export default function Home(props) {
     setBasePosterUrl,
     openTrailer,
   } = useContext(MovieContext)
+  const { alert } = useContext(FirebaseContext)
   const [searching, setSearching] = useState()
   const posterSize = 'w300'
 
@@ -187,6 +189,7 @@ export default function Home(props) {
 
   return (
     <React.Fragment>
+      {alert}
       <Container maxWidth="lg">
         <main>
           {/* Hero unit */}

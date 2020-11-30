@@ -1,20 +1,7 @@
 //@Flow
 // random image link: https://source.unsplash.com/random
-
 import React, { useContext, useState, useEffect } from 'react'
-import {
-  CardActions,
-  ButtonBase,
-  CardContent,
-  CardMedia,
-  Typography,
-  Card,
-  Button,
-  IconButton,
-  Modal,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ReactPlayer from 'react-player'
+import { ButtonBase, CardContent, CardMedia, Typography, Card, IconButton } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { MovieContext } from './MovieContext'
 import RatingBar from './RatingBar'
@@ -75,7 +62,6 @@ export default function MovieCard({
   ratingStyle,
 }): React$Element<React$FragmentType> {
   const classes = useStyles()
-  const _classes = useStyles()
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const {
     setDisplay,
@@ -172,7 +158,7 @@ export default function MovieCard({
               <CardMedia
                 className={classes.cardMedia}
                 image={poster || 'https://source.unsplash.com/random'}
-                title={to}
+                title={title}
                 style={{ zIndex: 2 }}
               />
             </ButtonBase>

@@ -23,6 +23,7 @@ import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
 import FavoriteIcon from '@material-ui/icons/Favorite'
+import Alert from '@material-ui/lab/Alert'
 
 const styles = {
   box: {
@@ -69,7 +70,7 @@ const styles = {
 }
 
 export default function Account(): React$Element<React$FragmentType> {
-  const { user } = useContext(FirebaseContext),
+  const { user, alert, setAlert } = useContext(FirebaseContext),
     { display, basePosterUrl } = useContext(MovieContext),
     // if page is refreshed display dissapears
     classes = useStylesDisplay()
@@ -81,9 +82,18 @@ export default function Account(): React$Element<React$FragmentType> {
       .auth()
       .signOut()
       .then(function () {
-        console.log('Sign Out successful')
+        setAlert(
+          <Alert variant="filled" severity="success">
+            Signout successful!
+          </Alert>
+        )
       })
       .catch(function (error) {
+        setAlert(
+          <Alert variant="filled" severity="error">
+            Signout failed!
+          </Alert>
+        )
         console.log(error)
       })
   }
@@ -92,6 +102,7 @@ export default function Account(): React$Element<React$FragmentType> {
     <>
       {user ? (
         <>
+          {alert}
           <Box style={styles.topBar}></Box>
           <Box style={styles.box}>
             <Grid container spacing={6}>

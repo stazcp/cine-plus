@@ -1,11 +1,9 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "standard",
-    "standard-react"
-  ],
+  "extends": ["standard", "standard-react"],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "flowtype/require-valid-file-annotation": [2, "line"]
   },
   "parserOptions": {
     "ecmaFeatures": {

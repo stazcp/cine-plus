@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Modal'
+import { Modal, Paper, Typography } from '@material-ui/core'
 import { MovieContext } from './MovieContext'
 import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Alert from '@material-ui/lab/Alert'
 
 const useStyles = makeStyles((theme) => ({
   video: {
@@ -23,38 +24,37 @@ export default function SimpleModal({ open }) {
   const classes = useStyles()
   //receives movie from Home > DisplayCard > MovieContext
   const { setOpenTrailer, movie, setMovie } = useContext(MovieContext)
-  const [trailer, setTrailer] = useState()
   const [key, setKey] = useState()
   const [modalStyle] = useState()
   const sm = useMediaQuery('(max-width:600px)')
   const xs = useMediaQuery('(max-width:355px)')
 
   useEffect(() => {
-    if (movie) {
-      getTrailer(movie).then((data) => {
-        setKey(data.videos.results[0].key)
-        setTrailer(data)
-      })
-    }
+    fetchTrailer()
     return () => {
       setOpenTrailer(false)
     }
   }, [movie])
 
-  const handleOpen = () => {
-    setOpenTrailer(true)
+  const fetchTrailer = () => {
+    if (movie) {
+      getTrailer(movie).then((data) => {
+        if (data?.videos?.results?.length) {
+          setKey(data.videos.results[0]?.key && data.videos.results[0].key)
+        }
+      })
+    }
   }
 
   const handleClose = () => {
     setOpenTrailer(false)
     setMovie(undefined)
-    setTrailer(undefined)
     setKey(undefined)
   }
 
   const renderVideo = (
     <>
-      {key && (
+      {key ? (
         <div className={classes.video}>
           <ReactPlayer
             width={window.innerWidth}
@@ -64,6 +64,10 @@ export default function SimpleModal({ open }) {
             // light={true}
           />
         </div>
+      ) : (
+        <Alert variant="filled" severity="error">
+          Trailer not found!
+        </Alert>
       )}
     </>
   )

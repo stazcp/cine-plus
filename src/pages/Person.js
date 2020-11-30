@@ -1,6 +1,5 @@
-//@Flow
+// @flow
 //add movies he acted in?
-
 import React, { useContext, useEffect, useState } from 'react'
 import {
   Box,
@@ -26,7 +25,7 @@ import clsx from 'clsx'
 const useStyles = makeStyles((theme) => ({
   main: {
     paddingTop: 40,
-    backgroundImage: `url(${Image})`,
+    // backgroundImage: `url(${image})`,
     color: 'inherit',
     width: '100%',
     display: 'flex',

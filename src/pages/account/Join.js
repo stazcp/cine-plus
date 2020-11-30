@@ -18,6 +18,7 @@ import GoogleButton from 'react-google-button'
 import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
+import Alert from '@material-ui/lab/Alert'
 import './customStyles.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Join() {
   const classes = useStyles(),
-    { provider, user, newUser } = useContext(FirebaseContext),
+    { provider, user, newUser, alert, setAlert } = useContext(FirebaseContext),
     handleGoogleSignup = (e) => {
       firebase
         .auth()
@@ -62,9 +63,19 @@ export default function Join() {
           // The signed-in user info.
           let user = result.user
           newUser(user.email)
+          setAlert(
+            <Alert variant="filled" severity="success">
+              Signup successful!
+            </Alert>
+          )
         })
         .catch(function (error) {
           console.log(error)
+          setAlert(
+            <Alert variant="filled" severity="error">
+              Signup failed!
+            </Alert>
+          )
           // Handle Errors here.
           let errorCode = error.code
           let errorMessage = error.message
@@ -92,6 +103,7 @@ export default function Join() {
       <div className={classes.paper}>
         {!user ? (
           <>
+            {alert}
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>

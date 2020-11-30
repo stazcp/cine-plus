@@ -199,6 +199,7 @@ export default function Display(): React$Element<React$FragmentType> {
   }
 
   const handleOpenTrailer = () => {
+    console.log('open', id)
     setMovie(id)
     setOpenTrailer(true)
   }

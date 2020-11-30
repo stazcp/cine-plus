@@ -1,5 +1,5 @@
 //@Flow
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore'
 let keys
@@ -40,6 +40,19 @@ const provider = new firebase.auth.GoogleAuthProvider()
 export function FirebaseProvider({ children }) {
   firebase.auth().onAuthStateChanged((user) => setUser(user))
   const [user, setUser] = useState()
+  const [alert, setAlert] = useState(null)
+
+  useEffect(() => {
+    clearAlert()
+  }, [alert])
+
+  const clearAlert = () => {
+    if (alert) {
+      setTimeout(() => {
+        setAlert(null)
+      }, 3000)
+    }
+  }
 
   const transformType = (type: string): string | null => {
     switch (type) {
@@ -77,7 +90,6 @@ export function FirebaseProvider({ children }) {
       console.log(error)
       return false
     }
-    return false
   }
 
   //if successful will return false to remove the liked state
@@ -107,7 +119,6 @@ export function FirebaseProvider({ children }) {
       console.log(error)
       return true
     }
-    return true
   }
 
   const checkLiked = async (eleId: number, type: string): boolean | null => {
@@ -130,7 +141,6 @@ export function FirebaseProvider({ children }) {
       console.log(error)
       return false
     }
-    return null
   }
 
   //add new user to database and set schema
@@ -166,6 +176,8 @@ export function FirebaseProvider({ children }) {
         newUser,
         getFavorites,
         checkLiked,
+        alert,
+        setAlert,
       }}
     >
       {children}
