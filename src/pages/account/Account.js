@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${Image})`,
     color: 'white',
     width: '100%',
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   headerSection: {
     display: 'flex',
@@ -38,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
     alignContent: 'center',
     alignItems: 'flex-start',
     flexDirection: 'column',
-    padding: 40,
-    [theme.breakpoints.up('xs')]: {
-      padding: '40px 40px 40px 80px',
+    padding: '40px 40px 40px 80px',
+    [theme.breakpoints.down('xs')]: {
+      padding: 40,
     },
   },
   h1: {
@@ -89,6 +92,13 @@ const styles = {
     textDecoration: 'none',
     color: 'black',
     fontWeight: 700,
+    display: 'flex',
+    lineHeight: '150%',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  like: {
+    bottom: 100,
   },
 }
 
@@ -135,7 +145,7 @@ export default function Account(): React$Element<React$FragmentType> {
                     <CardMedia
                       className={classes.media}
                       image="https://source.unsplash.com/random"
-                      title="title"
+                      title="Profile Picture"
                     />
                   </CardActionArea>
                   <CardActions></CardActions>
@@ -171,7 +181,7 @@ export default function Account(): React$Element<React$FragmentType> {
               <FavoriteIcon color="secondary" /> TV Shows
             </Link>
             <Link to="/favorite/person" style={styles.link} className={'navLink'}>
-              <FavoriteIcon color="secondary" /> People
+              <FavoriteIcon color="secondary" style={styles.like} /> People
             </Link>
           </Box>
         </>
