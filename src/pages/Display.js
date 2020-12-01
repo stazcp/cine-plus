@@ -3,15 +3,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import {
   Card,
   CardActionArea,
-  CardActions,
   CardMedia,
-  Button,
   Grid,
   Box,
   Typography,
   IconButton,
-  ButtonBase,
-  Container,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
@@ -21,8 +17,6 @@ import { get, getConfig } from '../utils/movieDB'
 import DisplayCard from '../components/DisplayCard'
 import { useStylesSm } from '../styles/CardStyles'
 import { MovieContext } from '../components/MovieContext'
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone'
-import FavoriteIcon from '@material-ui/icons/Favorite'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
 import RatingBar from '../components/RatingBar'
 import { displayStyles } from '../styles/RatingBarStyles'
@@ -113,8 +107,6 @@ export default function Display(): React$Element<React$FragmentType> {
     setCast,
     setDisplay,
     setBasePosterUrl,
-    currentLikes,
-    setCurrentLikes,
     openTrailer,
     setOpenTrailer,
     setMovie,
@@ -132,7 +124,7 @@ export default function Display(): React$Element<React$FragmentType> {
 
   useEffect(() => {
     setLike()
-  }, [user, currentLikes])
+  }, [user])
 
   useEffect(() => {
     getPosterUrl()

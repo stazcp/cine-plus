@@ -139,6 +139,7 @@ export default function Home(props) {
             to={'#'}
             element={movie}
             type={type}
+            id={id}
           />
         )
       })
@@ -182,6 +183,7 @@ export default function Home(props) {
           element={movie}
           type={media_type || type}
           rating={vote_average}
+          id={id}
         />
       )
     })

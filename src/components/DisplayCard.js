@@ -60,6 +60,7 @@ export default function MovieCard({
   type,
   rating,
   ratingStyle,
+  id,
 }): React$Element<React$FragmentType> {
   const classes = useStyles()
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
@@ -68,11 +69,15 @@ export default function MovieCard({
     setPerson,
     setOpenTrailer,
     setMovie,
+    /* currentLikes is a trigger in case there are two same films showing on the same page 
+    and also a temp cache for likes handled in the context  */
     currentLikes,
     setCurrentLikes,
   } = useContext(MovieContext)
   const [liked, setLiked] = useState(null)
 
+  //supposed to trigger when a like is added or removed
+  //doesn't work
   useEffect(() => {
     setLike()
   }, [user, currentLikes])
@@ -105,15 +110,15 @@ export default function MovieCard({
       if (!liked) {
         favorite(element.id, type).then((result) => {
           setLiked(result)
+          currentLikes.push(id)
+          setCurrentLikes(currentLikes)
         })
-      } else if (liked) {
+      } else {
         removeFavorite(element.id, type).then((result) => {
           setLiked(result)
+          setCurrentLikes(currentLikes.filter((ele) => ele != id))
         })
       }
-    } else {
-      //trigger modal to prompt user to sign up
-      console.log('no user')
     }
   }
 

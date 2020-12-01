@@ -25,7 +25,6 @@ import clsx from 'clsx'
 const useStyles = makeStyles((theme) => ({
   main: {
     paddingTop: 40,
-    // backgroundImage: `url(${image})`,
     color: 'inherit',
     width: '100%',
     display: 'flex',
@@ -106,7 +105,9 @@ export default function Person(): React$Element<React$FragmentType> {
   const getPosterUrl = () => {
     if (!basePosterUrl) {
       getConfig().then((data) => {
-        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        if (data?.images?.base_url || data?.images?.secure_base_url) {
+          setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+        }
       })
     }
   }
@@ -128,7 +129,7 @@ export default function Person(): React$Element<React$FragmentType> {
     }
   }
 
-  const renderLikeBtn = (): React.Node | null => {
+  const renderLikeBtn = (): React$Element<React$FragmentType> | null => {
     if (liked === null) return null
     return (
       <Box>
