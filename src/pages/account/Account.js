@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
+    minWidth: '322px',
   },
   headerSection: {
     display: 'flex',
@@ -65,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
     paddingBottom: 30,
     display: 'flex',
-    justifyContent: 'space-around',
+    flexShrink: 1,
+    width: '100%',
   },
   h2: {
     fontSize: 20.8,
@@ -84,6 +86,14 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 450,
   },
+  links: {
+    width: '33%',
+    minWidth: '102px',
+  },
+  innerLink: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+  },
 }))
 
 const styles = {
@@ -96,6 +106,7 @@ const styles = {
     lineHeight: '150%',
     alignContent: 'center',
     justifyContent: 'center',
+    flexWrap: 'nowrap',
   },
   like: {
     bottom: 100,
@@ -173,17 +184,29 @@ export default function Account(): React$Element<React$FragmentType> {
               </Box>
             </Box>
           </Box>
-          <Box className={classes.bot} flexDirection="row" display="flex">
-            <Link to="/favorite/movie" style={styles.link} className={'navLink'}>
-              <FavoriteIcon color="secondary" /> Movies
-            </Link>
-            <Link to="/favorite/tv" style={styles.link} className={'navLink'}>
-              <FavoriteIcon color="secondary" /> TV Shows
-            </Link>
-            <Link to="/favorite/person" style={styles.link} className={'navLink'}>
-              <FavoriteIcon color="secondary" style={styles.like} /> People
-            </Link>
-          </Box>
+          <Grid container spacing={0} className={classes.bot}>
+            <Grid item className={classes.links} xs={4}>
+              <Link to="/favorite/movie" style={styles.link} className={'navLink'}>
+                <Box className={classes.innerLink}>
+                  <FavoriteIcon color="secondary" /> Movies
+                </Box>
+              </Link>
+            </Grid>
+            <Grid item className={classes.links} xs={4}>
+              <Link to="/favorite/tv" style={styles.link} className={'navLink'}>
+                <Box className={classes.innerLink}>
+                  <FavoriteIcon color="secondary" /> TV Shows
+                </Box>
+              </Link>
+            </Grid>
+            <Grid item className={classes.links} xs={4}>
+              <Link to="/favorite/person" style={styles.link} className={'navLink'}>
+                <Box className={classes.innerLink}>
+                  <FavoriteIcon color="secondary" style={styles.like} /> People
+                </Box>
+              </Link>
+            </Grid>
+          </Grid>
         </>
       ) : (
         <Redirect to="/" />

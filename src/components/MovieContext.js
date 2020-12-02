@@ -1,4 +1,5 @@
 import React, { useState, createContext } from 'react'
+import { defaultMovie } from '../utils/defaultMovie'
 
 export const MovieContext = createContext()
 
@@ -38,8 +39,8 @@ export const MovieProvider = (props) => {
     [basePosterUrl, setBasePosterUrl] = useState('https://image.tmdb.org/t/p/'),
     [display, setDisplay] = useState(),
     [cast, setCast] = useState({ people: [], type: 'person' }),
-    [openTrailer, setOpenTrailer] = useState(false),
-    [movie, setMovie] = useState(),
+    //trailer handling
+    [openTrailer, setOpenTrailer] = useState({ id: null, type: 'movie', open: false }),
     [person, setPerson] = useState(),
     [currentLikes, setCurrentLikes] = useState([])
 
@@ -64,8 +65,6 @@ export const MovieProvider = (props) => {
         setCast,
         openTrailer,
         setOpenTrailer,
-        movie,
-        setMovie,
         upcoming,
         setUpcoming,
         airingToday,

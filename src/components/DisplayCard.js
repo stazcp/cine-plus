@@ -1,4 +1,4 @@
-//@Flow
+// @flow
 // random image link: https://source.unsplash.com/random
 import React, { useContext, useState, useEffect } from 'react'
 import { ButtonBase, CardContent, CardMedia, Typography, Card, IconButton } from '@material-ui/core'
@@ -61,6 +61,17 @@ export default function MovieCard({
   rating,
   ratingStyle,
   id,
+}: {
+  date: string,
+  title: string,
+  poster: string,
+  to: string,
+  useStyles: Function,
+  element: {},
+  type: string,
+  rating?: number | string,
+  ratingStyle?: {},
+  id: string | number,
 }): React$Element<React$FragmentType> {
   const classes = useStyles()
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
@@ -85,22 +96,22 @@ export default function MovieCard({
   const setLike = () => {
     //trailers don't get likes
     if (type === 'trailer') return null
-    checkLiked(element && element.id, type).then((result) => {
+    checkLiked(element && id, type).then((result) => {
       setLiked(result)
     })
   }
 
   //stores the clicked movie to present it in Display page.
-  const handleClick = () => {
+  function handleOpenTrailer() {
     if (type === 'person') {
       setPerson(element)
     } else {
       setDisplay(element)
     }
     //open trailer
+    //the trailer cards are only movie trailers
     if (type === 'trailer') {
-      setMovie(element.id)
-      setOpenTrailer(true)
+      setOpenTrailer({ id: id, type: 'movie', open: true })
     }
   }
 
@@ -108,13 +119,13 @@ export default function MovieCard({
   const handleLike = () => {
     if (user) {
       if (!liked) {
-        favorite(element.id, type).then((result) => {
+        favorite(id, type).then((result) => {
           setLiked(result)
           currentLikes.push(id)
           setCurrentLikes(currentLikes)
         })
       } else {
-        removeFavorite(element.id, type).then((result) => {
+        removeFavorite(id, type).then((result) => {
           setLiked(result)
           setCurrentLikes(currentLikes.filter((ele) => ele != id))
         })
@@ -131,7 +142,7 @@ export default function MovieCard({
   const renderTrailerIcon = () => {
     if (type === 'trailer') {
       return (
-        <IconButton style={styles.trailerIconWrapper} onClick={() => handleClick()}>
+        <IconButton style={styles.trailerIconWrapper} onClick={() => handleOpenTrailer()}>
           <PlayArrowIcon style={styles.trailerIcon} />
         </IconButton>
       )
@@ -155,7 +166,7 @@ export default function MovieCard({
             {renderRating()}
             {renderTrailerIcon()}
             <ButtonBase
-              onClick={() => handleClick()}
+              onClick={() => handleOpenTrailer()}
               component={Link}
               to={to}
               style={styles.buttonBase}
@@ -170,7 +181,7 @@ export default function MovieCard({
           </div>
           <CardContent className={classes.cardContent} style={styles.cardContent}>
             <Typography>
-              <Link to={to} style={styles.link} onClick={() => handleClick()}>
+              <Link to={to} style={styles.link} onClick={() => handleOpenTrailer()}>
                 {title}
               </Link>
             </Typography>

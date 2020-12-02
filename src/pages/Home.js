@@ -12,6 +12,7 @@ import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
 import { Redirect } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
+const _minWidth = '322px'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '40px',
     marginRight: '-40px',
     marginBottom: '30px',
+    minWidth: _minWidth,
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -40,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflowX: 'scroll',
     overflowY: 'hidden',
+    minWidth: _minWidth,
   },
   heroSubtitle: {
     color: 'white',
@@ -251,7 +254,7 @@ export default function Home(props) {
             setOption={getTrending}
           />
           <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
-          <TrailerModal open={openTrailer} />
+          <TrailerModal />
           {redirectToSearch()}
         </main>
       </Container>

@@ -61,10 +61,10 @@ export const get = async (type: string, conf: string, extra: ?string): Promise<a
 // https://api.themoviedb.org/3/movie/694919/videos?api_key=###&language=en-US
 // just trailer
 
-export const getTrailer = async (id: string): Promise<any> => {
+export const getTrailer = async (id: string, type: string = 'movie'): Promise<any> => {
   try {
     if (id) {
-      let url = `${base_url}movie/${id}?api_key=${api_key}&append_to_response=videos`,
+      let url = `${base_url}${type}/${id}?api_key=${api_key}&append_to_response=videos`,
         response = await fetch(url),
         data = await response.json()
       return data

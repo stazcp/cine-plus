@@ -109,7 +109,6 @@ export default function Display(): React$Element<React$FragmentType> {
     setBasePosterUrl,
     openTrailer,
     setOpenTrailer,
-    setMovie,
   } = useContext(MovieContext)
   const { user, favorite, removeFavorite, checkLiked } = useContext(FirebaseContext)
   const { type, id } = useParams()
@@ -191,9 +190,7 @@ export default function Display(): React$Element<React$FragmentType> {
   }
 
   const handleOpenTrailer = () => {
-    console.log('open', id)
-    setMovie(id)
-    setOpenTrailer(true)
+    setOpenTrailer({ id: id, type: type, open: true })
   }
 
   const renderCast = () => {
@@ -215,6 +212,7 @@ export default function Display(): React$Element<React$FragmentType> {
             }
             element={person}
             type="person"
+            id={id}
           />
         )
       })

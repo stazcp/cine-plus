@@ -9,30 +9,29 @@ import Link from '@material-ui/core/Link'
 
 // how does this work? theme?
 const useStyles = makeStyles((theme) => ({
-    footer: {
-      backgroundColor: '#032541',
-      padding: theme.spacing(2),
-    },
-  })),
-  // colors look different even though I used same code?
-  styles = {
-    root: {
-      backgroundColor: '#fff',
-    },
-    h2Link: {
-      fontWeight: '700',
-      fontSize: '1em',
-      color: 'white',
-    },
-  }
+  footer: {
+    backgroundColor: '#032541',
+    padding: theme.spacing(2),
+    width: '100%',
+    minWidth: '322px',
+  },
+  root: {
+    backgroundColor: '#fff',
+  },
+  h2Link: {
+    fontWeight: '700',
+    fontSize: '1em',
+    color: 'white',
+  },
+}))
 
 export default function Footer(props) {
   const classes = useStyles()
   return (
-    <Box style={styles.root}>
+    <Box className={classes.root}>
       <footer className={classes.footer}>
         <Typography variant="h3" noWrap>
-          <Link href="/" underline="none" className="nav-link" style={styles.h2Link}>
+          <Link href="/" underline="none" className={classes.h2Link}>
             Cine+
           </Link>
         </Typography>
@@ -41,7 +40,7 @@ export default function Footer(props) {
           align="center"
           color="textPrimary"
           component="p"
-          style={styles.h2Link}
+          className={classes.h2Link}
         >
           by Staz
         </Typography>
