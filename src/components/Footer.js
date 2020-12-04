@@ -1,13 +1,9 @@
-// improvements needed:
-// 1. firgure out what to put here
-
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
 
-// how does this work? theme?
 const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: '#032541',

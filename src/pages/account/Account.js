@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 40,
     backgroundImage: `url(${Image})`,
     color: 'white',
-    width: '100%',
+    minWidth: '100%',
     display: 'flex',
     alignContent: 'center',
-    minWidth: '322px',
     [theme.breakpoints.down('xs')]: {
       justifyContent: 'center',
     },
@@ -113,7 +112,7 @@ const styles = {
   },
 }
 
-export default function Account(): React$Element<React$FragmentType> {
+export default function Account(): React$Element<'div'> {
   const { user, alert, setAlert } = useContext(FirebaseContext)
   const { display, basePosterUrl } = useContext(MovieContext)
   // if page is refreshed display dissapears
@@ -143,7 +142,7 @@ export default function Account(): React$Element<React$FragmentType> {
   }
 
   return (
-    <>
+    <div style={{ minWidth: '110%' }}>
       {user ? (
         <>
           {alert}
@@ -211,6 +210,6 @@ export default function Account(): React$Element<React$FragmentType> {
       ) : (
         <Redirect to="/" />
       )}
-    </>
+    </div>
   )
 }
