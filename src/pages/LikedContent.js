@@ -36,6 +36,8 @@ export default function LikedContent() {
         return 'Your Favorite TV Shows'
       case 'person':
         return 'Your Favorite People'
+      default:
+        throw new Error(`wrong type ${type}`)
     }
   }
 

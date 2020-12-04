@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     display: 'flex',
     alignContent: 'center',
-    justifyContent: 'center',
     minWidth: '322px',
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+    },
   },
   headerSection: {
     display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
     alignItems: 'flex-start',
     flexDirection: 'column',
     padding: '40px 40px 40px 80px',

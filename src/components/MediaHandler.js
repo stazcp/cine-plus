@@ -1,4 +1,4 @@
-//@Flow
+// @flow
 import React, { useContext, useEffect } from 'react'
 import { Grid, Typography, Box, Container } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -28,7 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function MediaHandler({ media, type, pageTitle }) {
+export default function MediaHandler({
+  media,
+  type,
+  pageTitle,
+}: {
+  media: {},
+  type: string,
+  pageTitle: string,
+}): React$Element<React$FragmentType> {
   const theme = useTheme()
   const classes = useStyles()
   const { basePosterUrl, setBasePosterUrl } = useContext(MovieContext)
@@ -86,6 +94,7 @@ export default function MediaHandler({ media, type, pageTitle }) {
               element={ele}
               type={type}
               rating={vote_average}
+              id={id}
             />
           </Grid>
         )

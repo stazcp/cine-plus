@@ -40,21 +40,8 @@ const provider = new firebase.auth.GoogleAuthProvider()
 export function FirebaseProvider({ children }) {
   firebase.auth().onAuthStateChanged((user) => setUser(user))
   const [user, setUser] = useState()
-  const [alert, setAlert] = useState(null)
 
-  useEffect(() => {
-    clearAlert()
-  }, [alert])
-
-  const clearAlert = () => {
-    if (alert) {
-      setTimeout(() => {
-        setAlert(null)
-      }, 3000)
-    }
-  }
-
-  const transformType = (type: string): string | null => {
+  const transformType = (type: string): string => {
     switch (type) {
       case 'movie':
         return 'favoriteMovies'
@@ -63,7 +50,7 @@ export function FirebaseProvider({ children }) {
       case 'person':
         return 'favoriteActors'
       default:
-        return null
+        throw new Error(`wrong type ${type}`)
     }
   }
 
@@ -176,8 +163,6 @@ export function FirebaseProvider({ children }) {
         newUser,
         getFavorites,
         checkLiked,
-        alert,
-        setAlert,
       }}
     >
       {children}

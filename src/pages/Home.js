@@ -73,7 +73,6 @@ export default function Home(props) {
     setBasePosterUrl,
     openTrailer,
   } = useContext(MovieContext)
-  const { alert } = useContext(FirebaseContext)
   const [searching, setSearching] = useState()
   const posterSize = 'w300'
 
@@ -194,7 +193,6 @@ export default function Home(props) {
 
   return (
     <React.Fragment>
-      {alert}
       <Container maxWidth="lg">
         <main>
           {/* Hero unit */}
