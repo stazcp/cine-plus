@@ -25,14 +25,18 @@ import Alert from '@material-ui/lab/Alert'
 import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
+  main: {
+    width: '100%',
+  },
   banner: {
     paddingTop: 40,
     paddingBottom: 40,
     backgroundImage: `url(${Image})`,
     color: 'white',
-    minWidth: '100%',
+    width: '100%',
     display: 'flex',
-    alignContent: 'center',
+    paddingRight: 32,
+    // alignContent: 'center',
     [theme.breakpoints.down('xs')]: {
       justifyContent: 'center',
     },
@@ -142,7 +146,7 @@ export default function Account(): React$Element<'div'> {
   }
 
   return (
-    <div style={{ minWidth: '110%' }}>
+    <div className={classes.main}>
       {user ? (
         <>
           {alert}

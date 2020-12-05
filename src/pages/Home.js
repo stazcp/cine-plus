@@ -12,7 +12,6 @@ import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
 import { Redirect } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
-const _minWidth = '110%'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -23,13 +22,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(8, 0, 6),
     height: '1356',
     backgroundImage: `url(${Image})`,
-    marginLeft: '-40px',
+    // marginLeft: '-40px',
     paddingLeft: '40px',
     paddingRight: '40px',
-    marginRight: '-40px',
+    // marginRight: '-40px',
     marginBottom: '30px',
+    overflowX: 'hidden',
     [theme.breakpoints.down('xs')]: {
-      minWidth: _minWidth,
+      // minWidth: '110%',
     },
   },
   heroButtons: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflowX: 'scroll',
     overflowY: 'hidden',
-    minWidth: _minWidth,
+    minWidth: '80%',
   },
   heroSubtitle: {
     color: 'white',
@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     width: '300px',
     height: '168.53px',
     display: 'flex',
+  },
+  main: {
+    // overflowX: 'hidden',
   },
 }))
 
@@ -195,7 +198,7 @@ export default function Home(props) {
 
   return (
     <React.Fragment>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className={classes.main}>
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
