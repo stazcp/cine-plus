@@ -12,7 +12,7 @@ import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
 import { Redirect } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
-const _minWidth = '322px'
+const _minWidth = '110%'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '40px',
     marginRight: '-40px',
     marginBottom: '30px',
-    minWidth: _minWidth,
+    [theme.breakpoints.down('xs')]: {
+      minWidth: _minWidth,
+    },
   },
   heroButtons: {
     marginTop: theme.spacing(4),
