@@ -1,3 +1,4 @@
+// @flow
 import React, { useContext, useEffect, useState } from 'react'
 import { createMuiTheme, makeStyles, withStyles } from '@material-ui/core/styles'
 import {
@@ -117,7 +118,7 @@ const styles = {
   },
 }
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(): React$Element<'div'> {
   const classes = useStyles()
   const MENU_ANCHORS = {
     movies: null,
@@ -129,7 +130,7 @@ export default function PrimarySearchAppBar() {
   const [openDrawer, setOpenDrawer] = useState(false)
   const { user } = useContext(FirebaseContext)
 
-  const handleOpenMenu = (e, anchor) => {
+  const handleOpenMenu = (e, anchor: string) => {
     setAnchorEl({ ...MENU_ANCHORS, [anchor]: e.currentTarget })
     e.preventDefault()
   }
@@ -321,7 +322,7 @@ export default function PrimarySearchAppBar() {
           : 'Login or Join to Like your Favorite Films'
       }
     >
-      <IconButton aria-label="message" color="inherit" style={styles.account}>
+      <IconButton aria-label="message" color="inherit">
         <AddIcon />
       </IconButton>
     </Tooltip>
@@ -368,10 +369,10 @@ export default function PrimarySearchAppBar() {
         {renderMoviesMenu()}
         {renderTVShowsMenu()}
         <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
-        {/* //makes sure content is not hidden under AppBar */}
         <Paper>
           <div className={classes.toolbar}></div>
         </Paper>
+        {/* //makes sure content is not hidden under AppBar */}
       </MuiThemeProvider>
     </div>
   )

@@ -119,7 +119,6 @@ const styles = {
 export default function Account(): React$Element<'div'> {
   const { user, alert, setAlert } = useContext(FirebaseContext)
   const { display, basePosterUrl } = useContext(MovieContext)
-  // if page is refreshed display dissapears
   const classes = useStyles()
 
   useEffect(() => {}, [])
