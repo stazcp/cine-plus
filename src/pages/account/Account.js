@@ -22,11 +22,13 @@ import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import { makeStyles } from '@material-ui/core/styles'
 import Alert from '@material-ui/lab/Alert'
+import { AlertContext } from '../../components/AlertContext'
 import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
   main: {
     width: '100%',
+    alignContent: 'center',
   },
   banner: {
     paddingTop: 40,
@@ -36,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     display: 'flex',
     paddingRight: 32,
-    // alignContent: 'center',
+
     [theme.breakpoints.down('xs')]: {
       justifyContent: 'center',
     },
@@ -87,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: 450,
+    height: 250,
   },
   links: {
     width: '33%',
@@ -111,14 +113,12 @@ const styles = {
     justifyContent: 'center',
     flexWrap: 'nowrap',
   },
-  like: {
-    bottom: 100,
-  },
 }
 
 export default function Account(): React$Element<'div'> {
-  const { user, alert, setAlert } = useContext(FirebaseContext)
+  const { user } = useContext(FirebaseContext)
   const { display, basePosterUrl } = useContext(MovieContext)
+  const { setAlert } = useContext(AlertContext)
   const classes = useStyles()
 
   useEffect(() => {}, [])
@@ -147,6 +147,7 @@ export default function Account(): React$Element<'div'> {
   return (
     <div className={classes.main}>
       {user ? (
+        //$FlowFixMe
         <>
           {alert}
           <Box className={classes.topBar}></Box>
@@ -204,7 +205,7 @@ export default function Account(): React$Element<'div'> {
             <Grid item className={classes.links} xs={4}>
               <Link to="/favorite/person" style={styles.link} className={'navLink'}>
                 <Box className={classes.innerLink}>
-                  <FavoriteIcon color="secondary" style={styles.like} /> People
+                  <FavoriteIcon color="secondary" /> People
                 </Box>
               </Link>
             </Grid>

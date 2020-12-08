@@ -19,6 +19,7 @@ import firebase from 'firebase'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect } from 'react-router-dom'
 import Alert from '@material-ui/lab/Alert'
+import { AlertContext } from '../../components/AlertContext'
 import './customStyles.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -51,51 +52,54 @@ const useStyles = makeStyles((theme) => ({
   }
 
 export default function Join() {
-  const classes = useStyles(),
-    { provider, user, newUser, alert, setAlert } = useContext(FirebaseContext),
-    handleGoogleSignup = (e) => {
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(function (result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          let token = result.credential.accessToken
-          // The signed-in user info.
-          let user = result.user
-          newUser(user.email)
-          setAlert(
-            <Alert variant="filled" severity="success">
-              Signup successful!
-            </Alert>
-          )
-        })
-        .catch(function (error) {
-          console.log(error)
-          setAlert(
-            <Alert variant="filled" severity="error">
-              Signup failed!
-            </Alert>
-          )
-          // Handle Errors here.
-          let errorCode = error.code
-          let errorMessage = error.message
-          // The email of the user's account used.
-          let email = error.email
-          // The firebase.auth.AuthCredential type that was used.
-          let credential = error.credential
-        })
-    },
-    handleGoogleSignout = (e) => {
-      firebase
-        .auth()
-        .signOut()
-        .then(function () {
-          console.log('Sign Out successful')
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
+  const classes = useStyles()
+  const { provider, user, newUser } = useContext(FirebaseContext)
+  const { setAlert } = useContext(AlertContext)
+
+  function handleGoogleSignup(e) {
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        let token = result.credential.accessToken
+        // The signed-in user info.
+        let user = result.user
+        newUser(user.email)
+        setAlert(
+          <Alert variant="filled" severity="success">
+            Signup successful!
+          </Alert>
+        )
+      })
+      .catch(function (error) {
+        console.log(error)
+        setAlert(
+          <Alert variant="filled" severity="error">
+            Signup failed!
+          </Alert>
+        )
+        // Handle Errors here.
+        let errorCode = error.code
+        let errorMessage = error.message
+        // The email of the user's account used.
+        let email = error.email
+        // The firebase.auth.AuthCredential type that was used.
+        let credential = error.credential
+      })
+  }
+
+  function handleGoogleSignout(e) {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        console.log('Sign Out successful')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 
   return (
     <Container component="main" maxWidth="xs">

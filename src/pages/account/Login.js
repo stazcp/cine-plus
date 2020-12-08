@@ -18,6 +18,7 @@ import { FirebaseContext } from '../../Firebase/FirebaseContext'
 import { Redirect, Link } from 'react-router-dom'
 import Alert from '@material-ui/lab/Alert'
 import './customStyles.css'
+import { AlertContext } from '../../components/AlertContext'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,15 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles()
-  const { provider, user, alert, setAlert } = useContext(FirebaseContext)
-
-  useEffect(() => {
-    if (alert) {
-      setTimeout(() => {
-        setAlert(null)
-      }, 3000)
-    }
-  }, [alert])
+  const { provider, user } = useContext(FirebaseContext)
+  const { setAlert } = useContext(AlertContext)
 
   const handleGoogleSignup = (e) => {
     // firebase.auth().signInWithRedirect(provider)

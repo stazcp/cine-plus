@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './App.css'
 import Home from '../../pages/Home'
 import Footer from '../Footer'
@@ -18,7 +18,7 @@ import Leaderboard from '../../pages/more/Leaderboard'
 import Support from '../../pages/more/Support'
 import Api from '../../pages/more/Api'
 import Display from '../../pages/Display'
-import { MovieProvider } from '../MovieContext'
+import { MovieProvider, MovieContext } from '../MovieContext'
 import { FirebaseProvider } from '../../Firebase/FirebaseContext'
 import Login from '../../pages/account/Login'
 import Join from '../../pages/account/Join'
@@ -26,14 +26,18 @@ import Account from '../../pages/account/Account'
 import Person from '../../pages/Person'
 import LikedContent from '../../pages/LikedContent'
 import Search from '../../pages/Search'
+import { AlertContext } from '../AlertContext'
+import Alert from '@material-ui/lab/Alert'
 
-// lowercase routes
-function App() {
+function App(props) {
+  const { alert } = useContext(AlertContext)
+
   return (
     <MovieProvider>
       <Router>
         <FirebaseProvider>
           <AppBar />
+          {alert && alert}
           <Switch>
             {/* movies */}
             <Route path="/popular-movies">

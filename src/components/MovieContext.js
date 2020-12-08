@@ -1,6 +1,5 @@
 import React, { useState, createContext, useReducer } from 'react'
 import { defaultMovie } from '../utils/defaultMovie'
-import Alert from '@material-ui/lab/Alert'
 
 export const MovieContext = createContext()
 

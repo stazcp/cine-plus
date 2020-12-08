@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useEffect, useContext } from 'react'
 import { Typography, Box, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -56,12 +57,10 @@ const useStyles = makeStyles((theme) => ({
     height: '168.53px',
     display: 'flex',
   },
-  main: {
-    // overflowX: 'hidden',
-  },
+  main: {},
 }))
 
-export default function Home(props) {
+export default function Home(): React$Element<typeof React.Fragment> {
   const classes = useStyles()
   const {
     popular,
@@ -95,7 +94,9 @@ export default function Home(props) {
 
   const getPosterUrl = () => {
     getConfig().then((data) => {
-      setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      if (data?.images?.secure_base_url || data?.images?.base_url) {
+        setBasePosterUrl(data.images.secure_base_url || data.images.base_url)
+      }
     })
   }
 
@@ -197,7 +198,7 @@ export default function Home(props) {
   }
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth="lg" className={classes.main}>
         <main>
           {/* Hero unit */}
@@ -261,6 +262,6 @@ export default function Home(props) {
           {redirectToSearch()}
         </main>
       </Container>
-    </React.Fragment>
+    </>
   )
 }

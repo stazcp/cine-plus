@@ -6,6 +6,7 @@ import ReactPlayer from 'react-player'
 import { getTrailer } from '../utils/movieDB'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Alert from '@material-ui/lab/Alert'
+import { AlertContext } from './AlertContext'
 
 const useStyles = makeStyles((theme) => ({
   video: {
@@ -24,37 +25,43 @@ export default function SimpleModal() {
   const classes = useStyles()
   //receives trailer from Home > DisplayCard | Display > MovieContext
   const { openTrailer, setOpenTrailer } = useContext(MovieContext)
+  const { setAlert, alert } = useContext(AlertContext)
   const [key, setKey] = useState()
   const [modalStyle] = useState()
-  const [alert, setAlert] = useState()
   const sm = useMediaQuery('(max-width:600px)')
   const xs = useMediaQuery('(max-width:355px)')
   const { id, type, open } = openTrailer
 
   useEffect(() => {
     fetchTrailer()
-  }, [openTrailer])
+  }, [openTrailer.open])
 
   const fetchTrailer = () => {
-    if (id && type) {
+    if (id && type && open) {
       try {
         getTrailer(id, type).then((data) => {
-          console.log(data)
           const { results } = data.videos
           if (results?.length) {
             setKey(results[0]?.key && results[0].key)
+          } else {
+            sendAlert()
           }
         })
       } catch (error) {
         console.log(error)
         //create Alert State
-        setAlert(
-          <Alert variant="filled" severity="error">
-            Trailer not found!
-          </Alert>
-        )
+        sendAlert()
       }
     }
+  }
+
+  function sendAlert() {
+    setAlert(
+      <Alert variant="filled" severity="error">
+        Trailer not found!
+      </Alert>
+    )
+    handleClose()
   }
 
   const handleClose = () => {
@@ -64,7 +71,7 @@ export default function SimpleModal() {
 
   return (
     <>
-      {key ? (
+      {key && (
         <div>
           <Modal
             open={open}
@@ -83,7 +90,7 @@ export default function SimpleModal() {
             </div>
           </Modal>
         </div>
-      ) : null}
+      )}
     </>
   )
 }

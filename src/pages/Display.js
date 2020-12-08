@@ -231,7 +231,7 @@ export default function Display(): React$Element<React$FragmentType> {
 
   return (
     <>
-      <Box className={classes.topBar}></Box>
+      {/* <Box className={classes.topBar}></Box> */}
       <Box className={classes.main}>
         <Box display="flex">
           <Card className={customClasses.root}>
