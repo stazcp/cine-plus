@@ -147,6 +147,24 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
     setOpenDrawer(false)
   }
 
+  /*
+  improvement:
+  <MenuCreator>
+{routingData.people.items.map((item, i) => {
+          return (
+            <MenuItem key={i}>
+              <Link to={item.to} style={styles.link}>
+                {' '}
+                {item.title}{' '}
+              </Link>
+            </MenuItem>
+          )
+        })}
+  </MenuCreator>
+
+  Or send in different arrays to the same component
+  */
+
   const moviesMenuId = 'movies-menu'
   const renderMoviesMenu = () => {
     return (

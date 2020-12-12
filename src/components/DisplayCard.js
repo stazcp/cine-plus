@@ -87,8 +87,6 @@ export default function MovieCard({
   } = useContext(MovieContext)
   const [liked, setLiked] = useState(null)
 
-  //supposed to trigger when a like is added or removed
-  //doesn't work
   useEffect(() => {
     setLike()
   }, [user, currentLikes])

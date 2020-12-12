@@ -37,7 +37,7 @@ function App(props) {
       <Router>
         <FirebaseProvider>
           <AppBar />
-          {alert && alert}
+          {alert}
           <Switch>
             {/* movies */}
             <Route path="/popular-movies">
