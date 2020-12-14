@@ -13,10 +13,6 @@ import AiringToday from '../../pages/tvShows/AiringToday'
 import TopRatedShows from '../../pages/tvShows/TopRatedShows'
 import OnTv from '../../pages/tvShows/OnTv'
 import People from '../../pages/People'
-import Discussions from '../../pages/more/Discussions'
-import Leaderboard from '../../pages/more/Leaderboard'
-import Support from '../../pages/more/Support'
-import Api from '../../pages/more/Api'
 import Display from '../../pages/Display'
 import { MovieProvider, MovieContext } from '../MovieContext'
 import { FirebaseProvider } from '../../Firebase/FirebaseContext'
@@ -68,19 +64,6 @@ function App(props) {
             {/* people */}
             <Route path="/people">
               <People />
-            </Route>
-            {/* more */}
-            <Route path="/discussions">
-              <Discussions />
-            </Route>
-            <Route path="/leaderboard">
-              <Leaderboard />
-            </Route>
-            <Route path="/support">
-              <Support />
-            </Route>
-            <Route path="/api">
-              <Api />
             </Route>
             {/* other */}
             <Route path="/login">

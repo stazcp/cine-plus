@@ -166,32 +166,30 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
   */
 
   const moviesMenuId = 'movies-menu'
-  const renderMoviesMenu = () => {
-    return (
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorEl={anchorEl.movies}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        id={moviesMenuId}
-        keepMounted
-        open={Boolean(anchorEl.movies)}
-        onClose={handleMenuClose}
-      >
-        {routingData.movies.items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.link}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    )
-  }
+  const renderMoviesMenu = (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorEl={anchorEl.movies}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      id={moviesMenuId}
+      keepMounted
+      open={Boolean(anchorEl.movies)}
+      onClose={handleMenuClose}
+    >
+      {routingData.movies.items.map((item, i) => {
+        return (
+          <MenuItem key={i}>
+            <Link to={item.to} style={styles.link}>
+              {' '}
+              {item.title}{' '}
+            </Link>
+          </MenuItem>
+        )
+      })}
+    </Menu>
+  )
 
   const tvShowsMenuId = 'tv-shows-menu'
   const renderTVShowsMenu = () => {
@@ -384,7 +382,7 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
           </Toolbar>
         </AppBar>
         {renderPeopleMenu()}
-        {renderMoviesMenu()}
+        {renderMoviesMenu}
         {renderTVShowsMenu()}
         <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
         <Paper>
