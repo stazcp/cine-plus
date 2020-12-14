@@ -149,7 +149,7 @@ export default function Person(): React$Element<React$FragmentType> {
             <CardMedia
               className={customClasses.media}
               image={
-                person
+                person?.profile_path && basePosterUrl
                   ? `${basePosterUrl}w342${person.profile_path}`
                   : 'https://source.unsplash.com/random'
               }
