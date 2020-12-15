@@ -23,6 +23,7 @@ import Drawer from './Drawer'
 import { routingData } from '../routing/routes'
 import Tooltip from '@material-ui/core/Tooltip'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
+import MenuCreator from './MenuCreator'
 
 const drawerWidth = 240
 
@@ -118,17 +119,21 @@ const styles = {
   },
 }
 
+const MENU_ANCHORS = {
+  movies: null,
+  people: null,
+  tvShows: null,
+  more: null,
+}
+
 export default function PrimarySearchAppBar(): React$Element<'div'> {
   const classes = useStyles()
-  const MENU_ANCHORS = {
-    movies: null,
-    people: null,
-    tvShows: null,
-    more: null,
-  }
   const [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS)
   const [openDrawer, setOpenDrawer] = useState(false)
   const { user } = useContext(FirebaseContext)
+  const moviesMenuId = 'movies-menu',
+    tvShowsMenuId = 'tv-shows-menu',
+    peopleMenuId = 'people-menu'
 
   const handleOpenMenu = (e, anchor: string) => {
     setAnchorEl({ ...MENU_ANCHORS, [anchor]: e.currentTarget })
@@ -147,170 +152,16 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
     setOpenDrawer(false)
   }
 
-  /*
-  improvement:
-  <MenuCreator>
-{routingData.people.items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.link}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-  </MenuCreator>
-
-  Or send in different arrays to the same component
-  */
-
-  const moviesMenuId = 'movies-menu'
-  const renderMoviesMenu = (
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorEl={anchorEl.movies}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      id={moviesMenuId}
-      keepMounted
-      open={Boolean(anchorEl.movies)}
-      onClose={handleMenuClose}
-    >
-      {routingData.movies.items.map((item, i) => {
-        return (
-          <MenuItem key={i}>
-            <Link to={item.to} style={styles.link}>
-              {' '}
-              {item.title}{' '}
-            </Link>
-          </MenuItem>
-        )
-      })}
-    </Menu>
-  )
-
-  const tvShowsMenuId = 'tv-shows-menu'
-  const renderTVShowsMenu = () => {
-    return (
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorEl={anchorEl.tvShows}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        id={tvShowsMenuId}
-        keepMounted
-        open={Boolean(anchorEl.tvShows)}
-        onClose={handleMenuClose}
-      >
-        {routingData.tvShows.items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.link}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    )
-  }
-
-  const peopleMenuId = 'people-menu'
-  const renderPeopleMenu = () => {
-    return (
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorEl={anchorEl.people}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        id={peopleMenuId}
-        keepMounted
-        open={Boolean(anchorEl.people)}
-        onClose={handleMenuClose}
-      >
-        {routingData.people.items.map((item, i) => {
-          return (
-            <MenuItem key={i}>
-              <Link to={item.to} style={styles.link}>
-                {' '}
-                {item.title}{' '}
-              </Link>
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    )
-  }
-
-  const renderMovies = (
-    <Typography
-      edge="end"
-      aria-label="movies menu"
-      aria-controls={moviesMenuId}
-      aria-haspopup="true"
-      onClick={(e) => handleOpenMenu(e, 'movies')}
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
-      <Link to="#" style={styles.link}>
-        {routingData.movies.title}
-      </Link>
-    </Typography>
-  )
-
-  const renderTvShows = (
-    <Typography
-      edge="end"
-      aria-label="tv shows menu"
-      aria-controls={tvShowsMenuId}
-      aria-haspopup="true"
-      onClick={(e) => handleOpenMenu(e, 'tvShows')}
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
-      <Link to="#" style={styles.link}>
-        {routingData.tvShows.title}
-      </Link>
-    </Typography>
-  )
-
-  const renderPeople = (
-    <Typography
-      edge="end"
-      aria-label="people menu"
-      aria-controls={peopleMenuId}
-      aria-haspopup="true"
-      onClick={(e) => handleOpenMenu(e, 'people')}
-      color="inherit"
-      className={classes.h5Link}
-      variant="h5"
-    >
-      <Link to="#" style={styles.link}>
-        {routingData.people.title}
-      </Link>
-    </Typography>
-  )
-
-  const renderAccountActions = () => {
-    if (user) {
-      return (
-        <Tooltip title="Account">
-          <IconButton aria-label="show" color="inherit">
-            <Link to="/account" style={styles.link}>
-              {user && `${user.displayName}`.substring(0, 18)}
-            </Link>
-          </IconButton>
-        </Tooltip>
-      )
-    }
-    return routingData.account.items.map((ele, i) => {
+  const renderAccountActions = user ? (
+    <Tooltip title="Account">
+      <IconButton aria-label="show" color="inherit">
+        <Link to="/account" style={styles.link}>
+          {user && `${user.displayName}`.substring(0, 18)}
+        </Link>
+      </IconButton>
+    </Tooltip>
+  ) : (
+    routingData.account.items.map((ele, i) => {
       const { title, to } = ele
       return (
         <Typography edge="end" color="inherit" className={classes.h5Link} variant="h5" key={i}>
@@ -320,28 +171,6 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
         </Typography>
       )
     })
-  }
-
-  const renderLanguages = (
-    <Tooltip title="Language: EN">
-      <IconButton aria-label="language is english" color="inherit">
-        <LanguageIcon />
-      </IconButton>
-    </Tooltip>
-  )
-
-  const renderAdd = (
-    <Tooltip
-      title={
-        user
-          ? 'You can now Like Movies, Shows and People!'
-          : 'Login or Join to Like your Favorite Films'
-      }
-    >
-      <IconButton aria-label="message" color="inherit">
-        <AddIcon />
-      </IconButton>
-    </Tooltip>
   )
 
   return (
@@ -358,16 +187,69 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
               </Link>
             </Typography>
             <div className={classes.mainMenu}>
-              {renderMovies}
-              {renderTvShows}
-              {renderPeople}
+              <Typography
+                edge="end"
+                aria-label="movies menu"
+                aria-controls={moviesMenuId}
+                aria-haspopup="true"
+                onClick={(e) => handleOpenMenu(e, 'movies')}
+                color="inherit"
+                className={classes.h5Link}
+                variant="h5"
+              >
+                <Link to="#" style={styles.link}>
+                  {routingData.movies.title}
+                </Link>
+              </Typography>
+              <Typography
+                edge="end"
+                aria-label="tv shows menu"
+                aria-controls={tvShowsMenuId}
+                aria-haspopup="true"
+                onClick={(e) => handleOpenMenu(e, 'tvShows')}
+                color="inherit"
+                className={classes.h5Link}
+                variant="h5"
+              >
+                <Link to="#" style={styles.link}>
+                  {routingData.tvShows.title}
+                </Link>
+              </Typography>
+              <Typography
+                edge="end"
+                aria-label="people menu"
+                aria-controls={peopleMenuId}
+                aria-haspopup="true"
+                onClick={(e) => handleOpenMenu(e, 'people')}
+                color="inherit"
+                className={classes.h5Link}
+                variant="h5"
+              >
+                <Link to="#" style={styles.link}>
+                  {routingData.people.title}
+                </Link>
+              </Typography>
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              {renderAdd}
-              {renderLanguages}
+              <Tooltip
+                title={
+                  user
+                    ? 'You can now Like Movies, Shows and People!'
+                    : 'Login or Join to Like your Favorite Films'
+                }
+              >
+                <IconButton aria-label="message" color="inherit">
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Language: EN">
+                <IconButton aria-label="language is english" color="inherit">
+                  <LanguageIcon />
+                </IconButton>
+              </Tooltip>
             </div>
-            <div className={classes.rightMenu}>{renderAccountActions()}</div>
+            <div className={classes.rightMenu}>{renderAccountActions}</div>
             <div className={classes.sectionMobile}>
               <IconButton
                 color="inherit"
@@ -381,9 +263,24 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
             </div>
           </Toolbar>
         </AppBar>
-        {renderPeopleMenu()}
-        {renderMoviesMenu}
-        {renderTVShowsMenu()}
+        <MenuCreator
+          anchorEl={anchorEl.movies}
+          id={moviesMenuId}
+          items={routingData.movies.items}
+          handleMenuClose={handleMenuClose}
+        />
+        <MenuCreator
+          anchorEl={anchorEl.tvShows}
+          id={tvShowsMenuId}
+          items={routingData.tvShows.items}
+          handleMenuClose={handleMenuClose}
+        />
+        <MenuCreator
+          anchorEl={anchorEl.people}
+          id={peopleMenuId}
+          items={routingData.people.items}
+          handleMenuClose={handleMenuClose}
+        />
         <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
         <Paper>
           <div className={classes.toolbar}></div>

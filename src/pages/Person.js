@@ -189,7 +189,6 @@ export default function Person(): React$Element<React$FragmentType> {
             </Box>
           )}
           <br />
-
           <Box display="flex">{/* render directors */}</Box>
         </Box>
       </Box>
