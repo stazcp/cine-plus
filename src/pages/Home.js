@@ -13,6 +13,7 @@ import { MovieContext } from '../components/MovieContext'
 import { smCardStyles } from '../styles/RatingBarStyles'
 import { Redirect } from 'react-router-dom'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -20,25 +21,17 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-    height: '1356',
+    padding: theme.spacing(8, 5, 6),
+    margin: theme.spacing(0, 0, 4, 0),
     backgroundImage: `url(${Image})`,
-    // marginLeft: '-40px',
-    paddingLeft: '40px',
-    paddingRight: '40px',
-    // marginRight: '-40px',
-    marginBottom: '30px',
-    overflowX: 'hidden',
     [theme.breakpoints.down('xs')]: {
-      // minWidth: '110%',
+      margin: theme.spacing(0, -2, 4, -2),
     },
   },
   heroButtons: {
     marginTop: theme.spacing(4),
   },
   heroTitle: {
-    color: 'white',
-    fontSize: '3em',
     fontWeight: '700',
   },
   scroller: {
@@ -48,16 +41,11 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '80%',
   },
   heroSubtitle: {
-    color: 'white',
-    fontSize: '2em',
     fontWeight: '600',
   },
-  trailer: {
-    width: '300px',
-    height: '168.53px',
-    display: 'flex',
+  main: {
+    width: '100%',
   },
-  main: {},
 }))
 
 export default function Home(): React$Element<typeof React.Fragment> {
@@ -79,6 +67,11 @@ export default function Home(): React$Element<typeof React.Fragment> {
   } = useContext(MovieContext)
   const [searching, setSearching] = useState()
   const posterSize = 'w300'
+  const xs = useMediaQuery('(max-width:355px)')
+  let containerSize = 'lg'
+  if (xs) {
+    containerSize = false
+  }
 
   useEffect(() => {
     getFrontPage()
@@ -199,18 +192,12 @@ export default function Home(): React$Element<typeof React.Fragment> {
 
   return (
     <>
-      <Container maxWidth="lg" className={classes.main}>
+      <Container maxWidth={false} className={classes.main}>
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
             <Box maxWidth="lg">
-              <Typography
-                component="h1"
-                variant="h2"
-                align="left"
-                color="inherit"
-                className={classes.heroTitle}
-              >
+              <Typography variant="h2" align="left" color="secondary" className={classes.heroTitle}>
                 Welcome.
               </Typography>
               <Typography

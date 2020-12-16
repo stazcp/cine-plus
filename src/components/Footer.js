@@ -8,39 +8,26 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: '#032541',
     padding: theme.spacing(2),
-    width: '100%',
     bottom: 0,
   },
-  root: {
-    backgroundColor: '#fff',
-  },
-  h2Link: {
+  link: {
+    fontSize: theme.typography.h2.fontSize,
     fontWeight: '700',
-    fontSize: '1em',
-    color: 'white',
   },
 }))
 
 export default function Footer(props) {
   const classes = useStyles()
   return (
-    <Box className={classes.root}>
-      <footer className={classes.footer}>
-        <Typography variant="h3" noWrap>
-          <Link href="/" underline="none" className={classes.h2Link}>
-            Cine+
-          </Link>
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textPrimary"
-          component="p"
-          className={classes.h2Link}
-        >
-          by Staz
-        </Typography>
-      </footer>
-    </Box>
+    <footer className={classes.footer}>
+      <Typography>
+        <Link href="/" underline="none" color="secondary" className={classes.link}>
+          Cine+
+        </Link>
+      </Typography>
+      <Typography variant="subtitle1" align="center" color="secondary" variant="body2">
+        © 2020 by Staz Christodoulakis
+      </Typography>
+    </footer>
   )
 }

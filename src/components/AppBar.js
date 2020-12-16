@@ -1,6 +1,6 @@
 // @flow
 import React, { useContext, useEffect, useState } from 'react'
-import { createMuiTheme, makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
@@ -10,6 +10,7 @@ import {
   Badge,
   IconButton,
   Paper,
+  Box,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import LanguageIcon from '@material-ui/icons/Language'
@@ -22,24 +23,9 @@ import clsx from 'clsx'
 import Drawer from './Drawer'
 import { routingData } from '../routing/routes'
 import Tooltip from '@material-ui/core/Tooltip'
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import MenuCreator from './MenuCreator'
-
+import { shadows } from '@material-ui/system'
 const drawerWidth = 240
-
-const defaultTheme = createMuiTheme()
-const theme = createMuiTheme({
-  overrides: {
-    MuiTooltip: {
-      tooltip: {
-        backgroundColor: 'white',
-        color: 'black',
-        fontSize: '1em',
-        fontWeight: '400',
-      },
-    },
-  },
-})
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -72,9 +58,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#032541',
     boxShadow: '0 0 0 0',
   },
-  h2Link: {
+  logo: {
     fontWeight: '700',
-    fontSize: '2em',
   },
   h5Link: {
     fontWeight: '600',
@@ -175,118 +160,117 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
 
   return (
     <div className={classes.grow}>
-      <MuiThemeProvider theme={theme}>
-        <AppBar
-          position="fixed"
-          className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
-        >
-          <Toolbar>
-            <Typography className={classes.h2Link} variant="h2" noWrap>
-              <Link to="/" style={styles.link}>
-                Cine+
+      <AppBar
+        position="fixed"
+        className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
+      >
+        <Toolbar>
+          <Link to="/" style={styles.link}>
+            <Typography className={classes.logo} variant="h4" noWrap>
+              Cine+
+            </Typography>
+          </Link>
+
+          <div className={classes.mainMenu}>
+            <Typography
+              edge="end"
+              aria-label="movies menu"
+              aria-controls={moviesMenuId}
+              aria-haspopup="true"
+              onClick={(e) => handleOpenMenu(e, 'movies')}
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
+              <Link to="#" style={styles.link}>
+                {routingData.movies.title}
               </Link>
             </Typography>
-            <div className={classes.mainMenu}>
-              <Typography
-                edge="end"
-                aria-label="movies menu"
-                aria-controls={moviesMenuId}
-                aria-haspopup="true"
-                onClick={(e) => handleOpenMenu(e, 'movies')}
-                color="inherit"
-                className={classes.h5Link}
-                variant="h5"
-              >
-                <Link to="#" style={styles.link}>
-                  {routingData.movies.title}
-                </Link>
-              </Typography>
-              <Typography
-                edge="end"
-                aria-label="tv shows menu"
-                aria-controls={tvShowsMenuId}
-                aria-haspopup="true"
-                onClick={(e) => handleOpenMenu(e, 'tvShows')}
-                color="inherit"
-                className={classes.h5Link}
-                variant="h5"
-              >
-                <Link to="#" style={styles.link}>
-                  {routingData.tvShows.title}
-                </Link>
-              </Typography>
-              <Typography
-                edge="end"
-                aria-label="people menu"
-                aria-controls={peopleMenuId}
-                aria-haspopup="true"
-                onClick={(e) => handleOpenMenu(e, 'people')}
-                color="inherit"
-                className={classes.h5Link}
-                variant="h5"
-              >
-                <Link to="#" style={styles.link}>
-                  {routingData.people.title}
-                </Link>
-              </Typography>
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <Tooltip
-                title={
-                  user
-                    ? 'You can now Like Movies, Shows and People!'
-                    : 'Login or Join to Like your Favorite Films'
-                }
-              >
-                <IconButton aria-label="message" color="inherit">
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Language: EN">
-                <IconButton aria-label="language is english" color="inherit">
-                  <LanguageIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-            <div className={classes.rightMenu}>{renderAccountActions}</div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="end"
-                onClick={handleDrawerOpen}
-                className={clsx(openDrawer && classes.hide)}
-              >
-                <MenuIcon />
+            <Typography
+              edge="end"
+              aria-label="tv shows menu"
+              aria-controls={tvShowsMenuId}
+              aria-haspopup="true"
+              onClick={(e) => handleOpenMenu(e, 'tvShows')}
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
+              <Link to="#" style={styles.link}>
+                {routingData.tvShows.title}
+              </Link>
+            </Typography>
+            <Typography
+              edge="end"
+              aria-label="people menu"
+              aria-controls={peopleMenuId}
+              aria-haspopup="true"
+              onClick={(e) => handleOpenMenu(e, 'people')}
+              color="inherit"
+              className={classes.h5Link}
+              variant="h5"
+            >
+              <Link to="#" style={styles.link}>
+                {routingData.people.title}
+              </Link>
+            </Typography>
+          </div>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <Tooltip
+              title={
+                user
+                  ? 'You can now Like Movies, Shows and People!'
+                  : 'Login or Join to Like your Favorite Films'
+              }
+            >
+              <IconButton aria-label="message" color="inherit">
+                <AddIcon />
               </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <MenuCreator
-          anchorEl={anchorEl.movies}
-          id={moviesMenuId}
-          items={routingData.movies.items}
-          handleMenuClose={handleMenuClose}
-        />
-        <MenuCreator
-          anchorEl={anchorEl.tvShows}
-          id={tvShowsMenuId}
-          items={routingData.tvShows.items}
-          handleMenuClose={handleMenuClose}
-        />
-        <MenuCreator
-          anchorEl={anchorEl.people}
-          id={peopleMenuId}
-          items={routingData.people.items}
-          handleMenuClose={handleMenuClose}
-        />
-        <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
-        <Paper>
-          <div className={classes.toolbar}></div>
-        </Paper>
-        {/* //makes sure content is not hidden under AppBar */}
-      </MuiThemeProvider>
+            </Tooltip>
+            <Tooltip title="Language: EN">
+              <IconButton aria-label="language is english" color="inherit">
+                <LanguageIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div className={classes.rightMenu}>{renderAccountActions}</div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerOpen}
+              className={clsx(openDrawer && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <MenuCreator
+        anchorEl={anchorEl.movies}
+        id={moviesMenuId}
+        items={routingData.movies.items}
+        handleMenuClose={handleMenuClose}
+      />
+      <MenuCreator
+        anchorEl={anchorEl.tvShows}
+        id={tvShowsMenuId}
+        items={routingData.tvShows.items}
+        handleMenuClose={handleMenuClose}
+      />
+      <MenuCreator
+        anchorEl={anchorEl.people}
+        id={peopleMenuId}
+        items={routingData.people.items}
+        handleMenuClose={handleMenuClose}
+      />
+      <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
+      <Paper>
+        <div className={classes.toolbar}></div>
+      </Paper>
+      {/* //makes sure content is not hidden under AppBar */}
     </div>
   )
 }

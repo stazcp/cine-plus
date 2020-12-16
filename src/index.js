@@ -1,27 +1,20 @@
+// @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './components/App/App'
 import * as serviceWorker from './serviceWorker'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import AlertProvider from './components/AlertContext'
-
-// put in utils -> theme
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: ['Source Sans Pro', 'Arial', 'sans-serif'].join(','),
-    fontWeightBold: '700',
-    fontWeightRegular: '400',
-  },
-})
+import { theme } from './styles/mainTheme'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
       <AlertProvider>
         <App />
       </AlertProvider>
-    </ThemeProvider>
+    </MuiThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
