@@ -111,7 +111,7 @@ const MENU_ANCHORS = {
   more: null,
 }
 
-export default function PrimarySearchAppBar(): React$Element<'div'> {
+export default function PrimarySearchAppBar(): React$Element<typeof React.Fragment> {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(MENU_ANCHORS)
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -159,9 +159,9 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
   )
 
   return (
-    <div className={classes.grow}>
+    <>
       <AppBar
-        position="fixed"
+        position="static"
         className={clsx(classes.AppBar, { [classes.appBarShift]: openDrawer })}
       >
         <Toolbar>
@@ -267,10 +267,6 @@ export default function PrimarySearchAppBar(): React$Element<'div'> {
         handleMenuClose={handleMenuClose}
       />
       <Drawer open={openDrawer} handleDrawerClose={handleDrawerClose} data={routingData} />
-      <Paper>
-        <div className={classes.toolbar}></div>
-      </Paper>
-      {/* //makes sure content is not hidden under AppBar */}
-    </div>
+    </>
   )
 }

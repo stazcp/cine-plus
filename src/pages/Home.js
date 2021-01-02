@@ -193,61 +193,59 @@ export default function Home(): React$Element<typeof React.Fragment> {
   return (
     <>
       <Container maxWidth={false} className={classes.main}>
-        <main>
-          {/* Hero unit */}
-          <div className={classes.heroContent}>
-            <Box maxWidth="lg">
-              <Typography variant="h2" align="left" color="secondary" className={classes.heroTitle}>
-                Welcome.
-              </Typography>
-              <Typography
-                variant="h5"
-                align="left"
-                color="secondary"
-                paragraph
-                className={classes.heroSubtitle}
-              >
-                Millions of movies, TV shows and people to discover. Explore now.
-              </Typography>
-              <SearchBar
-                placeholder="Search for a movie, tv show, person....."
-                onRequestSearch={(value) => search(value)}
-              />
-            </Box>
-          </div>
-          {/* End hero unit */}
-          <ColumnHeader
-            header="What's Popular"
-            options={[
-              { title: 'Movies', option: 'movie' },
-              { title: 'Tv Shows', option: 'tv' },
-            ]}
-            setOption={getPopular}
-          />
-          <Box className={classes.scroller}>{renderCards(popular.movies, popular.type)}</Box>
-          <ColumnHeader
-            header="Top Rated"
-            options={[
-              { title: 'Movies', option: 'movie' },
-              { title: 'Tv Shows', option: 'tv' },
-            ]}
-            setOption={getTopRated}
-          />
-          <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
-          <ColumnHeader header="Latest Trailers" setOption={getTrending} />
-          <Box className={classes.scroller}>{renderTrailers(trailers.movies, trailers.type)}</Box>
-          <ColumnHeader
-            header="Trending"
-            options={[
-              { title: 'Today', option: 'day' },
-              { title: 'This Week', option: 'week' },
-            ]}
-            setOption={getTrending}
-          />
-          <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
-          <TrailerModal />
-          {redirectToSearch()}
-        </main>
+        {/* Hero unit */}
+        <div className={classes.heroContent}>
+          <Box maxWidth="lg">
+            <Typography variant="h2" align="left" color="secondary" className={classes.heroTitle}>
+              Welcome.
+            </Typography>
+            <Typography
+              variant="h5"
+              align="left"
+              color="secondary"
+              paragraph
+              className={classes.heroSubtitle}
+            >
+              Millions of movies, TV shows and people to discover. Explore now.
+            </Typography>
+            <SearchBar
+              placeholder="Search for a movie, tv show, person....."
+              onRequestSearch={(value) => search(value)}
+            />
+          </Box>
+        </div>
+        {/* End hero unit */}
+        <ColumnHeader
+          header="What's Popular"
+          options={[
+            { title: 'Movies', option: 'movie' },
+            { title: 'Tv Shows', option: 'tv' },
+          ]}
+          setOption={getPopular}
+        />
+        <Box className={classes.scroller}>{renderCards(popular.movies, popular.type)}</Box>
+        <ColumnHeader
+          header="Top Rated"
+          options={[
+            { title: 'Movies', option: 'movie' },
+            { title: 'Tv Shows', option: 'tv' },
+          ]}
+          setOption={getTopRated}
+        />
+        <Box className={classes.scroller}>{renderCards(topRated.movies, topRated.type)}</Box>
+        <ColumnHeader header="Latest Trailers" setOption={getTrending} />
+        <Box className={classes.scroller}>{renderTrailers(trailers.movies, trailers.type)}</Box>
+        <ColumnHeader
+          header="Trending"
+          options={[
+            { title: 'Today', option: 'day' },
+            { title: 'This Week', option: 'week' },
+          ]}
+          setOption={getTrending}
+        />
+        <Box className={classes.scroller}>{renderCards(trending.movies, trending.type)}</Box>
+        <TrailerModal />
+        {redirectToSearch()}
       </Container>
     </>
   )
