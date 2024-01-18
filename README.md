@@ -4,6 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 https://cine-plus.vercel.app/
 
+## Vanilla JS - version ##
+https://github.com/stazcp/movie_finder
+
 ## Available Scripts
 
 In the project directory, you can run:
